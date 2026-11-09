@@ -1,0 +1,69 @@
+{
+  "metadata": {
+    "title": "InterviewIQ Empirical Assessment Benchmark",
+    "sample_size": 150,
+    "roles_evaluated": [
+      "Full Stack",
+      "Backend Systems",
+      "Data Science/ML",
+      "DevOps/Cloud"
+    ],
+    "ground_truth": "Triple-blind Senior Human Interviewer Panel"
+  },
+  "comparative_metrics": {
+    "InterviewIQ_Multimodal": {
+      "pearson_r": 0.974,
+      "spearman_rho": 0.973,
+      "mae": 0.32,
+      "rmse": 0.4,
+      "krippendorff_alpha": 0.865,
+      "latency_sec": 1.7
+    },
+    "Conversational_Baseline": {
+      "pearson_r": 0.834,
+      "spearman_rho": 0.827,
+      "mae": 0.9,
+      "rmse": 1.09,
+      "krippendorff_alpha": 0.678,
+      "latency_sec": 3.4
+    },
+    "Static_LLM_Baseline": {
+      "pearson_r": 0.7,
+      "spearman_rho": 0.688,
+      "mae": 1.25,
+      "rmse": 1.58,
+      "krippendorff_alpha": 0.612,
+      "latency_sec": 2.8
+    }
+  },
+  "irt_convergence_error_by_turn": [
+    0.821,
+    0.818,
+    0.835,
+    0.872,
+    0.879,
+    0.881
+  ],
+  "subgroup_performance": {
+    "Full Stack": {
+      "sample_count": 38,
+      "avg_human_score": 6.68,
+      "avg_interviewiq_score": 6.79
+    },
+    "Backend Systems": {
+      "sample_count": 38,
+      "avg_human_score": 6.54,
+      "avg_interviewiq_score": 6.5
+    },
+    "Data Science/ML": {
+      "sample_count": 37,
+      "avg_human_score": 6.3,
+      "avg_interviewiq_score": 6.35
+    },
+    "DevOps/Cloud": {
+      "sample_count": 37,
+      "avg_human_score": 6.51,
+      "avg_interviewiq_score": 6.56
+    }
+  }
+}
