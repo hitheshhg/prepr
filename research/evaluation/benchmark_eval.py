@@ -242,3 +242,4 @@ if __name__ == "__main__":
     print(f"RMSE (/10):  {benchmark_output['comparative_metrics']['InterviewIQ_Multimodal']['rmse']}")
     print(f"Saved to:    {output_path}")
     print("=" * 60)
+

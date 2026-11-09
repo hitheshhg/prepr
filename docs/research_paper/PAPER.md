@@ -243,3 +243,4 @@ Future research will investigate full-duplex conversational audio streaming with
 3. Vaswani, A., et al. (2017). Attention Is All You Need. *Advances in Neural Information Processing Systems (NeurIPS)*.
 4. Bangerter, A., Roulin, N., & König, C. J. (2012). Personnel selection as a signaling game. *Journal of Applied Psychology*, 97(4), 719.
 5. Revelle, W. (2009). *An introduction to psychometric theory with applications in R*. Springer.
+
