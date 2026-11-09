@@ -96,7 +96,7 @@ export const ThemeToggle: React.FC<{ className?: string }> = ({ className = '' }
 
       {/* Floating Theme Selection Menu */}
       {menuOpen && (
-        <div className="absolute right-0 top-full mt-2 w-36 rounded-xl bg-white dark:bg-[#121214] border border-black/10 dark:border-white/15 shadow-2xl py-1.5 z-50 animate-in fade-in zoom-in-95 duration-150 font-mono text-xs">
+        <div className="absolute right-0 top-full mt-2 w-36 rounded-xl bg-[var(--bento-bg)] border border-[var(--bento-border)] shadow-2xl py-1.5 z-50 animate-in fade-in zoom-in-95 duration-150 font-mono text-xs backdrop-blur-xl">
           <div className="px-3 py-1 text-[10px] uppercase tracking-wider text-neutral-400 font-semibold border-b border-black/5 dark:border-white/5 mb-1 flex items-center gap-1.5">
             <Sparkles className="w-3 h-3 text-emerald-500 dark:text-[#4ade80]" />
             <span>Theme Mode</span>

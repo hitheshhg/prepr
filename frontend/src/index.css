@@ -146,7 +146,6 @@
   background-color: var(--bento-bg);
   border: 1px solid var(--bento-border);
   border-radius: 20px;
-  overflow: hidden;
   box-shadow: var(--bento-shadow);
   transform: translateZ(0);
   backface-visibility: hidden;

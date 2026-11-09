@@ -206,15 +206,13 @@ export const DashboardPage: React.FC = () => {
                     </defs>
                     <XAxis
                       dataKey="date"
-                      stroke="currentColor"
-                      className="text-neutral-400 dark:text-neutral-500"
-                      tick={{ fill: 'currentColor', fontSize: 11 }}
+                      stroke="#71717a"
+                      tick={{ fill: '#71717a', fontSize: 11, fontFamily: 'monospace' }}
                     />
                     <YAxis
                       domain={[0, 10]}
-                      stroke="currentColor"
-                      className="text-neutral-400 dark:text-neutral-500"
-                      tick={{ fill: 'currentColor', fontSize: 11 }}
+                      stroke="#71717a"
+                      tick={{ fill: '#71717a', fontSize: 11, fontFamily: 'monospace' }}
                     />
                     <Tooltip
                       contentStyle={{

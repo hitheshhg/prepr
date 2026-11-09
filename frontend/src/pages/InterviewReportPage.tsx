@@ -236,18 +236,17 @@ export const InterviewReportPage: React.FC = () => {
             <div className="w-full h-72 sm:h-80">
               <ResponsiveContainer width="100%" height="100%">
                 <RadarChart data={radarData}>
-                  <PolarGrid stroke="currentColor" className="text-neutral-300 dark:text-neutral-700 opacity-50" />
+                  <PolarGrid stroke="#71717a" strokeOpacity={0.3} />
                   <PolarAngleAxis
                     dataKey="subject"
-                    tick={{ fill: 'currentColor', fontSize: 11 }}
-                    className="text-neutral-600 dark:text-neutral-400 font-mono"
+                    tick={{ fill: '#71717a', fontSize: 10, fontFamily: 'monospace' }}
                   />
                   <PolarRadiusAxis
                     angle={30}
                     domain={[0, 10]}
-                    stroke="currentColor"
-                    className="text-neutral-400 dark:text-neutral-600 font-mono"
-                    tick={{ fill: 'currentColor', fontSize: 10 }}
+                    stroke="#71717a"
+                    strokeOpacity={0.3}
+                    tick={{ fill: '#71717a', fontSize: 9, fontFamily: 'monospace' }}
                   />
                   <Radar
                     name="Candidate"

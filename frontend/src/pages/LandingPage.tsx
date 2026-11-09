@@ -20,7 +20,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenAuth }) => {
   return (
     <div className="relative min-h-screen w-full flex flex-col justify-between items-center px-4 py-6 sm:py-8 bg-[var(--canvas-bg)] text-[var(--text-main)] transition-colors duration-200 select-none">
       {/* Top Bento Header */}
-      <header className="w-full max-w-5xl bento-card px-4 sm:px-6 py-3 rounded-2xl flex items-center justify-between">
+      <header className="w-full max-w-5xl bento-card px-4 sm:px-6 py-3 rounded-2xl flex items-center justify-between relative z-40 overflow-visible">
         <div className="flex items-center gap-2.5">
           <div className="w-8 h-8 rounded-xl bg-neutral-900 text-white dark:bg-white dark:text-black flex items-center justify-center font-mono font-bold text-sm shadow-sm">
             IQ

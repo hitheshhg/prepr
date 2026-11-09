@@ -40,8 +40,18 @@ export const Navbar: React.FC = () => {
         setDropdownOpen(false);
       }
     };
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setDropdownOpen(false);
+        setMobileMenuOpen(false);
+      }
+    };
     document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('keydown', handleKeyDown);
+    };
   }, []);
 
   const handleLogout = async () => {
@@ -61,7 +71,7 @@ export const Navbar: React.FC = () => {
   const photoURL = currentUser?.photoURL || userProfile?.photo_url || null;
 
   return (
-    <header className="bento-card p-3 sm:p-5 w-full transition-all">
+    <header className="bento-card p-3 sm:p-5 w-full transition-all relative z-40 overflow-visible">
       <div className="flex items-center justify-between gap-2 sm:gap-4">
         {/* Brand & Live Status */}
         <div className="flex items-center gap-2 sm:gap-3 min-w-0">
@@ -111,7 +121,7 @@ export const Navbar: React.FC = () => {
           <ThemeToggle />
 
           {/* User Profile Avatar Dropdown */}
-          <div className="relative" ref={dropdownRef}>
+          <div className="relative z-50" ref={dropdownRef}>
             <button
               type="button"
               onClick={() => {
@@ -120,19 +130,20 @@ export const Navbar: React.FC = () => {
               }}
               className="flex items-center gap-1.5 p-1 rounded-full border border-black/10 dark:border-white/10 hover:border-black/30 dark:hover:border-white/30 bg-black/[0.02] dark:bg-white/[0.02] transition-colors focus:outline-none"
               aria-expanded={dropdownOpen}
+              aria-haspopup="true"
             >
               <Avatar src={photoURL} name={displayName} size="sm" />
-              <ChevronDown className="w-3 h-3 text-neutral-400 hidden sm:block pr-0.5" />
+              <ChevronDown className={`w-3 h-3 text-neutral-400 hidden sm:block pr-0.5 transition-transform duration-200 ${dropdownOpen ? 'rotate-180' : ''}`} />
             </button>
 
             {dropdownOpen && (
-              <div className="absolute right-0 mt-2 w-56 rounded-2xl bento-card p-2 z-50 animate-in fade-in zoom-in-95 duration-150 font-mono text-xs">
+              <div className="absolute right-0 top-full mt-2 w-56 rounded-2xl bg-[var(--bento-bg)] border border-[var(--bento-border)] shadow-2xl p-2 z-50 animate-in fade-in zoom-in-95 duration-150 font-mono text-xs backdrop-blur-xl">
                 {/* User Summary */}
-                <div className="px-3 py-2 border-b border-black/5 dark:border-white/5 mb-1">
+                <div className="px-3 py-2 border-b border-[var(--bento-border)] mb-1">
                   <div className="font-semibold text-neutral-900 dark:text-white truncate">
                     {displayName}
                   </div>
-                  <div className="text-[11px] text-neutral-500 truncate">{email}</div>
+                  <div className="text-[11px] text-neutral-500 dark:text-neutral-400 truncate mt-0.5">{email}</div>
                 </div>
 
                 <Link
@@ -141,10 +152,10 @@ export const Navbar: React.FC = () => {
                     playClick(700, 0.02);
                     setDropdownOpen(false);
                   }}
-                  className="flex items-center gap-2 px-3 py-2 rounded-xl text-neutral-700 dark:text-neutral-300 hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
+                  className="flex items-center gap-2 px-3 py-2 rounded-xl text-neutral-700 dark:text-neutral-300 hover:bg-neutral-500/10 transition-colors"
                 >
                   <UserIcon className="w-3.5 h-3.5 text-neutral-400" />
-                  <span>Profile</span>
+                  <span>Profile Settings</span>
                 </Link>
 
                 <button
@@ -176,7 +187,7 @@ export const Navbar: React.FC = () => {
 
       {/* Mobile Drawer */}
       {mobileMenuOpen && (
-        <div className="md:hidden pt-3 mt-3 border-t border-black/10 dark:border-white/10 flex flex-col gap-1 font-mono text-xs">
+        <div className="md:hidden pt-3 mt-3 border-t border-[var(--bento-border)] flex flex-col gap-1 font-mono text-xs">
           {navLinks.map((link) => {
             const Icon = link.icon;
             const isActive = location.pathname === link.path;
@@ -199,6 +210,28 @@ export const Navbar: React.FC = () => {
               </Link>
             );
           })}
+
+          <div className="pt-2 mt-1 border-t border-[var(--bento-border)] flex flex-col gap-1">
+            <Link
+              to="/profile"
+              onClick={() => {
+                playClick(700, 0.02);
+                setMobileMenuOpen(false);
+              }}
+              className="flex items-center gap-2 px-3 py-2 rounded-xl text-neutral-600 dark:text-neutral-400 hover:bg-black/5 dark:hover:bg-white/5"
+            >
+              <UserIcon className="w-4 h-4" />
+              <span>Profile Settings</span>
+            </Link>
+            <button
+              type="button"
+              onClick={handleLogout}
+              className="flex items-center gap-2 px-3 py-2 rounded-xl text-rose-600 dark:text-rose-400 hover:bg-rose-500/10 text-left"
+            >
+              <LogOut className="w-4 h-4" />
+              <span>Sign out</span>
+            </button>
+          </div>
         </div>
       )}
     </header>

@@ -21,7 +21,7 @@ export const InfoTooltip: React.FC<InfoTooltipProps> = ({ text, className = '' }
     >
       <Info className="w-3.5 h-3.5" />
       {visible && (
-        <div className="absolute z-50 bottom-full left-1/2 -translate-x-1/2 mb-2 w-48 px-2.5 py-1.5 rounded-xl bg-white dark:bg-[#121214] border border-black/10 dark:border-white/15 text-[11px] leading-snug text-neutral-800 dark:text-neutral-200 shadow-2xl backdrop-blur-md pointer-events-none text-center font-mono">
+        <div className="absolute z-50 bottom-full left-1/2 -translate-x-1/2 mb-2 w-48 px-2.5 py-1.5 rounded-xl bg-[var(--bento-bg)] border border-[var(--bento-border)] text-[11px] leading-snug text-[var(--text-main)] shadow-2xl backdrop-blur-md pointer-events-none text-center font-mono">
           {text}
         </div>
       )}

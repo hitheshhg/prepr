@@ -24,7 +24,7 @@ export const Topbar: React.FC = () => {
   const photoURL = currentUser?.photoURL || userProfile?.photo_url || null;
 
   return (
-    <header className="h-16 border-b border-[var(--bento-border)] bg-[var(--bento-bg)]/80 backdrop-blur-md px-4 sm:px-6 flex items-center justify-between sticky top-0 z-30 select-none">
+    <header className="h-16 border-b border-[var(--bento-border)] bg-[var(--bento-bg)]/80 backdrop-blur-md px-4 sm:px-6 flex items-center justify-between sticky top-0 z-40 overflow-visible select-none">
       {/* Mobile Brand Title */}
       <div className="flex md:hidden items-center gap-2">
         <div className="w-7 h-7 rounded-lg bg-neutral-900 text-white dark:bg-white dark:text-black flex items-center justify-center font-mono font-bold text-xs">
@@ -56,7 +56,7 @@ export const Topbar: React.FC = () => {
           </button>
 
           {dropdownOpen && (
-            <div className="absolute right-0 mt-2 w-56 rounded-2xl bg-[var(--bento-bg)] border border-[var(--bento-border)] shadow-2xl backdrop-blur-xl py-2 z-50">
+            <div className="absolute right-0 top-full mt-2 w-56 rounded-2xl bg-[var(--bento-bg)] border border-[var(--bento-border)] shadow-2xl backdrop-blur-xl py-2 z-50">
               <div className="px-4 py-2 border-b border-[var(--bento-border)]">
                 <p className="text-xs font-semibold truncate">{displayName}</p>
                 <p className="text-[11px] text-[var(--text-muted)] truncate font-mono">{email}</p>

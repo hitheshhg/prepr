@@ -37,7 +37,7 @@ export const Card: React.FC<CardProps> = ({
     <motion.div
       className={twMerge(
         clsx(
-          'bento-card relative overflow-hidden transition-all duration-300',
+          'bento-card relative transition-all duration-300',
           hoverEffect && 'hover:scale-[1.005] hover:shadow-xl',
           glowStyles[glow],
           paddingStyles[padding],
