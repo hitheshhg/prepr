@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Mic,
@@ -13,6 +14,7 @@ import {
   TrendingUp,
   Volume2,
   VolumeX,
+  FileText,
 } from 'lucide-react';
 import Card from '../components/ui/Card';
 import Button from '../components/ui/Button';
@@ -835,8 +837,17 @@ export const InterviewRoomPage: React.FC = () => {
             </div>
 
             <div className="mt-8 pt-6 border-t border-[var(--bento-border)] flex flex-wrap items-center justify-center gap-3">
+              <Link to={`/report/${sessionSummary.session_id}`}>
+                <Button
+                  variant="primary"
+                  className="font-mono text-xs uppercase tracking-wider flex items-center gap-1.5"
+                  icon={<FileText className="w-4 h-4" />}
+                >
+                  View In-Depth Report & Roadmap
+                </Button>
+              </Link>
               <Button
-                variant="primary"
+                variant="secondary"
                 onClick={() => {
                   setSessionSummary(null);
                   setSessionActive(false);
