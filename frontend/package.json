@@ -10,6 +10,7 @@
     "lint": "tsc --noEmit"
   },
   "dependencies": {
+    "@mediapipe/tasks-vision": "^1.2.2",
     "axios": "^1.7.7",
     "canvas-confetti": "^1.9.3",
     "clsx": "^2.1.1",
