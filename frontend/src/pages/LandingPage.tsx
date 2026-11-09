@@ -1,7 +1,8 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
-import { Sparkles, FileCheck, Mic, Map } from 'lucide-react';
+import { FileCheck, Mic, Map } from 'lucide-react';
 import Button from '../components/ui/Button';
+import ThemeToggle from '../components/ui/ThemeToggle';
 import { useAuth } from '../context/AuthContext';
 
 interface LandingPageProps {
@@ -17,24 +18,29 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenAuth }) => {
   }
 
   return (
-    <div className="relative h-screen w-full flex flex-col justify-between items-center px-4 py-8 bg-[#0B0F19] text-slate-100 overflow-hidden select-none">
-      {/* Top Header: Logo + App Name */}
-      <header className="w-full max-w-5xl flex items-center justify-between">
+    <div className="relative min-h-screen w-full flex flex-col justify-between items-center px-4 py-6 sm:py-8 bg-[var(--canvas-bg)] text-[var(--text-main)] transition-colors duration-200 select-none">
+      {/* Top Bento Header */}
+      <header className="w-full max-w-5xl bento-card px-4 sm:px-6 py-3 rounded-2xl flex items-center justify-between">
         <div className="flex items-center gap-2.5">
-          <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-cyan-500 to-violet-600 flex items-center justify-center shadow-lg shadow-cyan-500/20">
-            <Sparkles className="w-5 h-5 text-white" />
+          <div className="w-8 h-8 rounded-xl bg-neutral-900 text-white dark:bg-white dark:text-black flex items-center justify-center font-mono font-bold text-sm shadow-sm">
+            IQ
           </div>
-          <span className="text-xl font-extrabold tracking-tight text-white">
-            Interview<span className="text-cyan-400">IQ</span>
+          <span className="text-base sm:text-lg font-extrabold tracking-tight">
+            Interview<span className="text-neutral-500 dark:text-neutral-400">IQ</span>
+          </span>
+          <span className="hidden sm:inline-flex wix-pill text-[10px]">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+            AI Ready
           </span>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 sm:gap-3">
+          <ThemeToggle />
           <Button
             variant="ghost"
             size="sm"
             onClick={() => onOpenAuth('signin')}
-            className="text-xs sm:text-sm"
+            className="text-xs font-mono"
           >
             Sign in
           </Button>
@@ -42,73 +48,81 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenAuth }) => {
             variant="primary"
             size="sm"
             onClick={() => onOpenAuth('signup')}
-            className="text-xs sm:text-sm"
+            className="text-xs font-mono"
           >
             Sign up
           </Button>
         </div>
       </header>
 
-      {/* Main Hero: Tagline, Explanation, 3 Icons & Actions */}
-      <main className="relative z-10 max-w-2xl text-center flex flex-col items-center my-auto space-y-7">
-        {/* Soft Glowing Orb behind tagline */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-cyan-500/15 rounded-full blur-[100px] pointer-events-none -z-10" />
+      {/* Main Hero: Bento Architecture */}
+      <main className="relative z-10 max-w-3xl text-center flex flex-col items-center my-auto py-12 space-y-6 sm:space-y-8">
+        {/* Status Badge */}
+        <div className="wix-pill text-[11px] py-1 px-3.5 inline-flex items-center gap-2">
+          <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+          <span>REAL-TIME VOICE AI • DETERMINISTIC ATS SCORING</span>
+        </div>
 
-        {/* Tagline (one line) */}
-        <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white leading-tight">
+        {/* Tagline */}
+        <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.1]">
           Get grilled by AI.{' '}
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-violet-400">
+          <span className="text-neutral-500 dark:text-neutral-400 block sm:inline">
             Get hired by humans.
           </span>
         </h1>
 
-        {/* Short explanation (max 2 lines) */}
-        <p className="text-sm sm:text-base text-slate-400 max-w-lg leading-relaxed">
-          Master technical interviews with real-time AI voice roleplay and automated ATS resume optimization.
+        {/* Short explanation */}
+        <p className="text-sm sm:text-base text-[var(--text-muted)] max-w-lg leading-relaxed">
+          Master technical interviews with real-time AI voice roleplay, deterministic ATS resume scoring, and personalized skill roadmaps.
         </p>
 
-        {/* 3 small icon-with-label items (3 words max each, no paragraphs) */}
-        <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-6 pt-2">
-          <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/[0.04] border border-white/10 text-xs text-slate-300">
-            <FileCheck className="w-3.5 h-3.5 text-cyan-400" />
-            <span>Resume score</span>
+        {/* 3 Bento Feature Micro-Pills */}
+        <div className="flex flex-wrap items-center justify-center gap-2.5 sm:gap-4 pt-1">
+          <div className="wix-pill flex items-center gap-2 py-1.5 px-3.5 hover:border-neutral-400 dark:hover:border-neutral-600 transition-colors">
+            <FileCheck className="w-3.5 h-3.5 text-emerald-500" />
+            <span className="font-mono text-xs">Resume score</span>
           </div>
 
-          <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/[0.04] border border-white/10 text-xs text-slate-300">
-            <Mic className="w-3.5 h-3.5 text-violet-400" />
-            <span>Voice interview</span>
+          <div className="wix-pill flex items-center gap-2 py-1.5 px-3.5 hover:border-neutral-400 dark:hover:border-neutral-600 transition-colors">
+            <Mic className="w-3.5 h-3.5 text-cyan-500" />
+            <span className="font-mono text-xs">Voice interview</span>
           </div>
 
-          <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/[0.04] border border-white/10 text-xs text-slate-300">
-            <Map className="w-3.5 h-3.5 text-emerald-400" />
-            <span>Career roadmap</span>
+          <div className="wix-pill flex items-center gap-2 py-1.5 px-3.5 hover:border-neutral-400 dark:hover:border-neutral-600 transition-colors">
+            <Map className="w-3.5 h-3.5 text-violet-500" />
+            <span className="font-mono text-xs">Career roadmap</span>
           </div>
         </div>
 
-        {/* Two buttons only: Sign in and Sign up */}
-        <div className="flex items-center gap-4 pt-4">
+        {/* Action Buttons */}
+        <div className="flex items-center gap-3 pt-3">
           <Button
             variant="primary"
             size="lg"
             onClick={() => onOpenAuth('signup')}
-            className="px-8 shadow-lg shadow-cyan-500/20"
+            className="px-8 font-mono text-xs tracking-wider uppercase"
           >
-            Sign up
+            Start Practicing
           </Button>
           <Button
             variant="secondary"
             size="lg"
             onClick={() => onOpenAuth('signin')}
-            className="px-8"
+            className="px-8 font-mono text-xs tracking-wider uppercase"
           >
             Sign in
           </Button>
         </div>
       </main>
 
-      {/* Footer: One small line privacy notice */}
-      <footer className="w-full text-center text-[11px] text-slate-500 border-t border-white/5 pt-4">
-        InterviewIQ • Your data is private, encrypted, and never shared.
+      {/* Bento Footer */}
+      <footer className="w-full max-w-5xl bento-card px-4 py-3 rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-2 text-[11px] font-mono text-[var(--text-muted)]">
+        <div>InterviewIQ • Autonomous Technical Interview Studio</div>
+        <div className="flex items-center gap-3">
+          <span>BLR IST</span>
+          <span>•</span>
+          <span>Zero-Telemetry Privacy</span>
+        </div>
       </footer>
     </div>
   );

@@ -11,7 +11,7 @@ export const InfoTooltip: React.FC<InfoTooltipProps> = ({ text, className = '' }
 
   return (
     <div
-      className={`relative inline-flex items-center text-slate-400 hover:text-cyan-400 transition-colors cursor-help ${className}`}
+      className={`relative inline-flex items-center text-neutral-400 hover:text-neutral-900 dark:hover:text-white transition-colors cursor-help ${className}`}
       onMouseEnter={() => setVisible(true)}
       onMouseLeave={() => setVisible(false)}
       onFocus={() => setVisible(true)}
@@ -21,9 +21,8 @@ export const InfoTooltip: React.FC<InfoTooltipProps> = ({ text, className = '' }
     >
       <Info className="w-3.5 h-3.5" />
       {visible && (
-        <div className="absolute z-50 bottom-full left-1/2 -translate-x-1/2 mb-2 w-48 px-2.5 py-1.5 rounded-lg bg-slate-900/95 border border-white/10 text-[11px] leading-snug text-slate-200 shadow-xl backdrop-blur-md pointer-events-none text-center">
+        <div className="absolute z-50 bottom-full left-1/2 -translate-x-1/2 mb-2 w-48 px-2.5 py-1.5 rounded-xl bg-white dark:bg-[#121214] border border-black/10 dark:border-white/15 text-[11px] leading-snug text-neutral-800 dark:text-neutral-200 shadow-2xl backdrop-blur-md pointer-events-none text-center font-mono">
           {text}
-          <div className="absolute top-full left-1/2 -translate-x-1/2 -mt-1 border-4 border-transparent border-t-slate-900" />
         </div>
       )}
     </div>
@@ -31,4 +30,3 @@ export const InfoTooltip: React.FC<InfoTooltipProps> = ({ text, className = '' }
 };
 
 export default InfoTooltip;
-

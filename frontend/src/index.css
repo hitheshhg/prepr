@@ -3,39 +3,208 @@
 @tailwind utilities;
 
 @layer base {
-  body {
-    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-    background-color: #0B0F19;
-    color: #F8FAFC;
-    overflow-x: hidden;
+  :root {
+    --canvas-bg: #f5f5f7;
+    --bento-bg: #ffffff;
+    --bento-border: rgba(0, 0, 0, 0.08);
+    --bento-border-hover: rgba(0, 0, 0, 0.22);
+    --bento-shadow: 0 2px 14px -2px rgba(0, 0, 0, 0.04), 0 1px 3px rgba(0, 0, 0, 0.02);
+    --border-default: rgba(0, 0, 0, 0.09);
+    --text-main: #0a0a0c;
+    --text-muted: #52525b;
+    --text-subtle: #71717a;
+    --text-faint: #a1a1aa;
+    --selection-bg: #000000;
+    --selection-color: #ffffff;
+    --scrollbar-thumb: rgba(0, 0, 0, 0.16);
+    --scrollbar-thumb-hover: rgba(0, 0, 0, 0.32);
+    --focus-outline: #000000;
   }
-  
+
+  .dark {
+    --canvas-bg: #09090b;
+    --bento-bg: #121214;
+    --bento-border: rgba(255, 255, 255, 0.08);
+    --bento-border-hover: rgba(255, 255, 255, 0.22);
+    --bento-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+    --border-default: rgba(255, 255, 255, 0.09);
+    --text-main: #ffffff;
+    --text-muted: #a1a1aa;
+    --text-subtle: #71717a;
+    --text-faint: #52525b;
+    --selection-bg: #ffffff;
+    --selection-color: #000000;
+    --scrollbar-thumb: rgba(255, 255, 255, 0.14);
+    --scrollbar-thumb-hover: rgba(255, 255, 255, 0.28);
+    --focus-outline: #ffffff;
+  }
+
+  *, ::before, ::after {
+    border-color: var(--border-default);
+  }
+
+  button {
+    cursor: pointer;
+  }
+
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    background-color: var(--canvas-bg);
+    overflow-x: hidden;
+    max-width: 100vw;
+  }
+
+  body {
+    background-color: var(--canvas-bg);
+    color: var(--text-main);
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    overflow-x: hidden;
+    max-width: 100vw;
+    margin: 0;
+    padding: 0;
+    transition: background-color 0.2s cubic-bezier(0.16, 1, 0.3, 1), color 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
   code, pre {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  }
+
+  ::selection {
+    color: var(--selection-color);
+    background: var(--selection-bg);
+  }
+
+  /* Featherlight minimal scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--scrollbar-thumb);
+    border-radius: 9999px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--scrollbar-thumb-hover);
   }
 }
 
-@layer utilities {
+/* =========================================================================
+   View Transitions API: Circular Ripple Wave (Hardware-Accelerated)
+   ========================================================================= */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+::view-transition-old(root) {
+  z-index: 1;
+}
+
+::view-transition-new(root) {
+  z-index: 9999;
+  will-change: clip-path;
+}
+
+/* Prevent double-transition lag during View Transition snapshots */
+.no-transition,
+.no-transition *,
+.no-transition *::before,
+.no-transition *::after {
+  transition: none !important;
+}
+
+/* =========================================================================
+   Bento / Portfolio Wh-1008 UI Architecture Utilities
+   ========================================================================= */
+
+@keyframes wavePulse {
+  0%, 100% {
+    transform: scaleY(0.35);
+  }
+  50% {
+    transform: scaleY(1.15);
+  }
+}
+
+.animate-wave-pulse {
+  animation: wavePulse 1.2s ease-in-out infinite;
+  transform-origin: center;
+}
+
+.bento-card,
+.wix-card,
+.glass-card {
+  background-color: var(--bento-bg);
+  border: 1px solid var(--bento-border);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: var(--bento-shadow);
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  transition: border-color 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@media (min-width: 640px) {
+  .bento-card,
+  .wix-card,
   .glass-card {
-    background: rgba(255, 255, 255, 0.03);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 24px;
   }
+}
 
-  .glass-card-hover {
-    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-  .glass-card-hover:hover {
-    background: rgba(255, 255, 255, 0.06);
-    border-color: rgba(6, 182, 212, 0.3);
-    box-shadow: 0 12px 30px -10px rgba(6, 182, 212, 0.15);
-    transform: translateY(-2px);
-  }
+.bento-card:hover,
+.wix-card:hover,
+.glass-card:hover {
+  border-color: var(--bento-border-hover);
+}
 
-  .aurora-gradient-text {
-    background: linear-gradient(135deg, #38BDF8 0%, #A855F7 50%, #EC4899 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+.wix-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  border: 1px solid var(--border-default);
+  padding: 0.5rem 0.95rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  user-select: none;
+  max-width: 100%;
+}
+
+@media (min-width: 640px) {
+  .wix-pill {
+    padding: 0.625rem 1.35rem;
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
   }
+}
+
+.wix-pill:hover {
+  border-color: var(--text-main);
+  transform: translateY(-1px);
+}
+
+.wix-pill:active {
+  transform: translateY(0);
+}
+
+/* Accessible focus outline */
+a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible {
+  outline: 2px solid var(--focus-outline);
+  outline-offset: 2px;
 }

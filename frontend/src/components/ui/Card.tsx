@@ -20,25 +20,25 @@ export const Card: React.FC<CardProps> = ({
 }) => {
   const paddingStyles = {
     none: 'p-0',
-    sm: 'p-4',
-    md: 'p-6',
-    lg: 'p-8',
+    sm: 'p-3.5 sm:p-5',
+    md: 'p-5 sm:p-7',
+    lg: 'p-6 sm:p-9',
   };
 
   const glowStyles = {
     none: '',
-    cyan: 'shadow-[0_0_30px_-5px_rgba(6,182,212,0.15)] border-cyan-500/20',
-    violet: 'shadow-[0_0_30px_-5px_rgba(139,92,246,0.15)] border-violet-500/20',
-    emerald: 'shadow-[0_0_30px_-5px_rgba(16,185,129,0.15)] border-emerald-500/20',
-    amber: 'shadow-[0_0_30px_-5px_rgba(245,158,11,0.15)] border-amber-500/20',
+    cyan: 'border-cyan-500/30 dark:border-cyan-400/25 shadow-[0_4px_24px_rgba(6,182,212,0.08)]',
+    violet: 'border-violet-500/30 dark:border-violet-400/25 shadow-[0_4px_24px_rgba(139,92,246,0.08)]',
+    emerald: 'border-emerald-500/30 dark:border-emerald-400/25 shadow-[0_4px_24px_rgba(16,185,129,0.08)]',
+    amber: 'border-amber-500/30 dark:border-amber-400/25 shadow-[0_4px_24px_rgba(245,158,11,0.08)]',
   };
 
   return (
     <motion.div
       className={twMerge(
         clsx(
-          'glass-card rounded-2xl relative overflow-hidden transition-all duration-300',
-          hoverEffect && 'glass-card-hover',
+          'bento-card relative overflow-hidden transition-all duration-300',
+          hoverEffect && 'hover:scale-[1.005] hover:shadow-xl',
           glowStyles[glow],
           paddingStyles[padding],
           className
@@ -52,4 +52,3 @@ export const Card: React.FC<CardProps> = ({
 };
 
 export default Card;
-

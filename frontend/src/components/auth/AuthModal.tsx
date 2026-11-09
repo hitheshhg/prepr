@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Mail, Lock, User as UserIcon, AlertCircle, Loader2 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
+import { playClick } from '../../lib/sound';
 
 interface AuthModalProps {
   isOpen: boolean;
@@ -30,6 +31,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, initialMo
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    playClick();
     setError(null);
     setSubmitting(true);
 
@@ -44,7 +46,6 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, initialMo
       navigate('/dashboard');
     } catch (err: unknown) {
       if (err instanceof Error) {
-        // Humanize common Firebase error messages
         const msg = err.message;
         if (msg.includes('auth/invalid-credential') || msg.includes('auth/wrong-password')) {
           setError('Invalid email or password combination.');
@@ -64,6 +65,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, initialMo
   };
 
   const handleGoogleSignIn = async () => {
+    playClick();
     setError(null);
     setSubmitting(true);
     try {
@@ -92,35 +94,38 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, initialMo
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           onClick={onClose}
-          className="fixed inset-0 bg-black/70 backdrop-blur-md"
+          className="fixed inset-0 bg-black/60 backdrop-blur-sm"
         />
 
-        {/* Modal Window */}
+        {/* Modal Window: Bento Architecture */}
         <motion.div
-          initial={{ scale: 0.95, opacity: 0, y: 15 }}
+          initial={{ scale: 0.96, opacity: 0, y: 10 }}
           animate={{ scale: 1, opacity: 1, y: 0 }}
-          exit={{ scale: 0.95, opacity: 0, y: 15 }}
-          transition={{ duration: 0.2 }}
-          className="relative w-full max-w-md rounded-2xl glass-card border border-white/10 p-7 bg-[#0f1422]/95 shadow-glass text-slate-100 z-10 overflow-hidden"
+          exit={{ scale: 0.96, opacity: 0, y: 10 }}
+          transition={{ duration: 0.18 }}
+          className="relative w-full max-w-md rounded-3xl bento-card border border-[var(--bento-border)] p-6 sm:p-8 bg-[var(--bento-bg)] text-[var(--text-main)] shadow-2xl z-10 overflow-hidden"
         >
-          {/* Subtle Aurora Ambient Glow */}
-          <div className="absolute -top-16 -right-16 w-40 h-40 bg-cyan-500/15 rounded-full blur-2xl pointer-events-none" />
-          <div className="absolute -bottom-16 -left-16 w-40 h-40 bg-purple-500/15 rounded-full blur-2xl pointer-events-none" />
-
           {/* Close Button */}
           <button
-            onClick={onClose}
-            className="absolute top-5 right-5 p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-white/10 transition"
+            onClick={() => {
+              playClick();
+              onClose();
+            }}
+            className="absolute top-5 right-5 p-1.5 rounded-xl text-[var(--text-muted)] hover:text-[var(--text-main)] hover:bg-neutral-500/10 transition-colors"
           >
             <X className="w-4 h-4" />
           </button>
 
           {/* Header */}
           <div className="text-center mb-6">
-            <h2 className="text-2xl font-bold tracking-tight text-white">
+            <div className="inline-flex wix-pill text-[10px] mb-2">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+              Secure Authentication
+            </div>
+            <h2 className="text-2xl font-extrabold tracking-tight">
               {isSignUp ? 'Create your Account' : 'Welcome Back'}
             </h2>
-            <p className="text-xs text-slate-400 mt-1">
+            <p className="text-xs text-[var(--text-muted)] mt-1">
               {isSignUp
                 ? 'Join InterviewIQ to practice voice interviews and analyze resumes'
                 : 'Sign in to access your interview reports and roadmap'}
@@ -129,8 +134,8 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, initialMo
 
           {/* Error Message */}
           {error && (
-            <div className="mb-4 p-3 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-300 text-xs flex items-center gap-2">
-              <AlertCircle className="w-4 h-4 flex-shrink-0 text-rose-400" />
+            <div className="mb-4 p-3 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-600 dark:text-rose-300 text-xs flex items-center gap-2 font-mono">
+              <AlertCircle className="w-4 h-4 flex-shrink-0 text-rose-500" />
               <span>{error}</span>
             </div>
           )}
@@ -140,7 +145,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, initialMo
             type="button"
             onClick={handleGoogleSignIn}
             disabled={submitting}
-            className="w-full flex items-center justify-center gap-3 py-2.5 px-4 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-sm font-medium text-white transition disabled:opacity-50 shadow-sm"
+            className="w-full flex items-center justify-center gap-2.5 py-2.5 px-4 rounded-xl bg-neutral-500/5 hover:bg-neutral-500/10 border border-[var(--bento-border)] text-xs font-mono font-medium text-[var(--text-main)] transition-colors disabled:opacity-50 shadow-sm"
           >
             <svg className="w-4 h-4" viewBox="0 0 24 24">
               <path
@@ -164,52 +169,52 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, initialMo
           </button>
 
           {/* Divider */}
-          <div className="relative my-5 flex items-center justify-center">
-            <div className="border-t border-white/10 w-full" />
-            <span className="bg-[#0f1422] px-3 text-[11px] font-mono uppercase tracking-wider text-slate-500">
+          <div className="relative my-4 flex items-center justify-center">
+            <div className="border-t border-[var(--bento-border)] w-full" />
+            <span className="bg-[var(--bento-bg)] px-3 text-[10px] font-mono uppercase tracking-wider text-[var(--text-muted)]">
               or with email
             </span>
-            <div className="border-t border-white/10 w-full" />
+            <div className="border-t border-[var(--bento-border)] w-full" />
           </div>
 
           {/* Email/Password Form */}
-          <form onSubmit={handleSubmit} className="space-y-3.5">
+          <form onSubmit={handleSubmit} className="space-y-3">
             {isSignUp && (
               <div>
-                <label className="block text-xs font-medium text-slate-300 mb-1">Full Name</label>
+                <label className="block text-xs font-mono font-medium text-[var(--text-muted)] mb-1">Full Name</label>
                 <div className="relative">
-                  <UserIcon className="w-4 h-4 text-slate-400 absolute left-3 top-3 pointer-events-none" />
+                  <UserIcon className="w-4 h-4 text-neutral-400 absolute left-3 top-3 pointer-events-none" />
                   <input
                     type="text"
                     required
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    placeholder="e.g. Shreya Sharma"
-                    className="w-full pl-9 pr-3 py-2 text-sm rounded-xl bg-white/5 border border-white/10 text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500/50 focus:ring-1 focus:ring-cyan-500/50 transition"
+                    placeholder="e.g. Hithesh HG"
+                    className="w-full pl-9 pr-3 py-2 text-xs rounded-xl bg-[var(--canvas-bg)] border border-[var(--bento-border)] text-[var(--text-main)] placeholder-neutral-400 focus:outline-none focus:ring-1 focus:ring-neutral-400 transition"
                   />
                 </div>
               </div>
             )}
 
             <div>
-              <label className="block text-xs font-medium text-slate-300 mb-1">Email Address</label>
+              <label className="block text-xs font-mono font-medium text-[var(--text-muted)] mb-1">Email Address</label>
               <div className="relative">
-                <Mail className="w-4 h-4 text-slate-400 absolute left-3 top-3 pointer-events-none" />
+                <Mail className="w-4 h-4 text-neutral-400 absolute left-3 top-3 pointer-events-none" />
                 <input
                   type="email"
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="name@university.edu"
-                  className="w-full pl-9 pr-3 py-2 text-sm rounded-xl bg-white/5 border border-white/10 text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500/50 focus:ring-1 focus:ring-cyan-500/50 transition"
+                  placeholder="name@company.com"
+                  className="w-full pl-9 pr-3 py-2 text-xs rounded-xl bg-[var(--canvas-bg)] border border-[var(--bento-border)] text-[var(--text-main)] placeholder-neutral-400 focus:outline-none focus:ring-1 focus:ring-neutral-400 transition"
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-xs font-medium text-slate-300 mb-1">Password</label>
+              <label className="block text-xs font-mono font-medium text-[var(--text-muted)] mb-1">Password</label>
               <div className="relative">
-                <Lock className="w-4 h-4 text-slate-400 absolute left-3 top-3 pointer-events-none" />
+                <Lock className="w-4 h-4 text-neutral-400 absolute left-3 top-3 pointer-events-none" />
                 <input
                   type="password"
                   required
@@ -217,7 +222,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, initialMo
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••"
-                  className="w-full pl-9 pr-3 py-2 text-sm rounded-xl bg-white/5 border border-white/10 text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500/50 focus:ring-1 focus:ring-cyan-500/50 transition"
+                  className="w-full pl-9 pr-3 py-2 text-xs rounded-xl bg-[var(--canvas-bg)] border border-[var(--bento-border)] text-[var(--text-main)] placeholder-neutral-400 focus:outline-none focus:ring-1 focus:ring-neutral-400 transition"
                 />
               </div>
             </div>
@@ -225,7 +230,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, initialMo
             <button
               type="submit"
               disabled={submitting}
-              className="w-full mt-2 py-2.5 px-4 rounded-xl bg-gradient-to-r from-cyan-500 to-violet-600 hover:from-cyan-400 hover:to-violet-500 text-white text-sm font-semibold transition shadow-neon-cyan flex items-center justify-center gap-2 disabled:opacity-50"
+              className="w-full mt-2 py-2.5 px-4 rounded-xl bg-neutral-900 text-white dark:bg-white dark:text-black font-mono text-xs uppercase tracking-wider font-semibold transition hover:opacity-90 flex items-center justify-center gap-2 disabled:opacity-50"
             >
               {submitting ? (
                 <>
@@ -241,17 +246,18 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, initialMo
           </form>
 
           {/* Toggle between Sign In and Sign Up */}
-          <div className="mt-5 text-center text-xs text-slate-400">
+          <div className="mt-4 text-center text-xs text-[var(--text-muted)] font-mono">
             {isSignUp ? (
               <span>
                 Already have an account?{' '}
                 <button
                   type="button"
                   onClick={() => {
+                    playClick();
                     setIsSignUp(false);
                     setError(null);
                   }}
-                  className="text-cyan-400 hover:underline font-medium"
+                  className="text-[var(--text-main)] font-semibold underline underline-offset-2 ml-1"
                 >
                   Sign In
                 </button>
@@ -262,10 +268,11 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, initialMo
                 <button
                   type="button"
                   onClick={() => {
+                    playClick();
                     setIsSignUp(true);
                     setError(null);
                   }}
-                  className="text-cyan-400 hover:underline font-medium"
+                  className="text-[var(--text-main)] font-semibold underline underline-offset-2 ml-1"
                 >
                   Create one now
                 </button>
@@ -277,3 +284,5 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, initialMo
     </AnimatePresence>
   );
 };
+
+export default AuthModal;

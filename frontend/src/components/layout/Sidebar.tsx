@@ -6,8 +6,8 @@ import {
   Mic,
   Award,
   Map,
-  Sparkles,
 } from 'lucide-react';
+import { playClick } from '../../lib/sound';
 
 const navItems = [
   { to: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
@@ -19,17 +19,17 @@ const navItems = [
 
 export const Sidebar: React.FC = () => {
   return (
-    <aside className="hidden md:flex flex-col w-64 border-r border-white/10 bg-[#0B0F19]/90 backdrop-blur-xl shrink-0 select-none">
+    <aside className="hidden md:flex flex-col w-64 border-r border-[var(--bento-border)] bg-[var(--bento-bg)] backdrop-blur-xl shrink-0 select-none">
       {/* Brand Header */}
-      <div className="h-16 flex items-center px-6 border-b border-white/10 gap-3">
-        <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-cyan-500 to-violet-600 flex items-center justify-center shadow-lg shadow-cyan-500/20">
-          <Sparkles className="w-4 h-4 text-white" />
+      <div className="h-16 flex items-center px-6 border-b border-[var(--bento-border)] gap-3">
+        <div className="w-8 h-8 rounded-xl bg-neutral-900 text-white dark:bg-white dark:text-black flex items-center justify-center font-mono font-bold text-xs shadow-sm">
+          IQ
         </div>
         <div className="flex flex-col">
-          <span className="font-extrabold text-white text-base tracking-tight leading-none">
-            Interview<span className="text-cyan-400">IQ</span>
+          <span className="font-extrabold text-base tracking-tight leading-none">
+            Interview<span className="text-neutral-500">IQ</span>
           </span>
-          <span className="text-[10px] text-slate-400 font-mono tracking-wider">AI Platform</span>
+          <span className="text-[10px] text-[var(--text-muted)] font-mono tracking-wider">AI Platform</span>
         </div>
       </div>
 
@@ -41,11 +41,12 @@ export const Sidebar: React.FC = () => {
             <NavLink
               key={item.to}
               to={item.to}
+              onClick={() => playClick()}
               className={({ isActive }) =>
-                `flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition-all ${
+                `flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-mono transition-all ${
                   isActive
-                    ? 'bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 shadow-sm shadow-cyan-500/10 font-semibold'
-                    : 'text-slate-400 hover:text-white hover:bg-white/[0.04]'
+                    ? 'bg-neutral-900 text-white dark:bg-white dark:text-black font-bold shadow-sm'
+                    : 'text-[var(--text-muted)] hover:text-[var(--text-main)] hover:bg-neutral-500/10'
                 }`
               }
             >
@@ -57,7 +58,7 @@ export const Sidebar: React.FC = () => {
       </nav>
 
       {/* Privacy note */}
-      <div className="p-4 border-t border-white/5 text-[11px] text-slate-500 text-center">
+      <div className="p-4 border-t border-[var(--bento-border)] text-[11px] font-mono text-[var(--text-muted)] text-center">
         Data encrypted & secure
       </div>
     </aside>
@@ -65,4 +66,3 @@ export const Sidebar: React.FC = () => {
 };
 
 export default Sidebar;
-

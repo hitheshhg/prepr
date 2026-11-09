@@ -3,6 +3,7 @@ import { motion, HTMLMotionProps } from 'framer-motion';
 import { Loader2 } from 'lucide-react';
 import { clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
+import { playClick } from '../../lib/sound';
 
 export interface ButtonProps extends Omit<HTMLMotionProps<'button'>, 'children'> {
   variant?: 'primary' | 'secondary' | 'glass' | 'outline' | 'ghost' | 'danger';
@@ -22,41 +23,53 @@ export const Button: React.FC<ButtonProps> = ({
   children,
   className,
   disabled,
+  onClick,
   ...props
 }) => {
-  const baseStyles = 'inline-flex items-center justify-center font-medium rounded-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-cyan-500/50 disabled:opacity-50 disabled:cursor-not-allowed select-none';
+  const baseStyles =
+    'inline-flex items-center justify-center font-mono font-medium rounded-xl transition-all duration-200 focus:outline-none focus-visible:outline-2 focus-visible:outline-neutral-900 dark:focus-visible:outline-white disabled:opacity-50 disabled:cursor-not-allowed select-none tracking-tight';
 
   const sizeStyles = {
     sm: 'text-xs px-3 py-1.5 gap-1.5',
-    md: 'text-sm px-4 py-2.5 gap-2',
-    lg: 'text-base px-6 py-3.5 gap-2.5 font-semibold',
+    md: 'text-xs sm:text-sm px-4 py-2 gap-2',
+    lg: 'text-sm sm:text-base px-5 sm:px-6 py-2.5 sm:py-3 gap-2.5 font-semibold',
   };
 
   const variantStyles = {
     primary:
-      'bg-gradient-to-r from-cyan-500 via-violet-600 to-pink-500 hover:from-cyan-400 hover:via-violet-500 hover:to-pink-400 text-white shadow-neon-cyan hover:shadow-neon-violet border border-white/20',
+      'bg-neutral-900 text-white dark:bg-white dark:text-black hover:bg-neutral-800 dark:hover:bg-neutral-200 shadow-sm active:scale-[0.98]',
     secondary:
-      'bg-white/10 hover:bg-white/15 text-white border border-white/10 hover:border-white/20 backdrop-blur-md',
+      'bg-black/5 dark:bg-white/10 text-neutral-800 dark:text-neutral-200 border border-black/10 dark:border-white/10 hover:bg-black/10 dark:hover:bg-white/15 active:scale-[0.98]',
     glass:
-      'glass-card glass-card-hover text-white border border-white/10 hover:border-cyan-500/40 shadow-glass',
+      'bg-black/[0.03] dark:bg-white/[0.04] text-neutral-900 dark:text-white border border-black/10 dark:border-white/10 hover:border-black/30 dark:hover:border-white/30 backdrop-blur-sm',
     outline:
-      'bg-transparent hover:bg-white/5 text-cyan-300 border border-cyan-500/30 hover:border-cyan-400',
+      'bg-transparent text-neutral-800 dark:text-neutral-200 border border-black/15 dark:border-white/15 hover:border-black dark:hover:border-white',
     ghost:
-      'bg-transparent hover:bg-white/10 text-slate-300 hover:text-white',
+      'bg-transparent text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5',
     danger:
-      'bg-rose-500/10 hover:bg-rose-500/20 text-rose-300 border border-rose-500/30 hover:border-rose-500/50',
+      'bg-rose-500/10 hover:bg-rose-500/20 text-rose-600 dark:text-rose-400 border border-rose-500/30',
+  };
+
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    if (!disabled && !loading) {
+      playClick(750, 0.02);
+    }
+    if (onClick) {
+      onClick(e);
+    }
   };
 
   return (
     <motion.button
       whileTap={{ scale: disabled || loading ? 1 : 0.98 }}
       disabled={disabled || loading}
+      onClick={handleClick}
       className={twMerge(clsx(baseStyles, sizeStyles[size], variantStyles[variant], className))}
       {...props}
     >
       {loading ? (
         <>
-          <Loader2 className="w-4 h-4 animate-spin text-current" />
+          <Loader2 className="w-3.5 h-3.5 animate-spin text-current" />
           <span>{children}</span>
         </>
       ) : (

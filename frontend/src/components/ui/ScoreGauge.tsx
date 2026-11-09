@@ -50,9 +50,9 @@ export const ScoreGauge: React.FC<ScoreGaugeProps> = ({
   };
 
   const getScoreColor = () => {
-    if (score >= 80) return 'text-emerald-400';
-    if (score >= 60) return 'text-cyan-400';
-    return 'text-amber-400';
+    if (score >= 80) return 'text-emerald-600 dark:text-[#4ade80]';
+    if (score >= 60) return 'text-cyan-600 dark:text-cyan-400';
+    return 'text-amber-600 dark:text-amber-400';
   };
 
   return (
@@ -78,7 +78,8 @@ export const ScoreGauge: React.FC<ScoreGaugeProps> = ({
           cx={size / 2}
           cy={size / 2}
           r={radius}
-          stroke="rgba(255, 255, 255, 0.07)"
+          stroke="currentColor"
+          className="text-black/[0.08] dark:text-white/[0.08]"
           strokeWidth={strokeWidth}
           fill="none"
         />
@@ -100,13 +101,13 @@ export const ScoreGauge: React.FC<ScoreGaugeProps> = ({
       </svg>
 
       {/* Central Content */}
-      <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
+      <div className="absolute inset-0 flex flex-col items-center justify-center text-center font-mono">
         <span className={`text-4xl font-extrabold tracking-tight ${getScoreColor()}`}>
           {animatedScore}
-          <span className="text-xl font-normal text-slate-400">%</span>
+          <span className="text-xl font-normal text-neutral-400 dark:text-neutral-500">%</span>
         </span>
-        <span className="text-xs font-semibold text-slate-200 mt-0.5">{label}</span>
-        {sublabel && <span className="text-[10px] text-slate-400 uppercase tracking-wider">{sublabel}</span>}
+        <span className="text-xs font-semibold text-neutral-800 dark:text-neutral-200 mt-0.5">{label}</span>
+        {sublabel && <span className="text-[10px] text-neutral-500 uppercase tracking-wider">{sublabel}</span>}
       </div>
     </div>
   );

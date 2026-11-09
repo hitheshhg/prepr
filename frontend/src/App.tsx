@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
+import { ThemeProvider } from './context/ThemeContext';
 import { AuthModal } from './components/auth/AuthModal';
 import { ProtectedRoute } from './components/common/ProtectedRoute';
 import { AppShell } from './components/layout/AppShell';
@@ -34,8 +35,9 @@ export const App: React.FC = () => {
 
   return (
     <ErrorBoundary>
-      <AuthProvider>
-        <Router>
+      <ThemeProvider>
+        <AuthProvider>
+          <Router>
           <Routes>
             {/* Public Minimal Landing Page */}
             <Route
@@ -147,8 +149,9 @@ export const App: React.FC = () => {
           />
         </Router>
       </AuthProvider>
-    </ErrorBoundary>
-  );
+    </ThemeProvider>
+  </ErrorBoundary>
+);
 };
 
 export default App;

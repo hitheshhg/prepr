@@ -23,17 +23,17 @@ export const Avatar: React.FC<AvatarProps> = ({
   };
 
   const sizeClasses = {
-    sm: 'w-8 h-8 text-xs',
-    md: 'w-10 h-10 text-sm',
-    lg: 'w-12 h-12 text-base',
-    xl: 'w-20 h-20 text-2xl font-bold',
+    sm: 'w-7 h-7 sm:w-8 sm:h-8 text-[11px]',
+    md: 'w-9 h-9 sm:w-10 sm:h-10 text-xs sm:text-sm',
+    lg: 'w-11 h-11 sm:w-12 sm:h-12 text-sm sm:text-base',
+    xl: 'w-16 h-16 sm:w-20 sm:h-20 text-xl font-bold',
   };
 
   const showImage = src && !imgError;
 
   return (
     <div
-      className={`relative inline-flex items-center justify-center rounded-full overflow-hidden shrink-0 border border-cyan-500/30 bg-slate-800 text-cyan-300 font-semibold shadow-inner ${sizeClasses[size]} ${className}`}
+      className={`relative inline-flex items-center justify-center rounded-full overflow-hidden shrink-0 border border-black/10 dark:border-white/10 bg-black/5 dark:bg-white/10 text-neutral-800 dark:text-neutral-200 font-mono font-medium shadow-2xs ${sizeClasses[size]} ${className}`}
     >
       {showImage ? (
         <img
@@ -53,4 +53,3 @@ export const Avatar: React.FC<AvatarProps> = ({
 };
 
 export default Avatar;
-

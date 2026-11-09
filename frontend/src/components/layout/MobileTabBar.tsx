@@ -7,6 +7,7 @@ import {
   Award,
   Map,
 } from 'lucide-react';
+import { playClick } from '../../lib/sound';
 
 const navItems = [
   { to: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
@@ -18,22 +19,23 @@ const navItems = [
 
 export const MobileTabBar: React.FC = () => {
   return (
-    <nav className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#0B0F19]/95 backdrop-blur-xl border-t border-white/10 px-2 py-1.5 flex items-center justify-around">
+    <nav className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-[var(--bento-bg)]/95 backdrop-blur-xl border-t border-[var(--bento-border)] px-2 py-1.5 flex items-center justify-around">
       {navItems.map((item) => {
         const Icon = item.icon;
         return (
           <NavLink
             key={item.to}
             to={item.to}
+            onClick={() => playClick()}
             className={({ isActive }) =>
-              `flex flex-col items-center gap-1 py-1 px-2 rounded-lg text-[10px] font-medium transition-colors ${
+              `flex flex-col items-center gap-1 py-1 px-2 rounded-lg text-[10px] font-mono transition-colors ${
                 isActive
-                  ? 'text-cyan-400 font-semibold'
-                  : 'text-slate-400 hover:text-white'
+                  ? 'text-[var(--text-main)] font-bold'
+                  : 'text-[var(--text-muted)] hover:text-[var(--text-main)]'
               }`
             }
           >
-            <Icon className="w-5 h-5 shrink-0" />
+            <Icon className="w-4 h-4 shrink-0" />
             <span>{item.label}</span>
           </NavLink>
         );
@@ -43,4 +45,3 @@ export const MobileTabBar: React.FC = () => {
 };
 
 export default MobileTabBar;
-

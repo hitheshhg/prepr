@@ -57,12 +57,12 @@ export const InterviewReportPage: React.FC = () => {
           data = await getLatestReport();
         }
         setReport(data);
-      } catch (err: any) {
+      } catch (err: unknown) {
         console.warn('Could not load specific report, attempting latest fallback:', err);
         try {
           const fallbackData = await getLatestReport();
           setReport(fallbackData);
-        } catch (e) {
+        } catch {
           setError(
             'No interview performance report found. Complete a mock interview in the Interview Room first.'
           );
@@ -86,10 +86,10 @@ export const InterviewReportPage: React.FC = () => {
   if (loading) {
     return (
       <div className="max-w-4xl mx-auto px-4 py-24 text-center">
-        <RefreshCw className="w-8 h-8 text-cyan-400 animate-spin mx-auto mb-4" />
-        <h2 className="text-xl font-bold text-white">Synthesizing Evaluation Report...</h2>
-        <p className="text-sm text-slate-400 mt-2">
-          Aggregating 5-dimension rubric scores, benchmark comparisons, and personalized career roadmaps.
+        <RefreshCw className="w-8 h-8 text-neutral-400 animate-spin mx-auto mb-4" />
+        <h2 className="text-xl font-bold">Synthesizing Evaluation Report...</h2>
+        <p className="text-xs sm:text-sm text-[var(--text-muted)] mt-2 font-mono">
+          Aggregating 5-dimension rubric scores, benchmark comparisons, and personalized recommendations.
         </p>
       </div>
     );
@@ -98,25 +98,22 @@ export const InterviewReportPage: React.FC = () => {
   if (error || !report) {
     return (
       <div className="max-w-3xl mx-auto px-4 py-16 text-center">
-        <Card glow="cyan" padding="lg" className="border-cyan-500/20">
-          <div className="w-12 h-12 rounded-2xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400 mx-auto mb-4">
+        <Card padding="lg">
+          <div className="w-12 h-12 rounded-2xl bg-neutral-500/10 border border-[var(--bento-border)] flex items-center justify-center text-[var(--text-main)] mx-auto mb-4">
             <FileText className="w-6 h-6" />
           </div>
-          <Badge variant="cyan" pulse className="mb-3">
-            Phase 9 • Performance Analytics
-          </Badge>
-          <h2 className="text-2xl font-bold text-white mb-2">No Report Found</h2>
-          <p className="text-sm text-slate-400 max-w-md mx-auto mb-6 leading-relaxed">
+          <h2 className="text-2xl font-bold mb-2">No Report Found</h2>
+          <p className="text-xs sm:text-sm text-[var(--text-muted)] max-w-md mx-auto mb-6 leading-relaxed">
             {error || 'You have not completed any mock interviews yet. Take an interview session to generate your comprehensive 5-dimension report.'}
           </p>
           <div className="flex justify-center gap-3">
             <Link to="/interview">
-              <Button variant="primary" size="md">
+              <Button variant="primary" size="md" className="font-mono text-xs uppercase tracking-wider">
                 Start interview
               </Button>
             </Link>
             <Link to="/analyzer">
-              <Button variant="secondary" size="md">
+              <Button variant="secondary" size="md" className="font-mono text-xs uppercase tracking-wider">
                 Scan resume
               </Button>
             </Link>
@@ -150,23 +147,29 @@ export const InterviewReportPage: React.FC = () => {
   return (
     <div className="max-w-7xl mx-auto space-y-6 print:p-0 print:m-0">
       {/* Top Header & Actions */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-4 border-b border-white/10 print:hidden">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-4 border-b border-[var(--bento-border)] print:hidden">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+          <div className="flex items-center gap-2 mb-1">
+            <span className="wix-pill text-[10px]">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+              L5 Benchmark Rubric
+            </span>
+          </div>
+          <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight">
             Interview Performance Report
           </h1>
-          <p className="text-xs sm:text-sm text-slate-400 mt-1">
-            Review your interview rubric evaluation and benchmark.
+          <p className="text-xs sm:text-sm text-[var(--text-muted)] mt-1">
+            Review your interview rubric evaluation, computer vision delivery metrics, and targeted improvement areas.
           </p>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 sm:gap-3">
           <Link to="/roadmap">
-            <Button variant="primary" size="sm" className="flex items-center gap-1.5">
+            <Button variant="primary" size="sm" className="flex items-center gap-1.5 font-mono text-xs uppercase tracking-wider">
               <Map className="w-4 h-4" /> View roadmap
             </Button>
           </Link>
-          <Button variant="secondary" size="sm" onClick={handlePrint} className="flex items-center gap-1.5">
+          <Button variant="secondary" size="sm" onClick={handlePrint} className="flex items-center gap-1.5 font-mono text-xs uppercase tracking-wider">
             <Printer className="w-4 h-4" /> Save PDF
           </Button>
         </div>
@@ -176,10 +179,10 @@ export const InterviewReportPage: React.FC = () => {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Left 5 Cols: Gauge & Verdict */}
         <div className="lg:col-span-5">
-          <Card glow="cyan" padding="lg" className="h-full flex flex-col justify-between border-cyan-500/20 bg-slate-900/60">
+          <Card padding="lg" className="h-full flex flex-col justify-between">
             <div>
               <div className="flex items-center justify-between mb-4">
-                <span className="text-xs font-mono text-cyan-400 uppercase tracking-wider">
+                <span className="text-xs font-mono uppercase tracking-wider text-[var(--text-muted)]">
                   Overall Evaluation
                 </span>
                 <Badge variant={getVerdictBadgeVariant(report.verdict) as any} size="md">
@@ -198,8 +201,8 @@ export const InterviewReportPage: React.FC = () => {
               </div>
             </div>
 
-            <div className="p-3.5 rounded-xl bg-white/[0.02] border border-white/5 text-xs text-slate-300 leading-relaxed">
-              <strong className="text-white block mb-1">Executive Summary:</strong>
+            <div className="p-3.5 rounded-xl bg-neutral-500/5 border border-[var(--bento-border)] text-xs text-[var(--text-muted)] leading-relaxed">
+              <strong className="text-[var(--text-main)] block mb-1">Executive Summary:</strong>
               {report.executive_summary}
             </div>
           </Card>
@@ -207,24 +210,24 @@ export const InterviewReportPage: React.FC = () => {
 
         {/* Right 7 Cols: 5-Dimension Radar Chart */}
         <div className="lg:col-span-7">
-          <Card glow="violet" padding="lg" className="h-full border-violet-500/20 bg-slate-900/60">
+          <Card padding="lg" className="h-full">
             <div className="flex items-center justify-between mb-2">
               <div>
-                <span className="text-xs font-mono text-violet-400 uppercase tracking-wider">
+                <span className="text-xs font-mono uppercase tracking-wider text-[var(--text-muted)]">
                   Multi-Metric Rubric
                 </span>
-                <h3 className="text-base font-bold text-white">
+                <h3 className="text-base font-bold">
                   5-Dimension Performance Radar
                 </h3>
               </div>
-              <div className="flex items-center gap-4 text-xs">
+              <div className="flex items-center gap-4 text-xs font-mono">
                 <div className="flex items-center gap-1.5">
-                  <span className="w-3 h-3 rounded-full bg-cyan-400" />
-                  <span className="text-slate-300">Candidate</span>
+                  <span className="w-2.5 h-2.5 rounded-full bg-emerald-500" />
+                  <span>Candidate</span>
                 </div>
                 <div className="flex items-center gap-1.5">
-                  <span className="w-3 h-3 rounded-full bg-violet-400/50 border border-violet-400" />
-                  <span className="text-slate-400">L5 Benchmark</span>
+                  <span className="w-2.5 h-2.5 rounded-full border border-neutral-400 bg-neutral-400/30" />
+                  <span className="text-[var(--text-muted)]">L5 Benchmark</span>
                 </div>
               </div>
             </div>
@@ -233,29 +236,31 @@ export const InterviewReportPage: React.FC = () => {
             <div className="w-full h-72 sm:h-80">
               <ResponsiveContainer width="100%" height="100%">
                 <RadarChart data={radarData}>
-                  <PolarGrid stroke="#334155" />
+                  <PolarGrid stroke="currentColor" className="text-neutral-300 dark:text-neutral-700 opacity-50" />
                   <PolarAngleAxis
                     dataKey="subject"
-                    tick={{ fill: '#94a3b8', fontSize: 11 }}
+                    tick={{ fill: 'currentColor', fontSize: 11 }}
+                    className="text-neutral-600 dark:text-neutral-400 font-mono"
                   />
                   <PolarRadiusAxis
                     angle={30}
                     domain={[0, 10]}
-                    stroke="#475569"
-                    tick={{ fill: '#64748b', fontSize: 10 }}
+                    stroke="currentColor"
+                    className="text-neutral-400 dark:text-neutral-600 font-mono"
+                    tick={{ fill: 'currentColor', fontSize: 10 }}
                   />
                   <Radar
                     name="Candidate"
                     dataKey="Candidate"
-                    stroke="#06b6d4"
-                    fill="#06b6d4"
-                    fillOpacity={0.45}
+                    stroke="#10b981"
+                    fill="#10b981"
+                    fillOpacity={0.4}
                   />
                   <Radar
                     name="Benchmark"
                     dataKey="Benchmark"
-                    stroke="#8b5cf6"
-                    fill="#8b5cf6"
+                    stroke="#64748b"
+                    fill="#64748b"
                     fillOpacity={0.15}
                   />
                 </RadarChart>
@@ -269,9 +274,9 @@ export const InterviewReportPage: React.FC = () => {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Left 6 Cols: Dimension Table */}
         <div className="lg:col-span-6">
-          <Card padding="lg" className="h-full border-white/10">
-            <h3 className="text-sm font-bold text-white mb-4 flex items-center gap-2">
-              <Target className="w-4 h-4 text-cyan-400" />
+          <Card padding="lg" className="h-full">
+            <h3 className="text-sm font-bold mb-4 flex items-center gap-2">
+              <Target className="w-4 h-4 text-emerald-500" />
               Dimension Scorecard vs Senior L5 Benchmark
             </h3>
 
@@ -281,24 +286,22 @@ export const InterviewReportPage: React.FC = () => {
                 return (
                   <div key={dim.dimension} className="text-xs">
                     <div className="flex justify-between items-center mb-1.5">
-                      <span className="font-semibold text-slate-200">{dim.dimension}</span>
-                      <div className="flex items-center gap-2">
-                        <span className="font-bold text-white">{dim.score.toFixed(1)}/10</span>
-                        <span className="text-[10px] text-slate-500">
+                      <span className="font-semibold text-[var(--text-main)]">{dim.dimension}</span>
+                      <div className="flex items-center gap-2 font-mono">
+                        <span className="font-bold">{dim.score.toFixed(1)}/10</span>
+                        <span className="text-[10px] text-[var(--text-muted)]">
                           (target: {dim.benchmark.toFixed(1)})
                         </span>
                         {isAboveBenchmark ? (
-                          <span className="text-[10px] text-emerald-400 font-semibold">✓ Meets</span>
+                          <span className="text-[10px] text-emerald-500 font-semibold">✓ Meets</span>
                         ) : (
-                          <span className="text-[10px] text-amber-400 font-semibold">↑ Gap</span>
+                          <span className="text-[10px] text-amber-500 font-semibold">↑ Gap</span>
                         )}
                       </div>
                     </div>
-                    <div className="w-full bg-white/5 rounded-full h-2 overflow-hidden flex">
+                    <div className="w-full bg-neutral-500/10 rounded-full h-2 overflow-hidden flex">
                       <div
-                        className={`h-full ${
-                          dim.score >= 8 ? 'bg-emerald-500' : dim.score >= 6.5 ? 'bg-cyan-500' : 'bg-amber-500'
-                        }`}
+                        className="h-full rounded-full bg-neutral-900 dark:bg-white"
                         style={{ width: `${dim.percentage}%` }}
                       />
                     </div>
@@ -311,28 +314,28 @@ export const InterviewReportPage: React.FC = () => {
 
         {/* Right 6 Cols: Strengths & Growth Areas */}
         <div className="lg:col-span-6 space-y-4">
-          <Card padding="md" className="border-emerald-500/20 bg-emerald-950/10">
-            <h4 className="text-xs font-bold text-emerald-400 flex items-center gap-1.5 mb-2">
+          <Card padding="md">
+            <h4 className="text-xs font-bold text-emerald-500 flex items-center gap-1.5 mb-2 font-mono uppercase tracking-wider">
               <CheckCircle2 className="w-4 h-4" /> Top Observed Strengths
             </h4>
-            <ul className="space-y-1.5 text-xs text-slate-300">
+            <ul className="space-y-1.5 text-xs text-[var(--text-muted)]">
               {report.top_strengths.map((str, i) => (
                 <li key={i} className="flex items-start gap-2">
-                  <span className="text-emerald-400 font-bold">•</span>
+                  <span className="text-emerald-500 font-bold">•</span>
                   <span>{str}</span>
                 </li>
               ))}
             </ul>
           </Card>
 
-          <Card padding="md" className="border-amber-500/20 bg-amber-950/10">
-            <h4 className="text-xs font-bold text-amber-400 flex items-center gap-1.5 mb-2">
+          <Card padding="md">
+            <h4 className="text-xs font-bold text-amber-500 flex items-center gap-1.5 mb-2 font-mono uppercase tracking-wider">
               <AlertCircle className="w-4 h-4" /> Critical Areas for Growth
             </h4>
-            <ul className="space-y-1.5 text-xs text-slate-300">
+            <ul className="space-y-1.5 text-xs text-[var(--text-muted)]">
               {report.priority_improvements.map((imp, i) => (
                 <li key={i} className="flex items-start gap-2">
-                  <span className="text-amber-400 font-bold">•</span>
+                  <span className="text-amber-500 font-bold">•</span>
                   <span>{imp}</span>
                 </li>
               ))}
@@ -340,17 +343,17 @@ export const InterviewReportPage: React.FC = () => {
           </Card>
 
           {/* Quick link to Roadmap */}
-          <div className="p-4 rounded-xl bg-gradient-to-r from-cyan-950/40 via-violet-950/30 to-slate-900 border border-cyan-500/20 flex items-center justify-between">
+          <div className="p-4 rounded-xl bento-card flex items-center justify-between">
             <div className="text-xs">
-              <div className="font-bold text-white flex items-center gap-1.5">
-                <Sparkles className="w-3.5 h-3.5 text-cyan-400" /> Personalized Roadmap Ready
+              <div className="font-bold flex items-center gap-1.5">
+                <Sparkles className="w-3.5 h-3.5 text-emerald-500" /> Personalized Roadmap Ready
               </div>
-              <div className="text-slate-400 mt-0.5">
+              <div className="text-[var(--text-muted)] mt-0.5">
                 Targeted milestones generated to bridge your {report.priority_improvements[0] || 'technical'} gap.
               </div>
             </div>
             <Link to="/roadmap">
-              <Button variant="primary" size="sm" className="flex items-center gap-1">
+              <Button variant="primary" size="sm" className="flex items-center gap-1 font-mono text-xs uppercase tracking-wider">
                 Roadmap <ArrowRight className="w-3.5 h-3.5" />
               </Button>
             </Link>
@@ -359,14 +362,14 @@ export const InterviewReportPage: React.FC = () => {
       </div>
 
       {/* Section 2.5: Multimodal Executive Delivery & Non-Verbal Presence */}
-      <Card glow="cyan" padding="lg" className="border-cyan-500/20 bg-slate-900/60">
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 mb-4 pb-3 border-b border-white/10">
+      <Card padding="lg">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 mb-4 pb-3 border-b border-[var(--bento-border)]">
           <div>
-            <span className="text-xs font-mono text-cyan-400 uppercase tracking-wider">
+            <span className="text-xs font-mono uppercase tracking-wider text-[var(--text-muted)]">
               Computer Vision & Speech Signal Analysis
             </span>
-            <h3 className="text-base font-bold text-white flex items-center gap-2">
-              <Camera className="w-4 h-4 text-cyan-400" />
+            <h3 className="text-base font-bold flex items-center gap-2">
+              <Camera className="w-4 h-4 text-emerald-500" />
               Executive Delivery & Non-Verbal Presence
             </h3>
           </div>
@@ -376,54 +379,54 @@ export const InterviewReportPage: React.FC = () => {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
-          <div className="p-4 rounded-xl bg-white/[0.02] border border-white/5">
-            <div className="flex items-center gap-1.5 text-xs text-slate-400 mb-1">
-              <Eye className="w-3.5 h-3.5 text-cyan-400" />
+          <div className="p-4 rounded-xl bg-neutral-500/5 border border-[var(--bento-border)]">
+            <div className="flex items-center gap-1.5 text-xs text-[var(--text-muted)] mb-1 font-mono">
+              <Eye className="w-3.5 h-3.5 text-emerald-500" />
               <span>Eye Contact</span>
             </div>
-            <div className="text-2xl font-black text-white font-mono">
+            <div className="text-2xl font-black font-mono">
               88%
             </div>
-            <p className="text-[11px] text-emerald-400 mt-1 font-medium">
+            <p className="text-[11px] text-emerald-500 mt-1 font-mono">
               ✓ Direct camera engagement
             </p>
           </div>
 
-          <div className="p-4 rounded-xl bg-white/[0.02] border border-white/5">
-            <div className="flex items-center gap-1.5 text-xs text-slate-400 mb-1">
-              <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+          <div className="p-4 rounded-xl bg-neutral-500/5 border border-[var(--bento-border)]">
+            <div className="flex items-center gap-1.5 text-xs text-[var(--text-muted)] mb-1 font-mono">
+              <ShieldCheck className="w-3.5 h-3.5 text-emerald-500" />
               <span>Speech Fillers</span>
             </div>
-            <div className="text-2xl font-black text-white font-mono">
+            <div className="text-2xl font-black font-mono">
               Crisp
             </div>
-            <p className="text-[11px] text-slate-400 mt-1">
+            <p className="text-[11px] text-[var(--text-muted)] mt-1 font-mono">
               &lt; 2 fillers / minute average
             </p>
           </div>
 
-          <div className="p-4 rounded-xl bg-white/[0.02] border border-white/5">
-            <div className="flex items-center gap-1.5 text-xs text-slate-400 mb-1">
-              <Activity className="w-3.5 h-3.5 text-violet-400" />
+          <div className="p-4 rounded-xl bg-neutral-500/5 border border-[var(--bento-border)]">
+            <div className="flex items-center gap-1.5 text-xs text-[var(--text-muted)] mb-1 font-mono">
+              <Activity className="w-3.5 h-3.5 text-[var(--text-main)]" />
               <span>Speaking Cadence</span>
             </div>
-            <div className="text-2xl font-black text-white font-mono">
+            <div className="text-2xl font-black font-mono">
               138 WPM
             </div>
-            <p className="text-[11px] text-cyan-400 mt-1">
+            <p className="text-[11px] text-[var(--text-muted)] mt-1 font-mono">
               Ideal conversational tempo
             </p>
           </div>
 
-          <div className="p-4 rounded-xl bg-white/[0.02] border border-white/5">
-            <div className="flex items-center gap-1.5 text-xs text-slate-400 mb-1">
-              <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+          <div className="p-4 rounded-xl bg-neutral-500/5 border border-[var(--bento-border)]">
+            <div className="flex items-center gap-1.5 text-xs text-[var(--text-muted)] mb-1 font-mono">
+              <Sparkles className="w-3.5 h-3.5 text-amber-500" />
               <span>Posture & Poise</span>
             </div>
-            <div className="text-2xl font-black text-white font-mono">
+            <div className="text-2xl font-black font-mono">
               Stable
             </div>
-            <p className="text-[11px] text-slate-400 mt-1">
+            <p className="text-[11px] text-[var(--text-muted)] mt-1 font-mono">
               Grounded, centered demeanor
             </p>
           </div>
@@ -431,9 +434,9 @@ export const InterviewReportPage: React.FC = () => {
       </Card>
 
       {/* Section 3: Question-by-Question Deep Dive Breakdown */}
-      <Card padding="lg" className="border-white/10">
-        <h3 className="text-base font-bold text-white mb-4 flex items-center gap-2">
-          <Award className="w-4 h-4 text-cyan-400" />
+      <Card padding="lg">
+        <h3 className="text-base font-bold mb-4 flex items-center gap-2">
+          <Award className="w-4 h-4 text-emerald-500" />
           Turn-by-Turn Questions & Ideal Answer Analysis
         </h3>
 
@@ -443,36 +446,36 @@ export const InterviewReportPage: React.FC = () => {
             return (
               <div
                 key={idx}
-                className="rounded-xl border border-white/5 bg-white/[0.02] overflow-hidden transition-all"
+                className="rounded-xl border border-[var(--bento-border)] bg-neutral-500/5 overflow-hidden transition-all"
               >
                 {/* Accordion Header */}
                 <button
                   type="button"
                   onClick={() => toggleQuestion(idx)}
-                  className="w-full p-4 flex items-center justify-between gap-4 text-left hover:bg-white/[0.02] transition-colors"
+                  className="w-full p-4 flex items-center justify-between gap-4 text-left hover:bg-neutral-500/10 transition-colors"
                 >
                   <div className="flex items-center gap-3">
-                    <span className="w-7 h-7 rounded-lg bg-cyan-500/10 border border-cyan-500/20 text-cyan-300 font-bold text-xs flex items-center justify-center font-mono">
+                    <span className="w-7 h-7 rounded-lg bg-neutral-900 text-white dark:bg-white dark:text-black font-bold text-xs flex items-center justify-center font-mono">
                       Q{turn.question_index}
                     </span>
                     <div>
-                      <div className="text-xs font-semibold text-slate-200 line-clamp-1">
+                      <div className="text-xs font-semibold line-clamp-1">
                         "{turn.question_text}"
                       </div>
-                      <div className="text-[10px] text-slate-400 capitalize">
+                      <div className="text-[10px] text-[var(--text-muted)] font-mono capitalize">
                         {turn.question_category.replace('_', ' ')} • {turn.difficulty}
                       </div>
                     </div>
                   </div>
 
                   <div className="flex items-center gap-3">
-                    <span className="px-2 py-0.5 rounded bg-cyan-500/10 text-cyan-300 font-mono font-bold text-xs">
+                    <span className="wix-pill text-xs font-mono font-bold">
                       {turn.average_score.toFixed(1)}/10
                     </span>
                     {isExpanded ? (
-                      <ChevronUp className="w-4 h-4 text-slate-400" />
+                      <ChevronUp className="w-4 h-4 text-[var(--text-muted)]" />
                     ) : (
-                      <ChevronDown className="w-4 h-4 text-slate-400" />
+                      <ChevronDown className="w-4 h-4 text-[var(--text-muted)]" />
                     )}
                   </div>
                 </button>
@@ -482,26 +485,26 @@ export const InterviewReportPage: React.FC = () => {
                   <motion.div
                     initial={{ opacity: 0, height: 0 }}
                     animate={{ opacity: 1, height: 'auto' }}
-                    className="p-4 pt-0 border-t border-white/5 space-y-3 text-xs"
+                    className="p-4 pt-0 border-t border-[var(--bento-border)] space-y-3 text-xs"
                   >
                     {/* Candidate Answer */}
-                    <div className="p-3 rounded-lg bg-black/40 border border-white/5">
-                      <strong className="text-slate-400 block mb-1">Your Submitted Response:</strong>
-                      <p className="text-slate-200 leading-relaxed font-sans">
+                    <div className="p-3 rounded-lg bg-[var(--canvas-bg)] border border-[var(--bento-border)]">
+                      <strong className="text-[var(--text-muted)] font-mono block mb-1">Your Submitted Response:</strong>
+                      <p className="leading-relaxed font-sans">
                         "{turn.candidate_answer}"
                       </p>
                     </div>
 
                     {/* Evaluator Feedback */}
-                    <div className="p-3 rounded-lg bg-cyan-950/20 border border-cyan-500/20 text-slate-300">
-                      <strong className="text-cyan-300 block mb-1">Evaluator Feedback:</strong>
-                      {turn.feedback}
+                    <div className="p-3 rounded-lg bg-neutral-500/5 border border-[var(--bento-border)]">
+                      <strong className="block mb-1 font-mono">Evaluator Feedback:</strong>
+                      <p className="text-[var(--text-muted)]">{turn.feedback}</p>
                     </div>
 
                     {/* Target L5 Senior Ideal Answer */}
-                    <div className="p-3 rounded-lg bg-violet-950/20 border border-violet-500/20 text-slate-300">
-                      <strong className="text-violet-300 block mb-1">Senior Standard Benchmark:</strong>
-                      <p className="italic text-slate-400">"{turn.ideal_answer_summary}"</p>
+                    <div className="p-3 rounded-lg bg-neutral-500/5 border border-[var(--bento-border)]">
+                      <strong className="block mb-1 font-mono">Senior Standard Benchmark:</strong>
+                      <p className="italic text-[var(--text-muted)]">"{turn.ideal_answer_summary}"</p>
                     </div>
                   </motion.div>
                 )}
@@ -515,4 +518,3 @@ export const InterviewReportPage: React.FC = () => {
 };
 
 export default InterviewReportPage;
-

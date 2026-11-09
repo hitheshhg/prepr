@@ -1,5 +1,6 @@
 import React from 'react';
 import Navbar from './Navbar';
+import Footer from './Footer';
 
 interface AppShellProps {
   children: React.ReactNode;
@@ -7,19 +8,19 @@ interface AppShellProps {
 
 export const AppShell: React.FC<AppShellProps> = ({ children }) => {
   return (
-    <div className="min-h-screen bg-[#0B0F19] text-slate-100 flex flex-col selection:bg-cyan-500 selection:text-white">
-      {/* Top Floating Translucent Aurora Navbar */}
-      <Navbar />
+    <div className="min-h-screen bg-[var(--canvas-bg)] text-[var(--text-main)] transition-colors duration-200 flex flex-col items-center pt-3 sm:pt-6 pb-12 sm:pb-20 px-3 sm:px-6">
+      <div className="w-full max-w-6xl mx-auto flex flex-col gap-4 sm:gap-6 min-w-0">
+        {/* Bento Header Navbar */}
+        <Navbar />
 
-      {/* Main Content Stage */}
-      <main className="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 pb-12">
-        {children}
-      </main>
+        {/* Main Content Stage */}
+        <main className="w-full min-w-0">
+          {children}
+        </main>
 
-      {/* Minimal Footer */}
-      <footer className="text-center py-4 border-t border-white/5 text-[11px] text-slate-500">
-        InterviewIQ • Your data is private, encrypted, and never shared.
-      </footer>
+        {/* Minimal Bento Footer */}
+        <Footer />
+      </div>
     </div>
   );
 };

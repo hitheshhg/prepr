@@ -1,112 +1,83 @@
-import React from 'react';
-import { Sparkles, Shield, Cpu, Database, Flame, ExternalLink, GraduationCap, Github } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { ArrowUp, Github } from 'lucide-react';
+import { playClick } from '../../lib/sound';
 
 export const Footer: React.FC = () => {
+  const [time, setTime] = useState<string>('');
+
+  useEffect(() => {
+    const updateTime = () => {
+      try {
+        const now = new Date();
+        const istTime = now.toLocaleTimeString('en-US', {
+          timeZone: 'Asia/Kolkata',
+          hour12: false,
+          hour: '2-digit',
+          minute: '2-digit',
+          second: '2-digit',
+        });
+        setTime(istTime);
+      } catch {
+        setTime('IST');
+      }
+    };
+
+    updateTime();
+    const interval = setInterval(updateTime, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const scrollToTop = () => {
+    playClick(900, 0.03);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   return (
-    <footer className="mt-24 border-t border-white/10 bg-[#070A11] text-slate-400 py-12 px-6">
-      <div className="max-w-6xl mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
-          {/* Col 1: Brand & Academic Context */}
-          <div className="md:col-span-2 space-y-3 text-left">
-            <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-cyan-500 to-violet-600 flex items-center justify-center">
-                <Sparkles className="w-4 h-4 text-white" />
-              </div>
-              <span className="text-lg font-bold text-white tracking-tight">InterviewIQ</span>
-              <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-cyan-500/10 text-cyan-300 border border-cyan-500/20">
-                VTU Major Project
-              </span>
-            </div>
-            <p className="text-xs text-slate-400 max-w-md leading-relaxed">
-              An intelligent, voice-driven AI interview simulation and deterministic ATS resume analysis platform built for final-year B.E. Computer Science evaluation.
-            </p>
-            <div className="flex items-center gap-2 pt-1 text-xs text-slate-400">
-              <GraduationCap className="w-4 h-4 text-cyan-400" />
-              <span>Visvesvaraya Technological University (VTU)</span>
-            </div>
-          </div>
-
-          {/* Col 2: Architectural Specs */}
-          <div className="space-y-2.5 text-left">
-            <h4 className="text-xs font-semibold text-slate-200 uppercase tracking-wider">Engineered With</h4>
-            <ul className="text-xs space-y-1.5 text-slate-400 font-mono">
-              <li className="flex items-center gap-2">
-                <Cpu className="w-3.5 h-3.5 text-cyan-400" />
-                <span>FastAPI + Python 3.12</span>
-              </li>
-              <li className="flex items-center gap-2">
-                <Database className="w-3.5 h-3.5 text-emerald-400" />
-                <span>MongoDB Atlas (Motor Async)</span>
-              </li>
-              <li className="flex items-center gap-2">
-                <Flame className="w-3.5 h-3.5 text-amber-400" />
-                <span>Firebase Authentication</span>
-              </li>
-              <li className="flex items-center gap-2">
-                <Sparkles className="w-3.5 h-3.5 text-purple-400" />
-                <span>Google Gemini 2.5 Flash</span>
-              </li>
-            </ul>
-          </div>
-
-          {/* Col 3: Quick Links & Viva Resources */}
-          <div className="space-y-2.5 text-left">
-            <h4 className="text-xs font-semibold text-slate-200 uppercase tracking-wider">Resources</h4>
-            <ul className="text-xs space-y-1.5 text-slate-400">
-              <li>
-                <a
-                  href="http://localhost:8000/docs"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="hover:text-cyan-400 transition flex items-center gap-1.5"
-                >
-                  <span>Interactive API Swagger</span>
-                  <ExternalLink className="w-3 h-3" />
-                </a>
-              </li>
-              <li>
-                <a
-                  href="http://localhost:8000/health"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="hover:text-cyan-400 transition flex items-center gap-1.5"
-                >
-                  <span>System Diagnostics (/health)</span>
-                  <ExternalLink className="w-3 h-3" />
-                </a>
-              </li>
-              <li>
-                <a
-                  href="https://github.com/hitheshhg"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="hover:text-cyan-400 transition flex items-center gap-1.5"
-                >
-                  <Github className="w-3.5 h-3.5" />
-                  <span>GitHub Profile</span>
-                </a>
-              </li>
-            </ul>
-          </div>
+    <footer aria-label="Footer" className="w-full mt-4">
+      <div className="bento-card p-4 sm:p-6 flex flex-col sm:flex-row items-center justify-between gap-4 font-mono">
+        {/* Brand, Status & Live Clock */}
+        <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 text-center sm:text-left">
+          <Link
+            to="/dashboard"
+            onClick={() => playClick(600, 0.02)}
+            className="text-xs sm:text-sm font-semibold tracking-tight text-neutral-900 dark:text-white hover:opacity-80 transition-opacity flex items-center justify-center sm:justify-start gap-1.5"
+          >
+            <span className="w-2 h-2 rounded-full bg-neutral-900 dark:bg-white inline-block" />
+            <span>InterviewIQ</span>
+          </Link>
+          <span className="text-neutral-300 dark:text-neutral-700 hidden sm:inline">•</span>
+          <span className="text-xs text-neutral-600 dark:text-neutral-400 flex items-center justify-center sm:justify-start gap-1.5">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 dark:bg-[#4ade80] animate-pulse" />
+            <span>BLR {time ? `${time} IST` : 'IST'}</span>
+          </span>
+          <span className="text-neutral-300 dark:text-neutral-700 hidden sm:inline">•</span>
+          <p className="text-xs text-neutral-500">
+            © {new Date().getFullYear()} Shreya • VTU Major Project
+          </p>
         </div>
 
-        {/* Privacy Notice Banner as required by Master Prompt */}
-        <div className="p-3.5 rounded-xl bg-white/[0.02] border border-white/5 text-[11px] text-slate-400 flex items-start gap-2.5 text-left mb-8">
-          <Shield className="w-4 h-4 text-cyan-400 flex-shrink-0 mt-0.5" />
-          <div>
-            <span className="font-semibold text-slate-300">Privacy Notice for Demo Testing: </span>
-            This evaluation build uses Google AI Studio free-tier endpoints. To preserve confidentiality, test with dummy or anonymized resumes during presentations.
-          </div>
-        </div>
-
-        {/* Bottom Credits */}
-        <div className="pt-6 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-400 gap-4">
-          <p>© 2026 InterviewIQ • Built by Shreya for VTU Major Project Evaluation</p>
-          <div className="flex items-center gap-4 text-slate-400">
-            <span>Aurora Glassmorphism Design System</span>
-            <span>•</span>
-            <span className="text-emerald-400 font-mono">100% Type Safe</span>
-          </div>
+        {/* Links & Back to Top */}
+        <div className="flex items-center gap-3 text-xs">
+          <a
+            href="https://github.com/hitheshhg/InterviewIQ"
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={() => playClick(600, 0.02)}
+            aria-label="GitHub Repository"
+            className="p-1.5 text-neutral-500 dark:text-neutral-400 hover:text-neutral-950 dark:hover:text-white transition-colors"
+          >
+            <Github className="w-4 h-4" />
+          </a>
+          <button
+            type="button"
+            onClick={scrollToTop}
+            aria-label="Back to top"
+            className="p-1.5 rounded-lg border border-black/10 dark:border-white/10 text-neutral-500 dark:text-neutral-400 hover:text-neutral-950 dark:hover:text-white hover:border-black/30 dark:hover:border-white/30 transition-all ml-1"
+            title="Scroll to top"
+          >
+            <ArrowUp className="w-3.5 h-3.5" />
+          </button>
         </div>
       </div>
     </footer>

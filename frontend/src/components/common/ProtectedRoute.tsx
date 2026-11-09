@@ -13,9 +13,9 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#0B0F19] flex flex-col items-center justify-center p-4">
-        <RefreshCw className="w-8 h-8 text-cyan-400 animate-spin mb-4" />
-        <p className="text-xs font-mono text-slate-400 tracking-wider uppercase">
+      <div className="min-h-screen bg-[var(--canvas-bg)] text-[var(--text-main)] flex flex-col items-center justify-center p-4">
+        <RefreshCw className="w-8 h-8 text-neutral-400 animate-spin mb-4" />
+        <p className="text-xs font-mono text-[var(--text-muted)] tracking-wider uppercase">
           Verifying credentials...
         </p>
       </div>
@@ -23,7 +23,6 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
   }
 
   if (!currentUser) {
-    // Redirect unauthenticated user to landing page
     return <Navigate to="/" state={{ from: location }} replace />;
   }
 
@@ -31,4 +30,3 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
 };
 
 export default ProtectedRoute;
-

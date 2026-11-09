@@ -55,34 +55,42 @@ export const ProfilePage: React.FC = () => {
   };
 
   return (
-    <div className="max-w-xl mx-auto py-8">
-      {/* Page Title: max 4 words */}
-      <h1 className="text-2xl font-bold text-white mb-6">Candidate Profile</h1>
+    <div className="max-w-xl mx-auto py-6 space-y-4">
+      <div>
+        <div className="flex items-center gap-2 mb-1">
+          <span className="wix-pill text-[10px]">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+            Verified Profile
+          </span>
+        </div>
+        <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight">Candidate Profile</h1>
+        <p className="text-xs sm:text-sm text-[var(--text-muted)] mt-1">
+          Your credentials and interview activity summary.
+        </p>
+      </div>
 
-      <Card glow="cyan" padding="lg" className="border-cyan-500/20 bg-slate-900/60">
+      <Card padding="lg">
         <div className="flex flex-col items-center text-center space-y-4">
-          {/* Avatar with initials fallback */}
-          <Avatar src={photoUrl} name={displayName} size="xl" className="ring-4 ring-cyan-500/20" />
+          <Avatar src={photoUrl} name={displayName} size="xl" />
 
-          {/* Name & Email */}
           <div>
-            <h2 className="text-xl font-bold text-white">{displayName}</h2>
-            <div className="flex items-center justify-center gap-1.5 text-xs text-slate-400 mt-1">
-              <Mail className="w-3.5 h-3.5 text-cyan-400" />
+            <h2 className="text-xl font-bold tracking-tight">{displayName}</h2>
+            <div className="flex items-center justify-center gap-1.5 text-xs text-[var(--text-muted)] font-mono mt-1">
+              <Mail className="w-3.5 h-3.5" />
               <span>{email}</span>
             </div>
           </div>
 
-          <div className="w-full border-t border-white/10 pt-4 grid grid-cols-2 gap-4 text-left">
+          <div className="w-full border-t border-[var(--bento-border)] pt-4 grid grid-cols-2 gap-4 text-left">
             {/* Member Since */}
-            <div className="p-3 rounded-xl bg-white/[0.02] border border-white/5">
-              <div className="flex items-center gap-1.5 text-[11px] text-slate-400">
-                <Calendar className="w-3.5 h-3.5 text-cyan-400" />
+            <div className="p-3.5 rounded-xl bg-neutral-500/5 border border-[var(--bento-border)]">
+              <div className="flex items-center gap-1.5 text-[11px] font-mono text-[var(--text-muted)]">
+                <Calendar className="w-3.5 h-3.5" />
                 <span>Member Since</span>
               </div>
-              <p className="text-sm font-semibold text-white mt-1">
+              <p className="text-sm font-semibold font-mono mt-1">
                 {loading ? (
-                  <RefreshCw className="w-3 h-3 animate-spin text-slate-500" />
+                  <RefreshCw className="w-3 h-3 animate-spin text-[var(--text-muted)]" />
                 ) : (
                   formatDate(details?.created_at)
                 )}
@@ -90,14 +98,14 @@ export const ProfilePage: React.FC = () => {
             </div>
 
             {/* Total Sessions */}
-            <div className="p-3 rounded-xl bg-white/[0.02] border border-white/5">
-              <div className="flex items-center gap-1.5 text-[11px] text-slate-400">
-                <Award className="w-3.5 h-3.5 text-violet-400" />
+            <div className="p-3.5 rounded-xl bg-neutral-500/5 border border-[var(--bento-border)]">
+              <div className="flex items-center gap-1.5 text-[11px] font-mono text-[var(--text-muted)]">
+                <Award className="w-3.5 h-3.5" />
                 <span>Total Sessions</span>
               </div>
-              <p className="text-sm font-semibold text-white mt-1">
+              <p className="text-sm font-semibold font-mono mt-1">
                 {loading ? (
-                  <RefreshCw className="w-3 h-3 animate-spin text-slate-500" />
+                  <RefreshCw className="w-3 h-3 animate-spin text-[var(--text-muted)]" />
                 ) : (
                   details?.total_sessions ?? 0
                 )}
@@ -111,4 +119,3 @@ export const ProfilePage: React.FC = () => {
 };
 
 export default ProfilePage;
-
