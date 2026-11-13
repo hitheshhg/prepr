@@ -44,6 +44,16 @@ export interface PersonalizedRoadmap {
   created_at: string;
 }
 
+export interface MultimodalDeliveryMetrics {
+  average_eye_contact: number;
+  posture_breakdown: Record<string, number>;
+  head_pose_stability: number;
+  speech_wpm_average: number;
+  filler_words_total: number;
+  multimodal_delivery_index: number;
+  delivery_verdict: string;
+}
+
 export interface InterviewReport {
   report_id: string;
   session_id: string;
@@ -58,6 +68,7 @@ export interface InterviewReport {
   priority_improvements: string[];
   questions_breakdown: QuestionBreakdownItem[];
   roadmap?: PersonalizedRoadmap;
+  multimodal_delivery?: MultimodalDeliveryMetrics;
   created_at: string;
 }
 

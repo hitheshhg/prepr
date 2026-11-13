@@ -76,7 +76,11 @@ async def test_report_engine_full_lifecycle():
         user_id=user_id,
         request=SubmitAnswerRequest(
             answer_text="I design high throughput microservices using FastAPI, Redis caching, and MongoDB compound indexes.",
-            duration_seconds=30
+            duration_seconds=30,
+            eye_contact_score=92.5,
+            posture_status="attentive",
+            wpm=140,
+            filler_count=1
         )
     )
 
@@ -86,7 +90,11 @@ async def test_report_engine_full_lifecycle():
         user_id=user_id,
         request=SubmitAnswerRequest(
             answer_text="For rate limiting I implement the Token Bucket algorithm in Redis with Lua scripts for atomic operations.",
-            duration_seconds=40
+            duration_seconds=40,
+            eye_contact_score=85.0,
+            posture_status="stable",
+            wpm=135,
+            filler_count=2
         )
     )
 
@@ -98,6 +106,10 @@ async def test_report_engine_full_lifecycle():
     assert report.verdict in ["Strong Hire", "Hire", "Leaning Hire", "Needs Revision"]
     assert report.roadmap is not None
     assert len(report.roadmap.milestones) >= 3
+    assert report.multimodal_delivery is not None
+    assert report.multimodal_delivery.average_eye_contact > 80.0
+    assert report.multimodal_delivery.multimodal_delivery_index >= 7.0
+    assert "attentive" in report.multimodal_delivery.posture_breakdown
 
     # 5. Fetch Dashboard Metrics
     metrics = await report_engine.get_dashboard_metrics(user_id=user_id)

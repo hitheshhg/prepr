@@ -50,6 +50,11 @@ export interface StartInterviewResponse {
 export interface SubmitAnswerRequest {
   answer_text: string;
   duration_seconds?: number;
+  eye_contact_score?: number;
+  posture_status?: string;
+  head_pose_yaw_variance?: number;
+  wpm?: number;
+  filler_count?: number;
 }
 
 export interface SubmitAnswerResponse {

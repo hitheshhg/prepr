@@ -52,6 +52,10 @@ class TurnHistoryItem(BaseModel):
     answer_text: str
     duration_seconds: Optional[int] = 0
     evaluation: AnswerEvaluation
+    delivery_telemetry: Optional[Dict[str, Any]] = Field(
+        default=None,
+        description="Vision and acoustic behavioral telemetry (eye contact, posture, WPM, fillers)"
+    )
     timestamp: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
 
@@ -93,6 +97,11 @@ class SubmitAnswerRequest(BaseModel):
     """Payload sent by candidate when submitting an answer."""
     answer_text: str = Field(..., min_length=2, description="Candidate's answer text")
     duration_seconds: Optional[int] = Field(0, description="Seconds spent answering")
+    eye_contact_score: Optional[float] = Field(None, ge=0, le=100, description="Real-time MediaPipe eye contact %")
+    posture_status: Optional[str] = Field(None, description="Posture state: 'attentive', 'stable', or 'fidgeting'")
+    head_pose_yaw_variance: Optional[float] = Field(None, description="Head pose yaw deviation")
+    wpm: Optional[int] = Field(None, description="Speaking cadence words per minute")
+    filler_count: Optional[int] = Field(None, description="Filler words detected during response")
 
 
 class SubmitAnswerResponse(BaseModel):

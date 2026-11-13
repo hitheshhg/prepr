@@ -200,6 +200,10 @@ export const InterviewRoomPage: React.FC = () => {
       const resp = await submitAnswer(sessionId, {
         answer_text: fullAnswer,
         duration_seconds: timerSeconds,
+        eye_contact_score: deliveryMetrics.eyeContactScore,
+        posture_status: deliveryMetrics.postureStatus,
+        wpm: deliveryMetrics.wpm,
+        filler_count: deliveryMetrics.fillerCount,
       });
 
       const completedTurn = {

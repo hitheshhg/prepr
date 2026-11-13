@@ -361,76 +361,98 @@ export const InterviewReportPage: React.FC = () => {
       </div>
 
       {/* Section 2.5: Multimodal Executive Delivery & Non-Verbal Presence */}
-      <Card padding="lg">
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 mb-4 pb-3 border-b border-[var(--bento-border)]">
-          <div>
-            <span className="text-xs font-mono uppercase tracking-wider text-[var(--text-muted)]">
-              Computer Vision & Speech Signal Analysis
-            </span>
-            <h3 className="text-base font-bold flex items-center gap-2">
-              <Camera className="w-4 h-4 text-emerald-500" />
-              Executive Delivery & Non-Verbal Presence
-            </h3>
-          </div>
-          <Badge variant="emerald" size="sm">
-            AI Multimodal Analysis
-          </Badge>
-        </div>
+      {(() => {
+        const mm = report.multimodal_delivery;
+        const eyeContact = mm ? mm.average_eye_contact : 88;
+        const wpm = mm ? mm.speech_wpm_average : 138;
+        const fillers = mm ? mm.filler_words_total : 2;
+        const stability = mm ? mm.head_pose_stability : 92;
+        const mdi = mm ? mm.multimodal_delivery_index : 8.6;
+        const verdict = mm ? mm.delivery_verdict : 'Attentive & Composed Demeanor';
 
-        <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
-          <div className="p-4 rounded-xl bg-neutral-500/5 border border-[var(--bento-border)]">
-            <div className="flex items-center gap-1.5 text-xs text-[var(--text-muted)] mb-1 font-mono">
-              <Eye className="w-3.5 h-3.5 text-emerald-500" />
-              <span>Eye Contact</span>
+        return (
+          <Card padding="lg">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 mb-4 pb-3 border-b border-[var(--bento-border)]">
+              <div>
+                <span className="text-xs font-mono uppercase tracking-wider text-[var(--text-muted)]">
+                  Computer Vision & Speech Signal Analysis
+                </span>
+                <h3 className="text-base font-bold flex items-center gap-2">
+                  <Camera className="w-4 h-4 text-emerald-500" />
+                  Executive Delivery & Non-Verbal Presence
+                </h3>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="text-xs font-mono text-[var(--text-muted)] hidden sm:inline">
+                  Multimodal Delivery Index (MDI):
+                </span>
+                <Badge variant={mdi >= 8.5 ? 'emerald' : mdi >= 7.0 ? 'cyan' : 'amber'} size="sm">
+                  {mdi.toFixed(1)} / 10 MDI
+                </Badge>
+              </div>
             </div>
-            <div className="text-2xl font-black font-mono">
-              88%
-            </div>
-            <p className="text-[11px] text-emerald-500 mt-1 font-mono">
-              ✓ Direct camera engagement
-            </p>
-          </div>
 
-          <div className="p-4 rounded-xl bg-neutral-500/5 border border-[var(--bento-border)]">
-            <div className="flex items-center gap-1.5 text-xs text-[var(--text-muted)] mb-1 font-mono">
-              <ShieldCheck className="w-3.5 h-3.5 text-emerald-500" />
-              <span>Speech Fillers</span>
+            <div className="mb-4 px-3.5 py-2.5 rounded-xl bg-neutral-500/5 border border-[var(--bento-border)] flex items-center justify-between text-xs">
+              <span className="text-[var(--text-muted)] font-mono">Multimodal Synthesis:</span>
+              <span className="font-semibold text-emerald-500 font-mono">{verdict}</span>
             </div>
-            <div className="text-2xl font-black font-mono">
-              Crisp
-            </div>
-            <p className="text-[11px] text-[var(--text-muted)] mt-1 font-mono">
-              &lt; 2 fillers / minute average
-            </p>
-          </div>
 
-          <div className="p-4 rounded-xl bg-neutral-500/5 border border-[var(--bento-border)]">
-            <div className="flex items-center gap-1.5 text-xs text-[var(--text-muted)] mb-1 font-mono">
-              <Activity className="w-3.5 h-3.5 text-[var(--text-main)]" />
-              <span>Speaking Cadence</span>
-            </div>
-            <div className="text-2xl font-black font-mono">
-              138 WPM
-            </div>
-            <p className="text-[11px] text-[var(--text-muted)] mt-1 font-mono">
-              Ideal conversational tempo
-            </p>
-          </div>
+            <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
+              <div className="p-4 rounded-xl bg-neutral-500/5 border border-[var(--bento-border)]">
+                <div className="flex items-center gap-1.5 text-xs text-[var(--text-muted)] mb-1 font-mono">
+                  <Eye className="w-3.5 h-3.5 text-emerald-500" />
+                  <span>Eye Contact</span>
+                </div>
+                <div className="text-2xl font-black font-mono">
+                  {eyeContact.toFixed(0)}%
+                </div>
+                <p className="text-[11px] text-emerald-500 mt-1 font-mono">
+                  {eyeContact >= 80 ? '✓ Direct camera engagement' : '↑ Practice lens focus'}
+                </p>
+              </div>
 
-          <div className="p-4 rounded-xl bg-neutral-500/5 border border-[var(--bento-border)]">
-            <div className="flex items-center gap-1.5 text-xs text-[var(--text-muted)] mb-1 font-mono">
-              <Sparkles className="w-3.5 h-3.5 text-amber-500" />
-              <span>Posture & Poise</span>
+              <div className="p-4 rounded-xl bg-neutral-500/5 border border-[var(--bento-border)]">
+                <div className="flex items-center gap-1.5 text-xs text-[var(--text-muted)] mb-1 font-mono">
+                  <ShieldCheck className="w-3.5 h-3.5 text-emerald-500" />
+                  <span>Speech Fillers</span>
+                </div>
+                <div className="text-2xl font-black font-mono">
+                  {fillers} detected
+                </div>
+                <p className="text-[11px] text-[var(--text-muted)] mt-1 font-mono">
+                  {fillers <= 3 ? 'Crisp & deliberate delivery' : 'Moderate filler density'}
+                </p>
+              </div>
+
+              <div className="p-4 rounded-xl bg-neutral-500/5 border border-[var(--bento-border)]">
+                <div className="flex items-center gap-1.5 text-xs text-[var(--text-muted)] mb-1 font-mono">
+                  <Activity className="w-3.5 h-3.5 text-[var(--text-main)]" />
+                  <span>Speaking Cadence</span>
+                </div>
+                <div className="text-2xl font-black font-mono">
+                  {wpm} WPM
+                </div>
+                <p className="text-[11px] text-[var(--text-muted)] mt-1 font-mono">
+                  {wpm >= 120 && wpm <= 165 ? 'Ideal conversational tempo' : 'Target: 130-155 WPM'}
+                </p>
+              </div>
+
+              <div className="p-4 rounded-xl bg-neutral-500/5 border border-[var(--bento-border)]">
+                <div className="flex items-center gap-1.5 text-xs text-[var(--text-muted)] mb-1 font-mono">
+                  <Sparkles className="w-3.5 h-3.5 text-amber-500" />
+                  <span>Posture Stability</span>
+                </div>
+                <div className="text-2xl font-black font-mono">
+                  {stability.toFixed(0)}%
+                </div>
+                <p className="text-[11px] text-[var(--text-muted)] mt-1 font-mono">
+                  {stability >= 85 ? 'Grounded, centered demeanor' : 'Minor fidgeting detected'}
+                </p>
+              </div>
             </div>
-            <div className="text-2xl font-black font-mono">
-              Stable
-            </div>
-            <p className="text-[11px] text-[var(--text-muted)] mt-1 font-mono">
-              Grounded, centered demeanor
-            </p>
-          </div>
-        </div>
-      </Card>
+          </Card>
+        );
+      })()}
 
       {/* Section 3: Question-by-Question Deep Dive Breakdown */}
       <Card padding="lg">

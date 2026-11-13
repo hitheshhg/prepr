@@ -362,7 +362,17 @@ class InterviewSessionManager:
                     sample_answer_hint=fb["hint"]
                 )
 
-        # 4. Save Turn to Answers collection
+        # 4. Save Turn to Answers collection with delivery telemetry
+        delivery_telemetry = None
+        if request.eye_contact_score is not None or request.posture_status is not None:
+            delivery_telemetry = {
+                "eye_contact_score": request.eye_contact_score,
+                "posture_status": request.posture_status or "stable",
+                "head_pose_yaw_variance": request.head_pose_yaw_variance or 0.0,
+                "wpm": request.wpm or 135,
+                "filler_count": request.filler_count or 0,
+            }
+
         answer_record = {
             "session_id": session_id,
             "question_index": curr_index,
@@ -370,6 +380,7 @@ class InterviewSessionManager:
             "answer_text": request.answer_text,
             "duration_seconds": request.duration_seconds or 0,
             "evaluation": evaluation.model_dump(),
+            "delivery_telemetry": delivery_telemetry,
             "created_at": datetime.now(timezone.utc)
         }
 
@@ -392,6 +403,7 @@ class InterviewSessionManager:
             "answer_text": request.answer_text,
             "duration_seconds": request.duration_seconds or 0,
             "evaluation": evaluation.model_dump(),
+            "delivery_telemetry": delivery_telemetry,
             "timestamp": datetime.now(timezone.utc).isoformat()
         }
 

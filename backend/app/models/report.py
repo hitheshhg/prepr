@@ -51,6 +51,17 @@ class PersonalizedRoadmap(BaseModel):
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
 
+class MultimodalDeliveryMetrics(BaseModel):
+    """Behavioral and computer vision telemetry synthesized across interview turns."""
+    average_eye_contact: float = Field(..., ge=0, le=100, description="Average eye contact % across turns")
+    posture_breakdown: Dict[str, float] = Field(default_factory=dict, description="Time percentage attentive, stable, or fidgeting")
+    head_pose_stability: float = Field(..., ge=0, le=100, description="Stability index 0-100 derived from 3D yaw/pitch variance")
+    speech_wpm_average: int = Field(135, description="Speaking pace in words per minute")
+    filler_words_total: int = Field(0, description="Total speech fillers detected")
+    multimodal_delivery_index: float = Field(..., ge=0, le=10, description="Composite MDI score out of 10")
+    delivery_verdict: str = Field(..., description="e.g. 'Exceptional Focus & Professional Poise'")
+
+
 class InterviewReport(BaseModel):
     """Comprehensive performance evaluation report for a completed mock interview."""
     report_id: str
@@ -66,6 +77,10 @@ class InterviewReport(BaseModel):
     priority_improvements: List[str]
     questions_breakdown: List[QuestionBreakdownItem]
     roadmap: Optional[PersonalizedRoadmap] = None
+    multimodal_delivery: Optional[MultimodalDeliveryMetrics] = Field(
+        default=None,
+        description="Non-verbal MediaPipe vision and speech delivery metrics"
+    )
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
 
