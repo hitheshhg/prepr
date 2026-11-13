@@ -35,6 +35,7 @@ export interface StartInterviewRequest {
   resume_text?: string;
   total_questions?: number;
   initial_difficulty?: 'easy' | 'medium' | 'hard';
+  github_username?: string;
 }
 
 export interface StartInterviewResponse {

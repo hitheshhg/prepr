@@ -157,10 +157,31 @@ class InterviewSessionManager:
         """Initialize session, generate Question 1, and persist to MongoDB."""
         session_id = str(uuid.uuid4())
 
-        # 1. Resolve resume context
+        # 1. Resolve resume & GitHub portfolio context
         resume_context = request.resume_text or ""
         if not resume_context and request.resume_id:
             resume_context = await self._fetch_resume_text(request.resume_id, user_id)
+
+        # Resolve candidate GitHub repositories
+        github_user = request.github_username
+        if not github_user and db_manager.db is not None:
+            try:
+                user_doc = await db_manager.db.users.find_one({"firebase_uid": user_id})
+                if user_doc and user_doc.get("github_username"):
+                    github_user = user_doc.get("github_username")
+            except Exception:
+                pass
+
+        if github_user:
+            try:
+                from app.services.github_service import github_service
+                repos = await github_service.fetch_candidate_repositories(github_user)
+                if repos:
+                    gh_summary = github_service.format_repositories_for_prompt(repos)
+                    resume_context = f"{resume_context}\n\n{gh_summary}".strip()
+                    logger.info(f"[SessionManager] Injected GitHub context ({len(repos)} repos) for @{github_user}")
+            except Exception as gh_err:
+                logger.warning(f"[SessionManager] Could not fetch GitHub repos for @{github_user}: {gh_err}")
 
         if not resume_context:
             resume_context = f"Candidate interviewing for {request.target_role}. Relevant modern tech stack and projects."
@@ -209,6 +230,7 @@ class InterviewSessionManager:
             "target_role": request.target_role,
             "job_description": request.job_description,
             "resume_id": request.resume_id,
+            "github_username": github_user,
             "resume_context": resume_context[:2000],
             "total_questions": request.total_questions,
             "current_question_index": 1,

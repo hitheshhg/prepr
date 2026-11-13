@@ -16,6 +16,7 @@ import {
   VolumeX,
   FileText,
   Code,
+  Github,
 } from 'lucide-react';
 import Card from '../components/ui/Card';
 import Button from '../components/ui/Button';
@@ -25,6 +26,7 @@ import AIOrb, { AIOrbState } from '../components/interview/AIOrb';
 import MinimalistLoadingVisual from '../components/interview/MinimalistLoadingVisual';
 import WebcamVisionTracker from '../components/interview/WebcamVisionTracker';
 import LiveCodeSandbox from '../components/interview/LiveCodeSandbox';
+import { getLinkedGitHubAccount } from '../services/githubService';
 import { useDeliveryAnalytics } from '../hooks/useDeliveryAnalytics';
 import { useSpeechRecognition } from '../hooks/useSpeechRecognition';
 import { useSpeechSynthesis } from '../hooks/useSpeechSynthesis';
@@ -93,6 +95,7 @@ export const InterviewRoomPage: React.FC = () => {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [rightPanelTab, setRightPanelTab] = useState<'camera' | 'scorecard'>('camera');
   const [showCodeSandbox, setShowCodeSandbox] = useState(false);
+  const [githubHandle, setGithubHandle] = useState('');
 
   // Speech Hooks
   const {
@@ -139,6 +142,17 @@ export const InterviewRoomPage: React.FC = () => {
     };
   }, [isTimerRunning]);
 
+  // Pre-fill GitHub handle if candidate linked it in their profile
+  useEffect(() => {
+    getLinkedGitHubAccount()
+      .then((res) => {
+        if (res.status === 'linked' && res.github_username) {
+          setGithubHandle(res.github_username);
+        }
+      })
+      .catch(() => {});
+  }, []);
+
   const formatTimer = (seconds: number) => {
     const mins = Math.floor(seconds / 60);
     const secs = seconds % 60;
@@ -168,6 +182,7 @@ export const InterviewRoomPage: React.FC = () => {
         target_role: role,
         total_questions: totalQuestions,
         initial_difficulty: initialDifficulty,
+        github_username: githubHandle.trim() || undefined,
       });
 
       setSessionId(resp.session_id);
@@ -410,6 +425,34 @@ export const InterviewRoomPage: React.FC = () => {
                       ))}
                     </div>
                   </div>
+                </div>
+
+                {/* GitHub Portfolio Grounding (Optional) */}
+                <div className="pt-1">
+                  <div className="flex items-center justify-between mb-2">
+                    <label className="text-xs font-mono font-semibold uppercase tracking-wider text-[var(--text-muted)] flex items-center gap-1.5">
+                      <Github className="w-3.5 h-3.5" />
+                      <span>GitHub Codebase Grounding (Optional)</span>
+                    </label>
+                    <span className="text-[10px] text-emerald-500 font-mono flex items-center gap-1">
+                      <Sparkles className="w-2.5 h-2.5" /> Real Project Questions
+                    </span>
+                  </div>
+                  <div className="relative">
+                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--text-muted)] text-xs font-mono">
+                      github.com/
+                    </span>
+                    <input
+                      type="text"
+                      placeholder="username (e.g. hitheshhg)"
+                      value={githubHandle}
+                      onChange={(e) => setGithubHandle(e.target.value)}
+                      className="w-full pl-28 pr-3 py-2.5 rounded-xl bg-[var(--canvas-bg)] border border-[var(--bento-border)] text-xs text-[var(--text-main)] placeholder-neutral-400 focus:outline-none focus:ring-1 focus:ring-neutral-400 font-mono"
+                    />
+                  </div>
+                  <p className="text-[11px] text-[var(--text-muted)] mt-1.5 font-sans">
+                    Prepr will inspect your public repositories to formulate direct architectural deep-dive questions based on your real projects.
+                  </p>
                 </div>
 
                 {errorMessage && (
