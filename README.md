@@ -246,9 +246,9 @@ Test Results Breakdown:
 
 ## 📚 Academic Examination Resources
 
-- [**VIVA_PREP.md**](file:///Users/hithesh/Documents/majorProject/VIVA_PREP.md): **25 Exhaustive Viva Questions & High-Scoring Model Answers** + **5-Minute Live Evaluator Demo Script**.
-- [**DEPLOYMENT.md**](file:///Users/hithesh/Documents/majorProject/DEPLOYMENT.md): Production cloud deployment blueprint for Vercel and Render.
-- [**PROGRESS.md**](file:///Users/hithesh/Documents/majorProject/PROGRESS.md): Step-by-step 12-phase project completion chronicle.
+- [**VIVA_PREP.md**](file:///Users/hithesh/Documents/prepr/VIVA_PREP.md): **25 Exhaustive Viva Questions & High-Scoring Model Answers** + **5-Minute Live Evaluator Demo Script**.
+- [**DEPLOYMENT.md**](file:///Users/hithesh/Documents/prepr/DEPLOYMENT.md): Production cloud deployment blueprint for Vercel and Render.
+- [**PROGRESS.md**](file:///Users/hithesh/Documents/prepr/PROGRESS.md): Step-by-step 12-phase project completion chronicle.
 
 ---
 
