@@ -24,7 +24,7 @@ from app.models.session import (
 from app.services.session_manager import session_manager
 from app.dependencies import get_current_user
 
-logger = logging.getLogger("interviewiq.routes.interview")
+logger = logging.getLogger("prepr.routes.interview")
 
 router = APIRouter(prefix="/api/v1/interview", tags=["Interview Engine"])
 

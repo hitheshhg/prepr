@@ -4,7 +4,7 @@ from typing import Optional, Dict, Any
 from motor.motor_asyncio import AsyncIOMotorClient, AsyncIOMotorDatabase
 from app.config import settings
 
-logger = logging.getLogger("interviewiq.database")
+logger = logging.getLogger("prepr.database")
 
 class Database:
     client: Optional[AsyncIOMotorClient] = None

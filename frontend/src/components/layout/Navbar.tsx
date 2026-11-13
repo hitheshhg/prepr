@@ -81,7 +81,7 @@ export const Navbar: React.FC = () => {
             className="font-mono text-xs sm:text-sm font-semibold tracking-tight text-neutral-900 dark:text-white hover:opacity-80 transition-opacity select-none flex items-center gap-1.5 sm:gap-2 truncate"
           >
             <span className="w-2 h-2 rounded-full bg-neutral-900 dark:bg-white shrink-0" />
-            <span className="truncate">InterviewIQ</span>
+            <span className="truncate">prepr</span>
           </Link>
           <span className="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-mono bg-emerald-500/10 text-emerald-600 dark:text-[#4ade80] border border-emerald-500/25 shrink-0">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 dark:bg-[#4ade80] animate-pulse" />

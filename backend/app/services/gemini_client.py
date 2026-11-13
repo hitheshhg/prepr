@@ -8,14 +8,14 @@ from google.genai import types
 from google.genai.errors import APIError, ServerError, ClientError
 from app.config import settings
 
-logger = logging.getLogger("interviewiq.gemini")
+logger = logging.getLogger("prepr.gemini")
 
 T = TypeVar("T", bound=BaseModel)
 
 
 class GeminiClient:
     """
-    Centralized Gemini Client for InterviewIQ.
+    Centralized Gemini Client for Prepr.
     All LLM interactions pass through this module with:
     - Strict Pydantic JSON validation
     - Up to 2 retries on malformed JSON

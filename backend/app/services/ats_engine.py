@@ -8,7 +8,7 @@ from app.models.resume import (
 )
 from app.services.gemini_client import gemini_client
 
-logger = logging.getLogger("interviewiq.ats")
+logger = logging.getLogger("prepr.ats")
 
 # Standard Engineering Power Action Verbs
 ACTION_VERBS = {
@@ -295,7 +295,7 @@ def _fallback_entity_extractor(text: str) -> ParsedResume:
             "github": "",
             "location": ""
         },
-        summary="Extracted via InterviewIQ Text Parser",
+        summary="Extracted via Prepr Text Parser",
         technical_skills=["Python", "React", "FastAPI", "MongoDB"],
         soft_skills=["Problem Solving", "Communication"],
         tools=["Git", "Docker"],

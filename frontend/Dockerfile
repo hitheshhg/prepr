@@ -1,4 +1,4 @@
-# Production Multi-Stage Dockerfile for InterviewIQ Frontend
+# Production Multi-Stage Dockerfile for Prepr Frontend
 FROM node:20-alpine AS builder
 
 WORKDIR /app

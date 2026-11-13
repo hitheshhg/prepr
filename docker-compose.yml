@@ -5,7 +5,7 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile
-    container_name: interviewiq-backend
+    container_name: prepr-backend
     ports:
       - "8000:8000"
     env_file:
@@ -15,22 +15,22 @@ services:
       - ENVIRONMENT=production
     restart: unless-stopped
     networks:
-      - interviewiq-net
+      - prepr-net
 
   frontend:
     build:
       context: ./frontend
       dockerfile: Dockerfile
-    container_name: interviewiq-frontend
+    container_name: prepr-frontend
     ports:
       - "5173:80"
     depends_on:
       - backend
     restart: unless-stopped
     networks:
-      - interviewiq-net
+      - prepr-net
 
 networks:
-  interviewiq-net:
+  prepr-net:
     driver: bridge
 

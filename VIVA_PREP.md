@@ -1,9 +1,9 @@
-# InterviewIQ - VTU Viva Examination & Evaluation Handbook
+# Prepr - VTU Viva Examination & Evaluation Handbook
 
 **Candidate:** Shreya  
 **Degree:** Bachelor of Engineering (B.E.) in Computer Science & Engineering  
 **University:** Visvesvaraya Technological University (VTU), Belagavi  
-**Project Title:** InterviewIQ – AI Interview Preparation & Resume Analysis Platform  
+**Project Title:** Prepr – AI Interview Preparation & Resume Analysis Platform  
 **Master Tagline:** *"Get grilled by AI. Get hired by humans."*  
 **Core Technologies:** Python 3.12, FastAPI, React 18, TypeScript, Tailwind CSS, Google Gemini 2.5/1.5 Flash, MongoDB Atlas, Firebase Authentication, Web Speech API, Recharts, Docker.
 
@@ -19,7 +19,7 @@ Follow this exact minute-by-minute script during the live evaluator demonstratio
 | - Action: Start on the Landing Page (http://localhost:5173).                          |
 | - Pitch: "Respected evaluators, modern engineering candidates struggle with two       |
 |   critical hurdles: passing opaque ATS resume filters and succeeding in dynamic       |
-|   technical interviews. We built InterviewIQ with the master tagline:                 |
+|   technical interviews. We built Prepr with the master tagline:                       |
 |   'Get grilled by AI. Get hired by humans.'                                           |
 | - Highlight: Point to the Aurora Glassmorphism UI, explaining the decoupled monorepo   |
 |   architecture: FastAPI async backend on port 8000, React TypeScript frontend on      |
@@ -166,7 +166,7 @@ Gemini then layers on top to provide prioritized, actionable improvement tips."
 
 #### Q16: Why did you choose React 18 with Vite instead of Create React App or Next.js?
 **Model Answer:**  
-"Create React App (CRA) is deprecated and uses Webpack with slow cold starts. Vite leverages native ES modules (ESM) in modern browsers powered by Rollup and esbuild, giving sub-second Hot Module Replacement (HMR) and optimized tree-shaking that produced our production bundle in under 5 seconds. Next.js was evaluated, but since InterviewIQ is an interactive single-page dashboard with real-time WebSockets and client-side Web Speech APIs rather than a static SEO blog, React 18 SPA with client-side routing is lighter, simpler, and completely decoupled from the backend."
+"Create React App (CRA) is deprecated and uses Webpack with slow cold starts. Vite leverages native ES modules (ESM) in modern browsers powered by Rollup and esbuild, giving sub-second Hot Module Replacement (HMR) and optimized tree-shaking that produced our production bundle in under 5 seconds. Next.js was evaluated, but since Prepr is an interactive single-page dashboard with real-time WebSockets and client-side Web Speech APIs rather than a static SEO blog, React 18 SPA with client-side routing is lighter, simpler, and completely decoupled from the backend."
 
 #### Q17: How did you implement real-time voice speech-to-text without paying for third-party audio APIs?
 **Model Answer:**  
@@ -215,9 +215,9 @@ This provides clear, accessible visual cues to the user during voice conversatio
 ```
 This instructs the edge server to route all incoming HTTP requests to `index.html`, allowing React Router to inspect the browser URL and mount the correct page component seamlessly."
 
-#### Q25: What is the primary academic and societal impact of InterviewIQ?
+#### Q25: What is the primary academic and societal impact of Prepr?
 **Model Answer:**  
-"InterviewIQ democratizes high-quality technical interview preparation. Historically, candidates had to pay hundreds of dollars for mock interviews with senior engineers or rely on superficial flashcard tools. InterviewIQ provides an end-to-end, multi-turn, resume-aware platform that delivers real-time voice evaluation across a rigorous 5-dimension rubric, identifies concrete knowledge gaps, and algorithmically generates a personalized career roadmap. It bridges the gap between theoretical computer science education and practical industry hiring standards."
+"Prepr democratizes high-quality technical interview preparation. Historically, candidates had to pay hundreds of dollars for mock interviews with senior engineers or rely on superficial flashcard tools. Prepr provides an end-to-end, multi-turn, resume-aware platform that delivers real-time voice evaluation across a rigorous 5-dimension rubric, identifies concrete knowledge gaps, and algorithmically generates a personalized career roadmap. It bridges the gap between theoretical computer science education and practical industry hiring standards."
 
 ---
 

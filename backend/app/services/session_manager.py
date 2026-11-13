@@ -20,7 +20,7 @@ from app.models.session import (
 from app.services.gemini_client import GeminiClient
 from app.database import db_manager
 
-logger = logging.getLogger("interviewiq.session_manager")
+logger = logging.getLogger("prepr.session_manager")
 
 # Path to prompts directory
 PROMPTS_DIR = os.path.join(os.path.dirname(__file__), "..", "prompts")

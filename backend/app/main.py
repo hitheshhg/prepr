@@ -14,33 +14,33 @@ logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s [%(levelname)s] %(name)s: %(message)s"
 )
-logger = logging.getLogger("interviewiq")
+logger = logging.getLogger("prepr")
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # Startup tasks
-    logger.info(f"[InterviewIQ] Server starting in {settings.ENVIRONMENT} mode on port {settings.PORT}...")
+    logger.info(f"[Prepr] Server starting in {settings.ENVIRONMENT} mode on port {settings.PORT}...")
     try:
         await connect_to_mongo()
     except Exception as e:
-        logger.error(f"[InterviewIQ] Database initialization failed on startup: {e}")
+        logger.error(f"[Prepr] Database initialization failed on startup: {e}")
     
     try:
         init_firebase_admin()
     except Exception as e:
-        logger.error(f"[InterviewIQ] Firebase initialization failed on startup: {e}")
+        logger.error(f"[Prepr] Firebase initialization failed on startup: {e}")
 
     yield
     
     # Shutdown tasks
-    logger.info("[InterviewIQ] Server shutting down...")
+    logger.info("[Prepr] Server shutting down...")
     await close_mongo_connection()
 
 
 app = FastAPI(
-    title="InterviewIQ API",
-    description="Backend API for InterviewIQ - AI Interview Preparation & Resume Analysis Platform",
+    title="Prepr API",
+    description="Backend API for Prepr - AI Interview Preparation & Resume Analysis Platform",
     version="1.0.0",
     lifespan=lifespan,
 )
@@ -70,7 +70,7 @@ app.include_router(report.router)
 @app.get("/")
 async def root():
     return {
-        "message": "Welcome to the InterviewIQ API",
+        "message": "Welcome to the Prepr API",
         "docs": "/docs",
         "health": "/health"
     }

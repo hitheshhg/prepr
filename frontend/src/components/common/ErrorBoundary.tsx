@@ -65,7 +65,7 @@ export class ErrorBoundary extends Component<Props, State> {
             </h2>
 
             <p className="text-xs sm:text-sm text-[var(--text-muted)] mt-2 leading-relaxed">
-              InterviewIQ intercepted an unexpected interface error. Your session data and evaluations are safely persisted in MongoDB Atlas.
+              prepr intercepted an unexpected interface error. Your session data and evaluations are safely persisted in MongoDB Atlas.
             </p>
 
             {/* Recovery Action Buttons */}

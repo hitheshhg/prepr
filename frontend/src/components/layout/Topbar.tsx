@@ -28,10 +28,10 @@ export const Topbar: React.FC = () => {
       {/* Mobile Brand Title */}
       <div className="flex md:hidden items-center gap-2">
         <div className="w-7 h-7 rounded-lg bg-neutral-900 text-white dark:bg-white dark:text-black flex items-center justify-center font-mono font-bold text-xs">
-          IQ
+          PR
         </div>
         <span className="font-extrabold text-sm">
-          Interview<span className="text-neutral-500">IQ</span>
+          pre<span className="text-neutral-500">pr</span>
         </span>
       </div>
 

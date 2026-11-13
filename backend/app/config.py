@@ -9,7 +9,7 @@ class Settings(BaseSettings):
     
     # MongoDB settings (Phase 2)
     MONGODB_URI: str = ""
-    MONGODB_DB_NAME: str = "interviewiq"
+    MONGODB_DB_NAME: str = "prepr"
     
     # Firebase settings (Phase 3)
     FIREBASE_CREDENTIALS_PATH: str = "serviceAccountKey.json"

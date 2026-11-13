@@ -1,4 +1,4 @@
-# InterviewIQ
+# Prepr
 
 <div align="center">
 
@@ -20,9 +20,9 @@
 
 ## 📌 Executive Summary
 
-**InterviewIQ** bridges the critical gap between automated applicant screening and real-world technical hiring. Engineering candidates often face two insurmountable hurdles: passing opaque Applicant Tracking System (ATS) resume filters and performing effectively under live technical grilling.
+**Prepr** bridges the critical gap between automated applicant screening and real-world technical hiring. Engineering candidates often face two insurmountable hurdles: passing opaque Applicant Tracking System (ATS) resume filters and performing effectively under live technical grilling.
 
-InterviewIQ provides an integrated, end-to-end platform:
+Prepr provides an integrated, end-to-end platform:
 1. **Hybrid ATS Engine:** Parses PDF/DOCX resumes and computes a deterministic mathematical score alongside semantic gap analysis.
 2. **Resume-Aware Voice AI Interview Room:** Conducts real-time, hands-free technical interviews with browser-native speech processing and an animated multi-state AI Orb.
 3. **Adaptive State Machine:** Dynamically escalates or eases interview difficulty based on rolling answer quality.
@@ -139,7 +139,7 @@ graph TD
 ## 📂 Repository Structure
 
 ```
-interviewiq/
+prepr/
 ├── backend/
 │   ├── app/
 │   │   ├── middleware/      # Rate limiting (SlowAPI)

@@ -1,4 +1,4 @@
-# Project Progress Tracker - InterviewIQ
+# Project Progress Tracker - Prepr
 
 **Candidate:** Shreya  
 **Target:** VTU Major Project (B.E. Computer Science)  

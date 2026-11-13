@@ -1,4 +1,4 @@
-# Production Multi-Stage Dockerfile for InterviewIQ Backend
+# Production Multi-Stage Dockerfile for Prepr Backend
 FROM python:3.12-slim AS builder
 
 WORKDIR /app

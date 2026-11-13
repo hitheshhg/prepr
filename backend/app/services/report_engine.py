@@ -16,7 +16,7 @@ from app.models.session import AnswerScores
 from app.services.session_manager import session_manager
 from app.database import db_manager
 
-logger = logging.getLogger("interviewiq.report_engine")
+logger = logging.getLogger("prepr.report_engine")
 
 
 class ReportEngine:
@@ -154,7 +154,7 @@ class ReportEngine:
                         "question_category": "project_deep_dive",
                         "difficulty": "medium",
                     },
-                    "answer_text": "I built InterviewIQ using FastAPI and React with MongoDB Atlas.",
+                    "answer_text": "I built Prepr using FastAPI and React with MongoDB Atlas.",
                     "evaluation": {
                         "scores": {
                             "relevance": 8,

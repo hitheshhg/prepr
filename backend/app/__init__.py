@@ -1,2 +1,2 @@
-"""InterviewIQ Backend Application Package."""
+"""Prepr Backend Application Package."""
 __version__ = "1.0.0"

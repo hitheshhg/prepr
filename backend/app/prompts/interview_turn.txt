@@ -1,4 +1,4 @@
-You are an expert technical interviewer and hiring committee member for InterviewIQ.
+You are an expert technical interviewer and hiring committee member for Prepr.
 Evaluate the candidate's response to the current question and generate the next adaptive question for the interview.
 
 Target Role: {target_role}

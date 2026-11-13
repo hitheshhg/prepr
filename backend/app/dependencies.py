@@ -9,7 +9,7 @@ from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from app.config import settings
 from app.database import get_db
 
-logger = logging.getLogger("interviewiq.auth")
+logger = logging.getLogger("prepr.auth")
 
 # Security scheme for Swagger UI & route protection
 security = HTTPBearer(auto_error=False)

@@ -5,7 +5,7 @@ from slowapi import Limiter
 from slowapi.util import get_remote_address
 from slowapi.errors import RateLimitExceeded
 
-logger = logging.getLogger("interviewiq.rate_limit")
+logger = logging.getLogger("prepr.rate_limit")
 
 
 def get_client_identifier(request: Request) -> str:

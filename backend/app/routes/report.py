@@ -10,7 +10,7 @@ from app.models.report import (
 from app.services.report_engine import report_engine
 from app.dependencies import get_current_user
 
-logger = logging.getLogger("interviewiq.routes.report")
+logger = logging.getLogger("prepr.routes.report")
 
 router = APIRouter(prefix="/api/v1", tags=["Reports, Roadmap & Dashboard"])
 

@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "title": "InterviewIQ Empirical Assessment Benchmark",
+    "title": "Prepr Empirical Assessment Benchmark",
     "sample_size": 150,
     "roles_evaluated": [
       "Full Stack",
@@ -11,7 +11,7 @@
     "ground_truth": "Triple-blind Senior Human Interviewer Panel"
   },
   "comparative_metrics": {
-    "InterviewIQ_Multimodal": {
+    "Prepr_Multimodal": {
       "pearson_r": 0.974,
       "spearman_rho": 0.973,
       "mae": 0.32,
@@ -48,22 +48,22 @@
     "Full Stack": {
       "sample_count": 38,
       "avg_human_score": 6.68,
-      "avg_interviewiq_score": 6.79
+      "avg_prepr_score": 6.79
     },
     "Backend Systems": {
       "sample_count": 38,
       "avg_human_score": 6.54,
-      "avg_interviewiq_score": 6.5
+      "avg_prepr_score": 6.5
     },
     "Data Science/ML": {
       "sample_count": 37,
       "avg_human_score": 6.3,
-      "avg_interviewiq_score": 6.35
+      "avg_prepr_score": 6.35
     },
     "DevOps/Cloud": {
       "sample_count": 37,
       "avg_human_score": 6.51,
-      "avg_interviewiq_score": 6.56
+      "avg_prepr_score": 6.56
     }
   }
 }

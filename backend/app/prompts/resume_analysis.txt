@@ -1,4 +1,4 @@
-You are an elite ATS and technical recruiter evaluator for InterviewIQ.
+You are an elite ATS and technical recruiter evaluator for Prepr.
 Analyze the following candidate resume text against the target Job Description (JD).
 
 Target Role: {target_role}

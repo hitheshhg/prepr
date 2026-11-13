@@ -29,7 +29,7 @@ Full Stack Engineering Intern | CloudTech Solutions (2023 - 2024)
 • Developed responsive user interfaces with React, TypeScript, and Tailwind CSS, increasing user session duration by 35%.
 
 PROJECTS
-InterviewIQ - AI Mock Interview & Resume Analysis Platform
+Prepr - AI Mock Interview & Resume Analysis Platform
 • Developed real-time Voice AI interview platform with Web Speech API audio processing and Google Gemini structured evaluation.
 • Implemented deterministic mathematical ATS rule engine analyzing keyword density, action verbs, and quantified metric achievements.
 • Engineered 5-dimension radar chart visualization with Recharts and automated milestone career roadmaps.
@@ -51,7 +51,7 @@ Requirements:
 @pytest.mark.asyncio
 async def test_complete_platform_e2e_journey():
     """
-    End-to-End integration test validating the entire InterviewIQ candidate pipeline:
+    End-to-End integration test validating the entire Prepr candidate pipeline:
     1. Resume Parsing & ATS Analysis
     2. Mock Interview Session Initialization
     3. Multi-Turn Response Evaluation & Adaptive Progression
@@ -107,7 +107,7 @@ async def test_complete_platform_e2e_journey():
             ans1_res = await client.post(
                 f"/api/v1/interview/{session_id}/answer",
                 json={
-                    "answer_text": "In InterviewIQ, I designed the distributed backend using FastAPI and Motor async MongoDB with compound indexes for sub-50ms queries.",
+                    "answer_text": "In Prepr, I designed the distributed backend using FastAPI and Motor async MongoDB with compound indexes for sub-50ms queries.",
                     "duration_seconds": 35
                 }
             )

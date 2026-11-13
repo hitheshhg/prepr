@@ -23,10 +23,10 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenAuth }) => {
       <header className="w-full max-w-5xl bento-card px-4 sm:px-6 py-3 rounded-2xl flex items-center justify-between relative z-40 overflow-visible">
         <div className="flex items-center gap-2.5">
           <div className="w-8 h-8 rounded-xl bg-neutral-900 text-white dark:bg-white dark:text-black flex items-center justify-center font-mono font-bold text-sm shadow-sm">
-            IQ
+            PR
           </div>
           <span className="text-base sm:text-lg font-extrabold tracking-tight">
-            Interview<span className="text-neutral-500 dark:text-neutral-400">IQ</span>
+            pre<span className="text-neutral-500 dark:text-neutral-400">pr</span>
           </span>
           <span className="hidden sm:inline-flex wix-pill text-[10px]">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
@@ -117,7 +117,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenAuth }) => {
 
       {/* Bento Footer */}
       <footer className="w-full max-w-5xl bento-card px-4 py-3 rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-2 text-[11px] font-mono text-[var(--text-muted)]">
-        <div>InterviewIQ • Autonomous Technical Interview Studio</div>
+        <div>prepr • Autonomous Technical Interview Studio</div>
         <div className="flex items-center gap-3">
           <span>BLR IST</span>
           <span>•</span>

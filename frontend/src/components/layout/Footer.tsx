@@ -44,7 +44,7 @@ export const Footer: React.FC = () => {
             className="text-xs sm:text-sm font-semibold tracking-tight text-neutral-900 dark:text-white hover:opacity-80 transition-opacity flex items-center justify-center sm:justify-start gap-1.5"
           >
             <span className="w-2 h-2 rounded-full bg-neutral-900 dark:bg-white inline-block" />
-            <span>InterviewIQ</span>
+            <span>prepr</span>
           </Link>
           <span className="text-neutral-300 dark:text-neutral-700 hidden sm:inline">•</span>
           <span className="text-xs text-neutral-600 dark:text-neutral-400 flex items-center justify-center sm:justify-start gap-1.5">
@@ -60,7 +60,7 @@ export const Footer: React.FC = () => {
         {/* Links & Back to Top */}
         <div className="flex items-center gap-3 text-xs">
           <a
-            href="https://github.com/hitheshhg/InterviewIQ"
+            href="https://github.com/hitheshhg/prepr"
             target="_blank"
             rel="noopener noreferrer"
             onClick={() => playClick(600, 0.02)}

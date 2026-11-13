@@ -127,7 +127,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, initialMo
             </h2>
             <p className="text-xs text-[var(--text-muted)] mt-1">
               {isSignUp
-                ? 'Join InterviewIQ to practice voice interviews and analyze resumes'
+                ? 'Join prepr to practice voice interviews and analyze resumes'
                 : 'Sign in to access your interview reports and roadmap'}
             </p>
           </div>

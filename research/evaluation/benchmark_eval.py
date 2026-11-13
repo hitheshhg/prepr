@@ -1,9 +1,9 @@
 """
-InterviewIQ Empirical Benchmark Evaluation Suite
+Prepr Empirical Benchmark Evaluation Suite
 Author: Hithesh H. G.
-Project: InterviewIQ (https://github.com/hitheshhg/InterviewIQ)
+Project: Prepr (https://github.com/hitheshhg/prepr)
 
-Validates the mathematical formulation of InterviewIQ:
+Validates the mathematical formulation of Prepr:
 1. Item Response Theory (3PL IRT) Adaptive Convergence
 2. Deterministic ATS Scoring vs Human Panel ATS Ratings
 3. Multimodal Delivery Index (MDI) Fusion (MediaPipe 3D Gaze + Prosody + LLM)
@@ -118,7 +118,7 @@ def run_comprehensive_benchmark(n_samples: int = 150) -> Dict[str, Any]:
     Simulates a rigorous empirical benchmark over N technical interviews.
     Compares:
       - Ground Truth Senior Human Interviewer Panel (1-10)
-      - InterviewIQ Multimodal Model (ATS + IRT + MediaPipe Gaze + Prosody)
+      - Prepr Multimodal Model (ATS + IRT + MediaPipe Gaze + Prosody)
       - Static Zero-Shot LLM Baseline
       - Uncalibrated Conversational LLM Baseline
     """
@@ -127,7 +127,7 @@ def run_comprehensive_benchmark(n_samples: int = 150) -> Dict[str, Any]:
     roles = ["Full Stack", "Backend Systems", "Data Science/ML", "DevOps/Cloud"]
     
     human_ground_truth = []
-    interviewiq_scores = []
+    prepr_scores = []
     static_llm_scores = []
     conversational_scores = []
 
@@ -140,7 +140,7 @@ def run_comprehensive_benchmark(n_samples: int = 150) -> Dict[str, Any]:
         true_theta = random.gauss(0.0, 1.0)
         base_human_score = max(2.0, min(9.8, 6.5 + 1.8 * true_theta + random.gauss(0.0, 0.35)))
 
-        # InterviewIQ Multimodal Evaluation
+        # Prepr Multimodal Evaluation
         # Synergizes semantic answer depth, MediaPipe 3D gaze stability (80-98%), and speech rate
         irt_trajectory = simulate_interview_irt_convergence(true_theta)
         for t_idx, turn_data in enumerate(irt_trajectory):
@@ -156,21 +156,21 @@ def run_comprehensive_benchmark(n_samples: int = 150) -> Dict[str, Any]:
         conv_score = max(1.0, min(10.0, base_human_score + random.gauss(0.0, 1.25)))
 
         human_ground_truth.append(round(base_human_score, 2))
-        interviewiq_scores.append(round(final_iq_score, 2))
+        prepr_scores.append(round(final_iq_score, 2))
         static_llm_scores.append(round(static_score, 2))
         conversational_scores.append(round(conv_score, 2))
 
         role_evaluations[role].append({
             "candidate_id": f"cand_{i+1:03d}",
             "human_score": round(base_human_score, 2),
-            "interviewiq_score": round(final_iq_score, 2),
+            "prepr_score": round(final_iq_score, 2),
             "gaze_attentiveness": round(mediapipe_gaze_score, 1),
         })
 
     # Metric computations
-    r_iq = calculate_pearson_r(interviewiq_scores, human_ground_truth)
-    rho_iq = calculate_spearman_rho(interviewiq_scores, human_ground_truth)
-    mae_iq, rmse_iq = calculate_mae_rmse(interviewiq_scores, human_ground_truth)
+    r_iq = calculate_pearson_r(prepr_scores, human_ground_truth)
+    rho_iq = calculate_spearman_rho(prepr_scores, human_ground_truth)
+    mae_iq, rmse_iq = calculate_mae_rmse(prepr_scores, human_ground_truth)
 
     r_static = calculate_pearson_r(static_llm_scores, human_ground_truth)
     rho_static = calculate_spearman_rho(static_llm_scores, human_ground_truth)
@@ -182,13 +182,13 @@ def run_comprehensive_benchmark(n_samples: int = 150) -> Dict[str, Any]:
 
     results = {
         "metadata": {
-            "title": "InterviewIQ Empirical Assessment Benchmark",
+            "title": "Prepr Empirical Assessment Benchmark",
             "sample_size": n_samples,
             "roles_evaluated": roles,
             "ground_truth": "Triple-blind Senior Human Interviewer Panel",
         },
         "comparative_metrics": {
-            "InterviewIQ_Multimodal": {
+            "Prepr_Multimodal": {
                 "pearson_r": round(r_iq, 3),
                 "spearman_rho": round(rho_iq, 3),
                 "mae": round(mae_iq, 2),
@@ -218,7 +218,7 @@ def run_comprehensive_benchmark(n_samples: int = 150) -> Dict[str, Any]:
             role: {
                 "sample_count": len(role_evaluations[role]),
                 "avg_human_score": round(statistics.mean([x["human_score"] for x in role_evaluations[role]]), 2),
-                "avg_interviewiq_score": round(statistics.mean([x["interviewiq_score"] for x in role_evaluations[role]]), 2),
+                "avg_prepr_score": round(statistics.mean([x["prepr_score"] for x in role_evaluations[role]]), 2),
             }
             for role in roles
         }
@@ -234,12 +234,12 @@ if __name__ == "__main__":
         json.dump(benchmark_output, f, indent=2)
     
     print("=" * 60)
-    print(" INTERVIEWIQ EMPIRICAL RESEARCH BENCHMARK COMPLETE")
+    print(" PREPR EMPIRICAL RESEARCH BENCHMARK COMPLETE")
     print("=" * 60)
     print(f"Sample Size: {benchmark_output['metadata']['sample_size']}")
-    print(f"Pearson r:   {benchmark_output['comparative_metrics']['InterviewIQ_Multimodal']['pearson_r']}")
-    print(f"Spearman rho:{benchmark_output['comparative_metrics']['InterviewIQ_Multimodal']['spearman_rho']}")
-    print(f"RMSE (/10):  {benchmark_output['comparative_metrics']['InterviewIQ_Multimodal']['rmse']}")
+    print(f"Pearson r:   {benchmark_output['comparative_metrics']['Prepr_Multimodal']['pearson_r']}")
+    print(f"Spearman rho:{benchmark_output['comparative_metrics']['Prepr_Multimodal']['spearman_rho']}")
+    print(f"RMSE (/10):  {benchmark_output['comparative_metrics']['Prepr_Multimodal']['rmse']}")
     print(f"Saved to:    {output_path}")
     print("=" * 60)
 

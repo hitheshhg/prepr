@@ -13,7 +13,7 @@ async def health_check():
     
     return {
         "status": "ok",
-        "app_name": "InterviewIQ API",
+        "app_name": "Prepr API",
         "version": "1.0.0",
         "environment": settings.ENVIRONMENT,
         "timestamp": datetime.now(timezone.utc).isoformat(),

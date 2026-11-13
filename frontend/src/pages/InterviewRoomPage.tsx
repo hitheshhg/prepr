@@ -46,7 +46,7 @@ const PRESET_ROLES = [
 
 const SAMPLE_ANSWERS: Record<string, string> = {
   project_deep_dive:
-    'In my major project, InterviewIQ, I architected a full-stack AI interview platform using FastAPI and React. I implemented Google Gemini structured JSON mode with multi-tier fallback chains to achieve zero failed evaluations. On the database layer, I used Motor async MongoDB Atlas with compound indexes, maintaining sub-50ms query latencies. I engineered the interview state machine to dynamically adapt difficulty based on rolling answer scores.',
+    'In my major project, prepr, I architected a full-stack AI interview platform using FastAPI and React. I implemented Google Gemini structured JSON mode with multi-tier fallback chains to achieve zero failed evaluations. On the database layer, I used Motor async MongoDB Atlas with compound indexes, maintaining sub-50ms query latencies. I engineered the interview state machine to dynamically adapt difficulty based on rolling answer scores.',
   technical:
     'In FastAPI, asynchronous endpoints run directly on the single-threaded asyncio event loop. When awaiting non-blocking operations like database queries or external API calls, execution yields control back to the event loop to handle concurrent connections. For CPU-intensive operations, we offload processing to thread pools using run_in_threadpool or background Celery task queues to prevent event loop starvation.',
   system_design:

@@ -23,11 +23,11 @@ export const Sidebar: React.FC = () => {
       {/* Brand Header */}
       <div className="h-16 flex items-center px-6 border-b border-[var(--bento-border)] gap-3">
         <div className="w-8 h-8 rounded-xl bg-neutral-900 text-white dark:bg-white dark:text-black flex items-center justify-center font-mono font-bold text-xs shadow-sm">
-          IQ
+          PR
         </div>
         <div className="flex flex-col">
           <span className="font-extrabold text-base tracking-tight leading-none">
-            Interview<span className="text-neutral-500">IQ</span>
+            pre<span className="text-neutral-500">pr</span>
           </span>
           <span className="text-[10px] text-[var(--text-muted)] font-mono tracking-wider">AI Platform</span>
         </div>

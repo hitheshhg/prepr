@@ -5,7 +5,7 @@ from fastapi import UploadFile, HTTPException, status
 import pdfplumber
 import docx
 
-logger = logging.getLogger("interviewiq.extractor")
+logger = logging.getLogger("prepr.extractor")
 
 MAX_FILE_SIZE_BYTES = 5 * 1024 * 1024  # 5MB
 ALLOWED_EXTENSIONS = {".pdf", ".docx"}
@@ -23,7 +23,7 @@ async def extract_text_from_file(file: UploadFile) -> Tuple[str, str]:
     if file_ext not in ALLOWED_EXTENSIONS:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail=f"Unsupported file format '{file_ext}'. InterviewIQ supports PDF and DOCX documents only.",
+            detail=f"Unsupported file format '{file_ext}'. Prepr supports PDF and DOCX documents only.",
         )
 
     # Read contents into memory safely

@@ -32,7 +32,7 @@ Senior Full Stack Developer | Tech Innovations (2023 - Present)
 • Automated CI/CD deployment pipelines using Docker and GitHub Actions, cutting release turnaround time from 2 hours to 15 minutes.
 
 PROJECTS
-InterviewIQ - Voice AI Mock Interview Platform
+Prepr - Voice AI Mock Interview Platform
 • Built real-time WebSocket interview platform with Web Speech API audio processing and Google Gemini structured evaluation.
 • Implemented deterministic ATS scoring engine analyzing keyword density, action verbs, and quantified metric achievements.
 
