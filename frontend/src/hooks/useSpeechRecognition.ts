@@ -16,6 +16,11 @@ interface IWindowWithSpeech extends Window {
   webkitSpeechRecognition?: any;
 }
 
+export interface UseSpeechRecognitionOptions {
+  onFinalTranscript?: (text: string) => void;
+  enableBargeIn?: boolean;
+}
+
 export interface UseSpeechRecognitionReturn {
   isListening: boolean;
   transcript: string;
@@ -28,8 +33,15 @@ export interface UseSpeechRecognitionReturn {
 }
 
 export const useSpeechRecognition = (
-  onFinalTranscript?: (text: string) => void
+  callbackOrOptions?: ((text: string) => void) | UseSpeechRecognitionOptions
 ): UseSpeechRecognitionReturn => {
+  const options: UseSpeechRecognitionOptions =
+    typeof callbackOrOptions === 'function'
+      ? { onFinalTranscript: callbackOrOptions, enableBargeIn: true }
+      : callbackOrOptions || { enableBargeIn: true };
+
+  const { onFinalTranscript, enableBargeIn = true } = options;
+
   const [isListening, setIsListening] = useState(false);
   const [transcript, setTranscript] = useState('');
   const [interimTranscript, setInterimTranscript] = useState('');
@@ -37,6 +49,18 @@ export const useSpeechRecognition = (
   const [isSupported, setIsSupported] = useState(true);
 
   const recognitionRef = useRef<any>(null);
+  const isListeningRequestedRef = useRef(false);
+  const onFinalCallbackRef = useRef(onFinalTranscript);
+  onFinalCallbackRef.current = onFinalTranscript;
+
+  // Interruption / Barge-in helper
+  const cancelActiveTts = useCallback(() => {
+    if (enableBargeIn && typeof window !== 'undefined' && 'speechSynthesis' in window) {
+      if (window.speechSynthesis.speaking) {
+        window.speechSynthesis.cancel();
+      }
+    }
+  }, [enableBargeIn]);
 
   useEffect(() => {
     const win = window as unknown as IWindowWithSpeech;
@@ -56,9 +80,13 @@ export const useSpeechRecognition = (
       recognition.onstart = () => {
         setIsListening(true);
         setError(null);
+        cancelActiveTts();
       };
 
       recognition.onresult = (event: SpeechRecognitionEvent) => {
+        // Immediate conversational barge-in when candidate voice is detected
+        cancelActiveTts();
+
         let currentInterim = '';
         let currentFinal = '';
 
@@ -75,8 +103,8 @@ export const useSpeechRecognition = (
         if (currentFinal) {
           setTranscript((prev) => {
             const updated = (prev + ' ' + currentFinal).trim();
-            if (onFinalTranscript) {
-              onFinalTranscript(updated);
+            if (onFinalCallbackRef.current) {
+              onFinalCallbackRef.current(updated);
             }
             return updated;
           });
@@ -85,57 +113,74 @@ export const useSpeechRecognition = (
       };
 
       recognition.onerror = (event: SpeechRecognitionErrorEvent) => {
-        console.warn('[SpeechRecognition] Error encountered:', event.error);
+        console.warn('[SpeechRecognition] Error event:', event.error);
         if (event.error === 'not-allowed') {
-          setError('Microphone permission denied. Please allow microphone access.');
+          setError('Microphone permission denied. Please allow microphone access in your browser settings.');
+          isListeningRequestedRef.current = false;
+        } else if (event.error === 'audio-capture') {
+          setError('No microphone hardware detected on your device.');
+          isListeningRequestedRef.current = false;
         } else if (event.error !== 'no-speech') {
-          setError(`Speech recognition notice: ${event.error}`);
+          setError(`Speech recognition note: ${event.error}`);
         }
         setIsListening(false);
       };
 
       recognition.onend = () => {
-        setIsListening(false);
-        setInterimTranscript('');
+        // Auto-reconnect if continuous listening was requested and not stopped manually
+        if (isListeningRequestedRef.current) {
+          try {
+            recognition.start();
+          } catch {
+            setIsListening(false);
+          }
+        } else {
+          setIsListening(false);
+          setInterimTranscript('');
+        }
       };
 
       recognitionRef.current = recognition;
     } catch (e: any) {
-      console.error('[SpeechRecognition] Init failure:', e);
+      console.error('[SpeechRecognition] Initialization failed:', e);
       setIsSupported(false);
     }
 
     return () => {
+      isListeningRequestedRef.current = false;
       if (recognitionRef.current) {
         try {
           recognitionRef.current.abort();
-        } catch (e) {
-          // ignore cleanup abort errors
+        } catch {
+          // ignore cleanup abort
         }
       }
     };
-  }, [onFinalTranscript]);
+  }, [cancelActiveTts]);
 
   const startListening = useCallback(() => {
     setError(null);
     if (!recognitionRef.current) {
-      setError('Speech recognition is not supported in this browser.');
+      setError('Speech recognition is not supported in this browser. Please use Chrome or Edge for voice mode.');
       return;
     }
 
+    cancelActiveTts();
+    isListeningRequestedRef.current = true;
     try {
       recognitionRef.current.start();
+      setIsListening(true);
     } catch (e) {
-      // If already started, ignore error
-      console.warn('[SpeechRecognition] Start attempted while already active.');
+      console.warn('[SpeechRecognition] Start caught (may already be running):', e);
     }
-  }, []);
+  }, [cancelActiveTts]);
 
   const stopListening = useCallback(() => {
+    isListeningRequestedRef.current = false;
     if (recognitionRef.current) {
       try {
         recognitionRef.current.stop();
-      } catch (e) {
+      } catch {
         // ignore
       }
     }
@@ -159,3 +204,4 @@ export const useSpeechRecognition = (
   };
 };
 
+export default useSpeechRecognition;

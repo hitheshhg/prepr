@@ -105,11 +105,15 @@ export const InterviewRoomPage: React.FC = () => {
   const {
     isListening,
     interimTranscript,
+    isSupported: isSttSupported,
     startListening,
     stopListening,
     resetTranscript,
     error: sttError,
-  } = useSpeechRecognition(handleSpeechFinal);
+  } = useSpeechRecognition({
+    onFinalTranscript: handleSpeechFinal,
+    enableBargeIn: true,
+  });
 
   // Multimodal Vision & Delivery Analytics
   const { metrics: deliveryMetrics, recordEyeContact, updatePosture } = useDeliveryAnalytics(
@@ -657,12 +661,21 @@ export const InterviewRoomPage: React.FC = () => {
                 <button
                   type="button"
                   onClick={handleToggleVoiceRecording}
+                  disabled={!isSttSupported}
                   className={`w-10 h-10 rounded-xl flex-shrink-0 flex items-center justify-center transition-all ${
-                    isListening
+                    !isSttSupported
+                      ? 'opacity-40 cursor-not-allowed bg-neutral-500/10 text-[var(--text-muted)]'
+                      : isListening
                       ? 'bg-rose-500 text-white shadow-lg shadow-rose-500/40 animate-pulse'
                       : 'bg-neutral-500/10 hover:bg-neutral-500/20 text-[var(--text-main)] border border-[var(--bento-border)]'
                   }`}
-                  title={isListening ? 'Stop recording' : 'Click to answer via voice'}
+                  title={
+                    !isSttSupported
+                      ? 'Voice mode not supported in this browser (please use Chrome or Edge)'
+                      : isListening
+                      ? 'Stop recording'
+                      : 'Click to answer via voice (speech automatically interrupts AI)'
+                  }
                 >
                   {isListening ? <MicOff className="w-4 h-4" /> : <Mic className="w-4 h-4" />}
                 </button>
@@ -728,7 +741,12 @@ export const InterviewRoomPage: React.FC = () => {
                   {isListening && (
                     <span className="text-emerald-500 flex items-center gap-1">
                       <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping" />
-                      Microphone active
+                      Microphone active (barge-in enabled)
+                    </span>
+                  )}
+                  {!isSttSupported && (
+                    <span className="text-[var(--text-muted)]">
+                      Voice input optimized for Chromium • Keyboard active
                     </span>
                   )}
                   {sttError && <span className="text-amber-500">{sttError}</span>}
