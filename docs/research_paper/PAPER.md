@@ -120,6 +120,9 @@ $$I_j(\theta) = \frac{\left(P'_j(\theta)\right)^2}{P_j(\theta)\left(1 - P_j(\the
 
 $$j^* = \arg\max_{j \in \mathcal{Q}_{\text{unasked}}} I_j(\hat{\theta}_t)$$
 
+![Figure 1: 3PL Item Response Theory Item Characteristic Curves and Fisher Information Functions](figures/fig1_irt_fisher_information.png)
+*Figure 1: (a) 3PL Item Characteristic Curves $P_j(\theta)$ illustrating item difficulty thresholds $b_j$, and (b) corresponding Fisher Information functions $I_j(\theta)$ showing maximum information localized at $\theta = b_j$.*
+
 #### Latent Ability Bayesian Updating
 Following candidate answer evaluation $y_t \in [0, 1]$ on question $j_t$, the candidate's latent ability is updated iteratively using Expected A Posteriori (EAP) Bayesian updating:
 
@@ -174,6 +177,9 @@ $$\text{MDI} = \beta_1 \cdot \bar{G} + \beta_2 \cdot (1 - \sigma_{\text{yaw}}) +
 
 where weights $\beta = [0.15, 0.10, 0.15, 0.60]$ reflect the primacy of technical substance while acknowledging behavioral delivery.
 
+![Figure 4: Multimodal Delivery Profile and Score Distribution](figures/fig4_multimodal_delivery_radar.png)
+*Figure 4: (a) Radar profile across non-verbal posture stability, gaze fixation, speech prosody, and linguistic structure vs. Senior L5 engineering benchmark. (b) Empirical MDI score distribution across $N=150$ validated sessions.*
+
 ---
 
 ## 5. Experimental Evaluation
@@ -201,19 +207,13 @@ Each session was independently evaluated by:
 
 > **Key Finding:** Prepr achieves near-human agreement (Krippendorff's $\alpha = 0.865$) with senior interviewers while maintaining sub-1.8s end-to-end evaluation latency.
 
+![Figure 2: Empirical Benchmark Scatter Plot of Prepr Automated Score vs. Senior Human Expert Panel](figures/fig2_pearson_correlation_benchmark.png)
+*Figure 2: Empirical correlation scatter plot across $N=150$ technical interviews across Full-Stack, Backend, Data/ML, and DevOps profiles benchmarked against triple-blind human expert committee consensus ($r = 0.894, p < 0.001$).*
+
 ### 5.3 Convergence Rate of IRT vs. Static Difficulties
 
-```
-  Error in Latent Ability (\hat{\theta} - \theta^*)
-    1.2 |    Static Random Questioning
-        |     \
-    0.8 |      \---.  Prepr (Fisher Maximization IRT)
-        |           \
-    0.4 |            *-----._
-        |                    *-------* (Error < 0.08)
-    0.0 +---------------------------------
-        1     2     3     4     5     6  (Turns)
-```
+![Figure 3: Standard Error of Measurement Convergence Curve Across Turns](figures/fig3_sem_convergence_curve.png)
+*Figure 3: Standard Error of Measurement (SEM) convergence curves across turns 1 to 6. Prepr's Fisher Information active maximization achieves clinical precision ($\text{SEM} < 0.08$) by Turn 4.*
 
 As illustrated above, the Fisher Information maximization selects questions situated at the inflection point of the candidate's psychometric curve, allowing the standard error of estimation to drop below $0.08$ by Turn 4.
 

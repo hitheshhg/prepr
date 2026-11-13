@@ -81,6 +81,13 @@ Posterior latent ability estimation updates iteratively via Expected A Posterior
 \hat{\theta}_{t+1} = \hat{\theta}_t + \frac{1}{\sum_{\tau=1}^t I_{j_\tau}(\hat{\theta}_t) + \sigma_0^{-2}} \sum_{\tau=1}^t 1.7 a_{j_\tau} \left( y_\tau - P_{j_\tau}(\hat{\theta}_t) \right)
 \end{equation}
 
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\columnwidth]{figures/fig1_irt_fisher_information.pdf}
+\caption{Item Characteristic Curves $P_j(\theta)$ and corresponding Fisher Information functions $I_j(\theta)$ under 3PL Item Response Theory.}
+\label{fig:irt_fisher}
+\end{figure}
+
 \subsection{Client-Side 3D Facial Mesh Telemetry}
 Prepr executes Google MediaPipe Tasks Vision within browser WebAssembly. Landmarks $p_k \in \mathbb{R}^3$ ($k \in [0, 467]$) yield continuous pose angles without offloading video frames:
 \begin{align}
@@ -92,6 +99,13 @@ Gaze fixation stability $G_t$ is computed via radial angular deflection:
 \begin{equation}
 G_t = \max\left(0, 1 - \frac{\sqrt{\psi^2 + \theta^2}}{\kappa_{\text{threshold}}}\right)
 \end{equation}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\columnwidth]{figures/fig4_multimodal_delivery_radar.pdf}
+\caption{Multimodal Delivery Index (MDI) non-verbal radar profile benchmarked against Senior L5 criteria and empirical distribution ($N=150$).}
+\label{fig:mdi_radar}
+\end{figure}
 
 \section{Experimental Evaluation}
 
@@ -115,6 +129,20 @@ Conversational Baseline & 0.724 & 0.701 & 1.38 & 3.4s \\
 \end{table}
 
 As summarized in Table~\ref{tab:results}, Prepr achieved a Pearson correlation of $r = 0.894$ with expert human raters, outperforming conversational baselines by $+23.4\%$ while lowering root-mean-square grading error to $0.62$ on a $10$-point scale.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.88\columnwidth]{figures/fig2_pearson_correlation_benchmark.pdf}
+\caption{Pearson correlation scatter plot ($r=0.894, p < 0.001$) between Prepr automated evaluations and senior human expert committee consensus across $N=150$ sessions.}
+\label{fig:pearson_scatter}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\columnwidth]{figures/fig3_sem_convergence_curve.pdf}
+\caption{Standard Error of Measurement (SEM) convergence curve across interview turns 1 to 6 under Fisher Information maximization.}
+\label{fig:sem_convergence}
+\end{figure}
 
 \section{Conclusion}
 This paper introduced Prepr, a novel multimodal technical interviewing architecture incorporating 3PL Item Response Theory, deterministic ATS parsing, and client-side 468-point 3D computer vision. The system provides mathematically grounded adaptive questioning and objective multi-dimensional feedback while safeguarding candidate privacy.
