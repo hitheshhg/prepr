@@ -142,12 +142,12 @@ export const ProfilePage: React.FC = () => {
   };
 
   return (
-    <div className="max-w-2xl mx-auto py-6 space-y-6">
+    <div className="max-w-4xl mx-auto py-6 space-y-7">
       <div>
-        <div className="flex items-center gap-2 mb-1">
-          <span className="wix-pill text-[10px]">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-            Verified Profile
+        <div className="flex items-center gap-2 mb-1.5">
+          <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono font-semibold uppercase tracking-wider border border-emerald-500/30 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 select-none">
+            <span className="w-2 h-2 rounded-full bg-emerald-500 shrink-0 animate-pulse" />
+            <span>Verified Profile</span>
           </span>
         </div>
         <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight">Candidate Profile</h1>

@@ -152,10 +152,10 @@ export const InterviewReportPage: React.FC = () => {
       {/* Top Header & Actions */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-4 border-b border-[var(--bento-border)] print:hidden">
         <div>
-          <div className="flex items-center gap-2 mb-1">
-            <span className="wix-pill text-[10px]">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-              L5 Benchmark Rubric
+          <div className="flex items-center gap-2 mb-1.5">
+            <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono font-semibold uppercase tracking-wider border border-emerald-500/30 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 select-none">
+              <span className="w-2 h-2 rounded-full bg-emerald-500 shrink-0 animate-pulse" />
+              <span>L5 Benchmark Rubric</span>
             </span>
           </div>
           <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight">

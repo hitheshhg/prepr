@@ -20,8 +20,8 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenAuth }) => {
   return (
     <div className="relative min-h-screen w-full flex flex-col justify-between items-center px-4 py-6 sm:py-8 bg-[var(--canvas-bg)] text-[var(--text-main)] transition-colors duration-200 select-none">
       {/* Top Bento Header */}
-      <header className="w-full max-w-5xl bento-card px-4 sm:px-6 py-3 rounded-2xl flex items-center justify-between relative z-40 overflow-visible">
-        <div className="flex items-center gap-2.5">
+      <header className="w-full max-w-6xl sm:max-w-7xl bento-card px-5 sm:px-8 py-3.5 rounded-2xl flex items-center justify-between relative z-40 overflow-visible">
+        <div className="flex items-center gap-3">
           <img
             src="/logo-square.png"
             alt="Prepr Logo"
@@ -30,9 +30,9 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenAuth }) => {
           <span className="text-base sm:text-lg font-extrabold tracking-tight">
             pre<span className="text-neutral-500 dark:text-neutral-400">pr</span>
           </span>
-          <span className="hidden sm:inline-flex wix-pill text-[10px]">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-            AI Ready
+          <span className="hidden sm:inline-flex items-center gap-2 px-3 py-1 rounded-full text-[11px] font-mono font-semibold border border-emerald-500/30 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 select-none">
+            <span className="w-2 h-2 rounded-full bg-emerald-500 shrink-0 animate-pulse" />
+            <span>AI Ready</span>
           </span>
         </div>
 
@@ -58,7 +58,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenAuth }) => {
       </header>
 
       {/* Main Hero: Bento Architecture */}
-      <main className="relative z-10 max-w-3xl text-center flex flex-col items-center my-auto py-12 space-y-6 sm:space-y-8">
+      <main className="relative z-10 max-w-4xl lg:max-w-5xl text-center flex flex-col items-center my-auto py-12 space-y-6 sm:space-y-8">
         {/* Brand Mascot Logo */}
         <div className="relative group">
           <img
@@ -69,8 +69,8 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenAuth }) => {
         </div>
 
         {/* Status Badge */}
-        <div className="wix-pill text-[11px] py-1 px-3.5 inline-flex items-center gap-2">
-          <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+        <div className="inline-flex items-center gap-2.5 py-1.5 px-4 rounded-full border border-emerald-500/30 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-mono text-[11px] font-semibold tracking-wider">
+          <span className="w-2 h-2 rounded-full bg-emerald-500 shrink-0 animate-pulse" />
           <span>REAL-TIME VOICE AI • DETERMINISTIC ATS SCORING</span>
         </div>
 
@@ -127,7 +127,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenAuth }) => {
       </main>
 
       {/* Bento Footer */}
-      <footer className="w-full max-w-5xl bento-card px-4 py-3 rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-2 text-[11px] font-mono text-[var(--text-muted)]">
+      <footer className="w-full max-w-6xl sm:max-w-7xl bento-card px-5 sm:px-8 py-4 rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-3 text-[11px] font-mono text-[var(--text-muted)]">
         <div>prepr • Autonomous Technical Interview Studio</div>
         <div className="flex items-center gap-3">
           <span>BLR IST</span>

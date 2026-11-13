@@ -8,8 +8,8 @@ interface AppShellProps {
 
 export const AppShell: React.FC<AppShellProps> = ({ children }) => {
   return (
-    <div className="min-h-screen bg-[var(--canvas-bg)] text-[var(--text-main)] transition-colors duration-200 flex flex-col items-center pt-3 sm:pt-6 pb-12 sm:pb-20 px-3 sm:px-6">
-      <div className="w-full max-w-6xl mx-auto flex flex-col gap-4 sm:gap-6 min-w-0">
+    <div className="min-h-screen bg-[var(--canvas-bg)] text-[var(--text-main)] transition-colors duration-200 flex flex-col items-center pt-3 sm:pt-6 pb-12 sm:pb-20 px-4 sm:px-8">
+      <div className="w-full max-w-[1360px] mx-auto flex flex-col gap-5 sm:gap-7 min-w-0">
         {/* Bento Header Navbar */}
         <Navbar />
 

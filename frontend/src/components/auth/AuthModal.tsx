@@ -103,7 +103,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, initialMo
           animate={{ scale: 1, opacity: 1, y: 0 }}
           exit={{ scale: 0.96, opacity: 0, y: 10 }}
           transition={{ duration: 0.18 }}
-          className="relative w-full max-w-md rounded-3xl bento-card border border-[var(--bento-border)] p-6 sm:p-8 bg-[var(--bento-bg)] text-[var(--text-main)] shadow-2xl z-10 overflow-hidden"
+          className="relative w-full max-w-[480px] rounded-3xl bento-card border border-[var(--bento-border)] p-7 sm:p-9 bg-[var(--bento-bg)] text-[var(--text-main)] shadow-2xl z-10 overflow-hidden"
         >
           {/* Close Button */}
           <button
@@ -111,7 +111,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, initialMo
               playClick();
               onClose();
             }}
-            className="absolute top-5 right-5 p-1.5 rounded-xl text-[var(--text-muted)] hover:text-[var(--text-main)] hover:bg-neutral-500/10 transition-colors"
+            className="absolute top-5 right-5 p-2 rounded-xl text-[var(--text-muted)] hover:text-[var(--text-main)] hover:bg-neutral-500/10 transition-colors"
           >
             <X className="w-4 h-4" />
           </button>
@@ -121,16 +121,16 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, initialMo
             <img
               src="/logo.png"
               alt="Prepr Logo"
-              className="w-20 h-auto object-contain mx-auto mb-2 drop-shadow"
+              className="w-24 h-auto object-contain mx-auto mb-3 drop-shadow"
             />
-            <div className="inline-flex wix-pill text-[10px] mb-2">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-              Secure Authentication
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-[11px] font-mono font-semibold uppercase tracking-wider border border-emerald-500/30 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 mb-3 select-none">
+              <span className="w-2 h-2 rounded-full bg-emerald-500 shrink-0 animate-pulse" />
+              <span>Secure Authentication</span>
             </div>
             <h2 className="text-2xl font-extrabold tracking-tight">
               {isSignUp ? 'Create your Account' : 'Welcome Back'}
             </h2>
-            <p className="text-xs text-[var(--text-muted)] mt-1">
+            <p className="text-xs sm:text-sm text-[var(--text-muted)] mt-1.5 leading-relaxed">
               {isSignUp
                 ? 'Join prepr to practice voice interviews and analyze resumes'
                 : 'Sign in to access your interview reports and roadmap'}
@@ -150,9 +150,9 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, initialMo
             type="button"
             onClick={handleGoogleSignIn}
             disabled={submitting}
-            className="w-full flex items-center justify-center gap-2.5 py-2.5 px-4 rounded-xl bg-neutral-500/5 hover:bg-neutral-500/10 border border-[var(--bento-border)] text-xs font-mono font-medium text-[var(--text-main)] transition-colors disabled:opacity-50 shadow-sm"
+            className="w-full flex items-center justify-center gap-3 py-3 px-4 rounded-xl bg-neutral-500/5 hover:bg-neutral-500/10 border border-[var(--bento-border)] text-xs sm:text-sm font-mono font-medium text-[var(--text-main)] transition-colors disabled:opacity-50 shadow-sm"
           >
-            <svg className="w-4 h-4" viewBox="0 0 24 24">
+            <svg className="w-4 h-4 shrink-0" viewBox="0 0 24 24">
               <path
                 fill="#4285F4"
                 d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
@@ -173,53 +173,53 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, initialMo
             Continue with Google
           </button>
 
-          {/* Divider */}
-          <div className="relative my-4 flex items-center justify-center">
-            <div className="border-t border-[var(--bento-border)] w-full" />
-            <span className="bg-[var(--bento-bg)] px-3 text-[10px] font-mono uppercase tracking-wider text-[var(--text-muted)]">
-              or with email
+          {/* Clean Modern Divider */}
+          <div className="relative my-6 flex items-center justify-center">
+            <div className="flex-grow border-t border-[var(--bento-border)]" />
+            <span className="shrink-0 px-3.5 text-[11px] font-mono uppercase tracking-widest text-[var(--text-muted)] select-none">
+              or continue with email
             </span>
-            <div className="border-t border-[var(--bento-border)] w-full" />
+            <div className="flex-grow border-t border-[var(--bento-border)]" />
           </div>
 
           {/* Email/Password Form */}
-          <form onSubmit={handleSubmit} className="space-y-3">
+          <form onSubmit={handleSubmit} className="space-y-3.5">
             {isSignUp && (
               <div>
-                <label className="block text-xs font-mono font-medium text-[var(--text-muted)] mb-1">Full Name</label>
+                <label className="block text-xs font-mono font-medium text-[var(--text-muted)] mb-1.5">Full Name</label>
                 <div className="relative">
-                  <UserIcon className="w-4 h-4 text-neutral-400 absolute left-3 top-3 pointer-events-none" />
+                  <UserIcon className="w-4 h-4 text-neutral-400 absolute left-3.5 top-3.5 pointer-events-none" />
                   <input
                     type="text"
                     required
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     placeholder="e.g. Hithesh HG"
-                    className="w-full pl-9 pr-3 py-2 text-xs rounded-xl bg-[var(--canvas-bg)] border border-[var(--bento-border)] text-[var(--text-main)] placeholder-neutral-400 focus:outline-none focus:ring-1 focus:ring-neutral-400 transition"
+                    className="w-full pl-10 pr-3.5 py-2.5 text-xs sm:text-sm rounded-xl bg-[var(--canvas-bg)] border border-[var(--bento-border)] text-[var(--text-main)] placeholder-neutral-400 focus:outline-none focus:ring-1 focus:ring-neutral-400 transition"
                   />
                 </div>
               </div>
             )}
 
             <div>
-              <label className="block text-xs font-mono font-medium text-[var(--text-muted)] mb-1">Email Address</label>
+              <label className="block text-xs font-mono font-medium text-[var(--text-muted)] mb-1.5">Email Address</label>
               <div className="relative">
-                <Mail className="w-4 h-4 text-neutral-400 absolute left-3 top-3 pointer-events-none" />
+                <Mail className="w-4 h-4 text-neutral-400 absolute left-3.5 top-3.5 pointer-events-none" />
                 <input
                   type="email"
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="name@company.com"
-                  className="w-full pl-9 pr-3 py-2 text-xs rounded-xl bg-[var(--canvas-bg)] border border-[var(--bento-border)] text-[var(--text-main)] placeholder-neutral-400 focus:outline-none focus:ring-1 focus:ring-neutral-400 transition"
+                  className="w-full pl-10 pr-3.5 py-2.5 text-xs sm:text-sm rounded-xl bg-[var(--canvas-bg)] border border-[var(--bento-border)] text-[var(--text-main)] placeholder-neutral-400 focus:outline-none focus:ring-1 focus:ring-neutral-400 transition"
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-xs font-mono font-medium text-[var(--text-muted)] mb-1">Password</label>
+              <label className="block text-xs font-mono font-medium text-[var(--text-muted)] mb-1.5">Password</label>
               <div className="relative">
-                <Lock className="w-4 h-4 text-neutral-400 absolute left-3 top-3 pointer-events-none" />
+                <Lock className="w-4 h-4 text-neutral-400 absolute left-3.5 top-3.5 pointer-events-none" />
                 <input
                   type="password"
                   required
@@ -227,7 +227,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, initialMo
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••"
-                  className="w-full pl-9 pr-3 py-2 text-xs rounded-xl bg-[var(--canvas-bg)] border border-[var(--bento-border)] text-[var(--text-main)] placeholder-neutral-400 focus:outline-none focus:ring-1 focus:ring-neutral-400 transition"
+                  className="w-full pl-10 pr-3.5 py-2.5 text-xs sm:text-sm rounded-xl bg-[var(--canvas-bg)] border border-[var(--bento-border)] text-[var(--text-main)] placeholder-neutral-400 focus:outline-none focus:ring-1 focus:ring-neutral-400 transition"
                 />
               </div>
             </div>
@@ -235,7 +235,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, initialMo
             <button
               type="submit"
               disabled={submitting}
-              className="w-full mt-2 py-2.5 px-4 rounded-xl bg-neutral-900 text-white dark:bg-white dark:text-black font-mono text-xs uppercase tracking-wider font-semibold transition hover:opacity-90 flex items-center justify-center gap-2 disabled:opacity-50"
+              className="w-full mt-2 py-3 px-4 rounded-xl bg-neutral-900 text-white dark:bg-white dark:text-black font-mono text-xs sm:text-sm uppercase tracking-wider font-semibold transition hover:opacity-90 flex items-center justify-center gap-2 disabled:opacity-50 shadow-sm"
             >
               {submitting ? (
                 <>
@@ -251,7 +251,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, initialMo
           </form>
 
           {/* Toggle between Sign In and Sign Up */}
-          <div className="mt-4 text-center text-xs text-[var(--text-muted)] font-mono">
+          <div className="mt-6 pt-4 border-t border-[var(--bento-border)] text-center text-xs text-[var(--text-muted)] font-mono">
             {isSignUp ? (
               <span>
                 Already have an account?{' '}

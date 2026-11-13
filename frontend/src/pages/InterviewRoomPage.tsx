@@ -320,7 +320,7 @@ export const InterviewRoomPage: React.FC = () => {
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.25 }}
-          className="max-w-2xl mx-auto"
+          className="max-w-3xl mx-auto"
         >
           {starting ? (
             <Card padding="lg" className="py-16 text-center">
@@ -333,9 +333,9 @@ export const InterviewRoomPage: React.FC = () => {
           ) : (
             <>
               <div className="text-center mb-6">
-                <div className="inline-flex wix-pill text-[10px] mb-2">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                  Voice AI Studio
+                <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-mono font-semibold uppercase tracking-wider border border-emerald-500/30 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 mb-2.5 select-none">
+                  <span className="w-2 h-2 rounded-full bg-emerald-500 shrink-0 animate-pulse" />
+                  <span>Voice AI Studio</span>
                 </div>
                 <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight">
                   Start interview
@@ -481,7 +481,7 @@ export const InterviewRoomPage: React.FC = () => {
           VIEW 2: ACTIVE DUAL-STAGE INTERVIEW ROOM
          ========================================================================= */}
       {sessionActive && currentQuestion && (
-        <div className="max-w-5xl mx-auto space-y-4">
+        <div className="w-full max-w-6xl mx-auto space-y-4">
           {/* Top Session Progress Bar */}
           <div className="bento-card px-4 py-2.5 rounded-2xl flex items-center justify-between">
             <div className="flex items-center gap-3">
