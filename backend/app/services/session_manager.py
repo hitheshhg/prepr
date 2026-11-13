@@ -157,7 +157,7 @@ class InterviewSessionManager:
         """Initialize session, generate Question 1, and persist to MongoDB."""
         session_id = str(uuid.uuid4())
 
-        # 1. Resolve resume & GitHub portfolio context
+        # 1. Resolve resume & GitHub codebase context
         resume_context = request.resume_text or ""
         if not resume_context and request.resume_id:
             resume_context = await self._fetch_resume_text(request.resume_id, user_id)

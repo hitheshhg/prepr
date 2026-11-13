@@ -427,7 +427,7 @@ export const InterviewRoomPage: React.FC = () => {
                   </div>
                 </div>
 
-                {/* GitHub Portfolio Grounding (Optional) */}
+                {/* GitHub Codebase Grounding (Optional) */}
                 <div className="pt-1">
                   <div className="flex items-center justify-between mb-2">
                     <label className="text-xs font-mono font-semibold uppercase tracking-wider text-[var(--text-muted)] flex items-center gap-1.5">

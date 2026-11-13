@@ -152,7 +152,7 @@ export const ProfilePage: React.FC = () => {
         </div>
         <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight">Candidate Profile</h1>
         <p className="text-xs sm:text-sm text-[var(--text-muted)] mt-1">
-          Your credentials, interview activity summary, and connected developer portfolios.
+          Your credentials, interview activity summary, and connected developer GitHub repositories.
         </p>
       </div>
 
