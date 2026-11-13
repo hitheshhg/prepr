@@ -150,3 +150,40 @@ async def test_upload_endpoint_requires_auth():
     async with AsyncClient(transport=transport, base_url="http://test") as client:
         response = await client.post("/api/v1/resume/upload")
         assert response.status_code == 401
+
+
+@pytest.mark.asyncio
+async def test_extractor_multimodal_ocr_fallback(monkeypatch):
+    """Verify that scanned or non-searchable PDFs seamlessly fall back to Gemini Multimodal OCR."""
+    from app.services.gemini_client import gemini_client
+    import reportlab.pdfgen.canvas as pdf_canvas
+
+    # Create a dummy valid PDF structure with no digital text layer
+    pdf_buffer = BytesIO()
+    c = pdf_canvas.Canvas(pdf_buffer)
+    c.rect(10, 10, 100, 100)  # Draw graphics only, no text
+    c.save()
+    pdf_bytes = pdf_buffer.getvalue()
+
+    # Mock Gemini Multimodal OCR to simulate vision text recognition
+    mock_extracted_text = (
+        "HITHESH H G - Senior Full Stack Engineer. Experience with Python, FastAPI, React, TypeScript, "
+        "Docker, and Distributed Database Architecture. Graduated with Honors."
+    )
+
+    async def mock_multimodal(self, bytes_in):
+        assert len(bytes_in) > 0
+        return mock_extracted_text
+
+    monkeypatch.setattr(gemini_client, "extract_text_from_pdf_multimodal", mock_multimodal.__get__(gemini_client))
+
+    fake_scanned_pdf = UploadFile(
+        filename="scanned_resume.pdf",
+        file=BytesIO(pdf_bytes),
+    )
+
+    text, ext = await extract_text_from_file(fake_scanned_pdf)
+    assert ext == "pdf"
+    assert "Senior Full Stack Engineer" in text
+    assert "FastAPI" in text
+    assert len(text) >= 50

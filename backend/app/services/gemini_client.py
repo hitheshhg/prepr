@@ -131,6 +131,35 @@ class GeminiClient:
             f"[GeminiClient] All candidate Gemini models exhausted. Last error: {last_exception}"
         ) from last_exception
 
+    async def extract_text_from_pdf_multimodal(self, pdf_bytes: bytes) -> str:
+        """
+        Multimodal OCR fallback using Gemini 2.5 Flash for scanned or non-searchable PDF documents.
+        Passes the PDF bytes directly as an inline Part.
+        """
+        candidate_models = self.get_candidate_models()
+        prompt = (
+            "You are an expert OCR and technical document parsing assistant. "
+            "Accurately extract all readable plain text, sections, headings, contact details, "
+            "skills, education, and work experience from this scanned resume PDF. "
+            "Preserve structural layout without adding conversational commentary or preambles."
+        )
+
+        for model_name in candidate_models:
+            try:
+                part = types.Part.from_bytes(data=pdf_bytes, mime_type="application/pdf")
+                response = self.client.models.generate_content(
+                    model=model_name,
+                    contents=[prompt, part],
+                )
+                text = response.text or ""
+                if len(text.strip()) >= 50:
+                    logger.info(f"[GeminiClient] Multimodal PDF OCR succeeded using '{model_name}'.")
+                    return text.strip()
+            except Exception as e:
+                logger.warning(f"[GeminiClient] Multimodal OCR failed with '{model_name}': {e}")
+                continue
+        return ""
+
     def _parse_and_validate(self, raw_text: str, schema: Type[T]) -> T:
         """Helper to parse raw JSON string and instantiate Pydantic schema."""
         cleaned_text = raw_text.strip()

@@ -56,10 +56,21 @@ async def extract_text_from_file(file: UploadFile) -> Tuple[str, str]:
 
     # Check for empty or scanned image document
     cleaned = raw_text.strip()
+    if len(cleaned) < 50 and file_ext == ".pdf":
+        logger.info("[Extractor] Little or no text found in PDF (<50 chars). Attempting Gemini Multimodal OCR fallback...")
+        try:
+            from app.services.gemini_client import gemini_client
+            ocr_text = await gemini_client.extract_text_from_pdf_multimodal(content)
+            if len(ocr_text) >= 50:
+                logger.info(f"[Extractor] Multimodal OCR succeeded ({len(ocr_text)} characters extracted).")
+                cleaned = ocr_text
+        except Exception as ocr_err:
+            logger.warning(f"[Extractor] Multimodal OCR fallback error: {ocr_err}")
+
     if len(cleaned) < 50:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail="The uploaded resume contains very little or no extractable text. Please ensure you are uploading a text-based document rather than a scanned image or photo without an OCR text layer.",
+            detail="The uploaded resume contains very little or no extractable text. Please ensure you are uploading a text-based document or readable scanned document.",
         )
 
     return cleaned, file_ext.replace(".", "")
