@@ -27,9 +27,11 @@ export const Topbar: React.FC = () => {
     <header className="h-16 border-b border-[var(--bento-border)] bg-[var(--bento-bg)]/80 backdrop-blur-md px-4 sm:px-6 flex items-center justify-between sticky top-0 z-40 overflow-visible select-none">
       {/* Mobile Brand Title */}
       <div className="flex md:hidden items-center gap-2">
-        <div className="w-7 h-7 rounded-lg bg-neutral-900 text-white dark:bg-white dark:text-black flex items-center justify-center font-mono font-bold text-xs">
-          PR
-        </div>
+        <img
+          src="/logo-square.png"
+          alt="Prepr Logo"
+          className="w-7 h-7 object-contain rounded-lg p-0.5 bg-neutral-900/5 dark:bg-white/10 shrink-0"
+        />
         <span className="font-extrabold text-sm">
           pre<span className="text-neutral-500">pr</span>
         </span>

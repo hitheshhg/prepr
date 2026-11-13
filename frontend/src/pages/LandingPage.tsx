@@ -22,9 +22,11 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenAuth }) => {
       {/* Top Bento Header */}
       <header className="w-full max-w-5xl bento-card px-4 sm:px-6 py-3 rounded-2xl flex items-center justify-between relative z-40 overflow-visible">
         <div className="flex items-center gap-2.5">
-          <div className="w-8 h-8 rounded-xl bg-neutral-900 text-white dark:bg-white dark:text-black flex items-center justify-center font-mono font-bold text-sm shadow-sm">
-            PR
-          </div>
+          <img
+            src="/logo-square.png"
+            alt="Prepr Logo"
+            className="w-9 h-9 object-contain rounded-xl p-0.5 bg-neutral-900/5 dark:bg-white/10 shadow-sm shrink-0"
+          />
           <span className="text-base sm:text-lg font-extrabold tracking-tight">
             pre<span className="text-neutral-500 dark:text-neutral-400">pr</span>
           </span>
@@ -57,6 +59,15 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenAuth }) => {
 
       {/* Main Hero: Bento Architecture */}
       <main className="relative z-10 max-w-3xl text-center flex flex-col items-center my-auto py-12 space-y-6 sm:space-y-8">
+        {/* Brand Mascot Logo */}
+        <div className="relative group">
+          <img
+            src="/logo.png"
+            alt="Prepr AI Interview Platform Mascot"
+            className="w-32 sm:w-40 h-auto object-contain mx-auto drop-shadow-xl hover:scale-105 transition-transform duration-300"
+          />
+        </div>
+
         {/* Status Badge */}
         <div className="wix-pill text-[11px] py-1 px-3.5 inline-flex items-center gap-2">
           <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />

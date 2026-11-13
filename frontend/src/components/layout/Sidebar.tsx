@@ -22,9 +22,11 @@ export const Sidebar: React.FC = () => {
     <aside className="hidden md:flex flex-col w-64 border-r border-[var(--bento-border)] bg-[var(--bento-bg)] backdrop-blur-xl shrink-0 select-none">
       {/* Brand Header */}
       <div className="h-16 flex items-center px-6 border-b border-[var(--bento-border)] gap-3">
-        <div className="w-8 h-8 rounded-xl bg-neutral-900 text-white dark:bg-white dark:text-black flex items-center justify-center font-mono font-bold text-xs shadow-sm">
-          PR
-        </div>
+        <img
+          src="/logo-square.png"
+          alt="Prepr Logo"
+          className="w-9 h-9 object-contain rounded-xl p-0.5 bg-neutral-900/5 dark:bg-white/10 shadow-sm shrink-0"
+        />
         <div className="flex flex-col">
           <span className="font-extrabold text-base tracking-tight leading-none">
             pre<span className="text-neutral-500">pr</span>

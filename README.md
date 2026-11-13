@@ -1,6 +1,8 @@
-# Prepr
-
 <div align="center">
+
+<img src="docs/images/logo.png" alt="Prepr AI Interview Platform Logo" width="220" />
+
+# Prepr
 
 ![FastAPI](https://img.shields.io/badge/FastAPI-0.115-009688?style=for-the-badge&logo=fastapi&logoColor=white)
 ![React](https://img.shields.io/badge/React-18-61DAFB?style=for-the-badge&logo=react&logoColor=black)

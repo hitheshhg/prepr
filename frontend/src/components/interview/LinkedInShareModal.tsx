@@ -6,7 +6,6 @@ import {
   Copy,
   Check,
   ExternalLink,
-  ShieldCheck,
   Eye,
   Activity,
 } from 'lucide-react';
@@ -104,7 +103,7 @@ Grateful for the adaptive Item Response Theory (IRT) benchmarking on Prepr. Cont
 
             <div className="flex items-center justify-between text-[11px] pb-2 border-b border-neutral-800">
               <div className="flex items-center gap-1.5 text-emerald-400">
-                <ShieldCheck className="w-4 h-4" />
+                <img src="/logo-square.png" alt="Prepr" className="w-4 h-4 object-contain rounded" />
                 <span className="font-bold tracking-wider">PREPR VERIFIED REPORT</span>
               </div>
               <Badge variant="emerald" size="sm">

@@ -43,7 +43,11 @@ export const Footer: React.FC = () => {
             onClick={() => playClick(600, 0.02)}
             className="text-xs sm:text-sm font-semibold tracking-tight text-neutral-900 dark:text-white hover:opacity-80 transition-opacity flex items-center justify-center sm:justify-start gap-1.5"
           >
-            <span className="w-2 h-2 rounded-full bg-neutral-900 dark:bg-white inline-block" />
+            <img
+              src="/logo-square.png"
+              alt="Prepr Logo"
+              className="w-4 h-4 object-contain rounded shrink-0 inline-block"
+            />
             <span>prepr</span>
           </Link>
           <span className="text-neutral-300 dark:text-neutral-700 hidden sm:inline">•</span>

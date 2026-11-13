@@ -118,6 +118,11 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, initialMo
 
           {/* Header */}
           <div className="text-center mb-6">
+            <img
+              src="/logo.png"
+              alt="Prepr Logo"
+              className="w-20 h-auto object-contain mx-auto mb-2 drop-shadow"
+            />
             <div className="inline-flex wix-pill text-[10px] mb-2">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
               Secure Authentication
