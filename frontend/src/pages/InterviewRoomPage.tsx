@@ -15,6 +15,7 @@ import {
   Volume2,
   VolumeX,
   FileText,
+  Code,
 } from 'lucide-react';
 import Card from '../components/ui/Card';
 import Button from '../components/ui/Button';
@@ -23,6 +24,7 @@ import ScoreGauge from '../components/ui/ScoreGauge';
 import AIOrb, { AIOrbState } from '../components/interview/AIOrb';
 import MinimalistLoadingVisual from '../components/interview/MinimalistLoadingVisual';
 import WebcamVisionTracker from '../components/interview/WebcamVisionTracker';
+import LiveCodeSandbox from '../components/interview/LiveCodeSandbox';
 import { useDeliveryAnalytics } from '../hooks/useDeliveryAnalytics';
 import { useSpeechRecognition } from '../hooks/useSpeechRecognition';
 import { useSpeechSynthesis } from '../hooks/useSpeechSynthesis';
@@ -90,6 +92,7 @@ export const InterviewRoomPage: React.FC = () => {
   const [sessionSummary, setSessionSummary] = useState<SessionSummary | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [rightPanelTab, setRightPanelTab] = useState<'camera' | 'scorecard'>('camera');
+  const [showCodeSandbox, setShowCodeSandbox] = useState(false);
 
   // Speech Hooks
   const {
@@ -275,6 +278,10 @@ export const InterviewRoomPage: React.FC = () => {
       stopSpeaking();
       startListening();
     }
+  };
+
+  const handleAppendCodeToAnswer = (codeSnippet: string) => {
+    setAnswerText((prev) => (prev ? prev.trim() + '\n\n' + codeSnippet : codeSnippet));
   };
 
   const getDifficultyColor = (diff: string) => {
@@ -706,6 +713,19 @@ export const InterviewRoomPage: React.FC = () => {
                 <div className="flex items-center gap-1.5 self-end">
                   <button
                     type="button"
+                    onClick={() => setShowCodeSandbox((prev) => !prev)}
+                    className={`p-2 rounded-xl transition-colors ${
+                      showCodeSandbox
+                        ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30'
+                        : 'text-[var(--text-muted)] hover:text-[var(--text-main)] hover:bg-neutral-500/10'
+                    }`}
+                    title={showCodeSandbox ? 'Hide Code Sandbox' : 'Open Live Code Execution Sandbox'}
+                  >
+                    <Code className="w-4 h-4" />
+                  </button>
+
+                  <button
+                    type="button"
                     onClick={handleFillSample}
                     className="p-2 rounded-xl text-[var(--text-muted)] hover:text-[var(--text-main)] hover:bg-neutral-500/10 transition-colors"
                     title="Fill sample answer"
@@ -756,6 +776,13 @@ export const InterviewRoomPage: React.FC = () => {
                   {answerText.trim() ? answerText.trim().split(/\s+/).length : 0} words
                 </span>
               </div>
+
+              {/* In-Interview Live Code Execution Sandbox Drawer */}
+              <LiveCodeSandbox
+                isOpen={showCodeSandbox}
+                onClose={() => setShowCodeSandbox(false)}
+                onAppendToAnswer={handleAppendCodeToAnswer}
+              />
             </div>
 
             {errorMessage && (
