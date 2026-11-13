@@ -26,11 +26,13 @@ import {
   Eye,
   Activity,
   ShieldCheck,
+  Linkedin,
 } from 'lucide-react';
 import Card from '../components/ui/Card';
 import Button from '../components/ui/Button';
 import Badge from '../components/ui/Badge';
 import ScoreGauge from '../components/ui/ScoreGauge';
+import LinkedInShareModal from '../components/interview/LinkedInShareModal';
 import {
   InterviewReport,
   getReportBySession,
@@ -44,6 +46,7 @@ export const InterviewReportPage: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [expandedQuestion, setExpandedQuestion] = useState<number | null>(null);
+  const [isLinkedInModalOpen, setIsLinkedInModalOpen] = useState(false);
 
   useEffect(() => {
     const fetchReport = async () => {
@@ -164,6 +167,14 @@ export const InterviewReportPage: React.FC = () => {
         </div>
 
         <div className="flex items-center gap-2 sm:gap-3">
+          <Button
+            variant="secondary"
+            size="sm"
+            onClick={() => setIsLinkedInModalOpen(true)}
+            className="flex items-center gap-1.5 font-mono text-xs uppercase tracking-wider text-[#0a66c2] hover:bg-[#0a66c2]/10 border-[#0a66c2]/30"
+          >
+            <Linkedin className="w-4 h-4 fill-current" /> Share to LinkedIn
+          </Button>
           <Link to="/roadmap">
             <Button variant="primary" size="sm" className="flex items-center gap-1.5 font-mono text-xs uppercase tracking-wider">
               <Map className="w-4 h-4" /> View roadmap
@@ -204,6 +215,24 @@ export const InterviewReportPage: React.FC = () => {
             <div className="p-3.5 rounded-xl bg-neutral-500/5 border border-[var(--bento-border)] text-xs text-[var(--text-muted)] leading-relaxed">
               <strong className="text-[var(--text-main)] block mb-1">Executive Summary:</strong>
               {report.executive_summary}
+            </div>
+
+            {/* LinkedIn Verification Badge Shortcut */}
+            <div className="mt-3 flex items-center justify-between p-2.5 rounded-xl bg-[#0a66c2]/5 border border-[#0a66c2]/20 text-xs">
+              <div className="flex items-center gap-2">
+                <Linkedin className="w-4 h-4 text-[#0a66c2] fill-current flex-shrink-0" />
+                <span className="text-[11px] text-[var(--text-muted)] font-mono">
+                  Verified L5 candidate evaluation badge
+                </span>
+              </div>
+              <button
+                type="button"
+                onClick={() => setIsLinkedInModalOpen(true)}
+                className="text-[11px] font-mono font-bold text-[#0a66c2] hover:underline flex items-center gap-1"
+              >
+                <span>Share</span>
+                <ArrowRight className="w-3 h-3" />
+              </button>
             </div>
           </Card>
         </div>
@@ -534,6 +563,13 @@ export const InterviewReportPage: React.FC = () => {
           })}
         </div>
       </Card>
+
+      {/* 1-Click LinkedIn Achievement Sharing Modal */}
+      <LinkedInShareModal
+        isOpen={isLinkedInModalOpen}
+        onClose={() => setIsLinkedInModalOpen(false)}
+        report={report}
+      />
     </div>
   );
 };
