@@ -42,95 +42,72 @@ class ReportEngine:
         weak_areas: List[str],
         lowest_dimensions: List[str]
     ) -> PersonalizedRoadmap:
-        """Construct an algorithmic milestone roadmap targeting the candidate's exact gaps."""
+        """Construct a lightweight, actionable 3-step progression plan targeting detected gaps."""
         roadmap_id = str(uuid.uuid4())
+
+        focus_skill = weak_areas[0] if weak_areas else (lowest_dimensions[0] if lowest_dimensions else "Core Architecture")
+        secondary_skill = weak_areas[1] if len(weak_areas) > 1 else (lowest_dimensions[1] if len(lowest_dimensions) > 1 else "System Design Depth")
 
         milestones = [
             RoadmapMilestone(
                 milestone_id=str(uuid.uuid4()),
                 step_number=1,
-                title=f"Core Fundamentals & Deep-Dive Technical Mastery ({target_role})",
-                target_skill="Language Internals & Architectural Reasoning",
-                difficulty="Intermediate",
-                estimated_days=10,
+                title="Phase 1: Quick Core Review",
+                target_skill=focus_skill,
+                difficulty="Beginner",
+                estimated_days=3,
                 actionable_tasks=[
-                    "Master async/await event loop mechanisms, thread safety, and non-blocking I/O.",
-                    "Review memory management, garbage collection, and query execution planning.",
-                    "Complete 15 medium-difficulty coding and algorithm problems focusing on time/space tradeoffs."
+                    f"Review key fundamentals and common interview pitfalls for {focus_skill}.",
+                    "Solve 3 practice coding problems focusing on clean code and time complexity."
                 ],
                 recommended_resources=[
-                    "Designing Data-Intensive Applications (Martin Kleppmann)",
-                    "Official Language Documentation & Concurrency Deep Dives",
-                    "High Performance Web Architecture Guides"
+                    "Official Language & Framework Documentation"
                 ],
-                capstone_mini_project="Build an asynchronous message ingestion pipeline with zero memory leaks and sub-10ms response times."
+                capstone_mini_project=f"Build a clean mini-module demonstrating {focus_skill} with proper error handling."
             ),
             RoadmapMilestone(
                 milestone_id=str(uuid.uuid4()),
                 step_number=2,
-                title="Distributed Systems, Caching & Scalability Patterns",
-                target_skill="System Design & Low-Latency Caching",
-                difficulty="Advanced",
-                estimated_days=14,
+                title="Phase 2: Real-World Scenarios",
+                target_skill=secondary_skill,
+                difficulty="Intermediate",
+                estimated_days=4,
                 actionable_tasks=[
-                    "Implement distributed rate limiting using Redis Token Bucket / Leaky Bucket algorithms with Lua scripts.",
-                    "Design schema sharding, database read replicas, and cache invalidation strategies.",
-                    "Benchmark Redis caching vs direct database read latencies under 5,000 requests/sec."
+                    f"Study architectural tradeoffs and real-world edge cases in {secondary_skill}.",
+                    "Practice articulating system decisions (e.g. caching, latency, database indexes)."
                 ],
                 recommended_resources=[
-                    "System Design Primer (Donne Martin on GitHub)",
-                    "Redis Architecture & Lua Scripting Patterns",
-                    "AWS / Cloudflare Global CDN & Edge Caching Whitepapers"
+                    "System Design Primer (GitHub) or Architecture Patterns"
                 ],
-                capstone_mini_project="Design and benchmark a distributed URL shortener with multi-region Redis caching and 99.99% availability."
+                capstone_mini_project="Implement a small proof-of-concept incorporating caching or database indexing."
             ),
             RoadmapMilestone(
                 milestone_id=str(uuid.uuid4()),
                 step_number=3,
-                title="Production Observability, Edge Cases & Disaster Recovery",
-                target_skill="Incident Response & Resilience Engineering",
+                title="Phase 3: Mock Interview Polish",
+                target_skill="Structured Communication & Poise",
                 difficulty="Advanced",
-                estimated_days=10,
+                estimated_days=2,
                 actionable_tasks=[
-                    "Implement structured logging, distributed tracing (OpenTelemetry), and Prometheus metrics.",
-                    "Simulate cascade failure scenarios: database connection saturation and network partition.",
-                    "Formulate post-mortem runbooks and canary deployment rollback automation."
+                    "Structure past project stories using STAR format (Situation, Task, Action, Result).",
+                    "Retake a mock interview session on Prepr to verify score improvement."
                 ],
                 recommended_resources=[
-                    "Google Site Reliability Engineering (SRE) Handbook",
-                    "Chaos Engineering & Circuit Breaker Patterns",
-                    "The Art of Monitoring (James Turnbull)"
+                    "Prepr Real-Time Practice & Feedback Rubric"
                 ],
-                capstone_mini_project="Add circuit breakers and automated health check degradations to a microservices cluster."
-            ),
-            RoadmapMilestone(
-                milestone_id=str(uuid.uuid4()),
-                step_number=4,
-                title="Senior Behavioral Leadership & Architectural Communication",
-                target_skill="STAR Method & Technical Tradeoff Defense",
-                difficulty="Intermediate",
-                estimated_days=7,
-                actionable_tasks=[
-                    "Formulate 5 compelling STAR stories detailing technical conflicts, mentorship, and system incidents.",
-                    "Practice articulating architectural tradeoffs with empirical benchmark data.",
-                    "Conduct peer mock interviews emphasizing concise executive communication."
-                ],
-                recommended_resources=[
-                    "Cracking the PM / Tech Lead Interview (Gayle Laakmann)",
-                    "Crucial Conversations for Engineers",
-                    "Staff Engineer: Leadership beyond the management track"
-                ],
-                capstone_mini_project="Deliver a 10-minute technical architectural defense slide deck on an end-to-end cloud migration."
+                capstone_mini_project="Complete an interview on Prepr and achieve a target calibrated score >= 8.0/10."
             )
         ]
+
+        clean_weak_areas = weak_areas[:2] if weak_areas else [focus_skill, secondary_skill]
 
         return PersonalizedRoadmap(
             roadmap_id=roadmap_id,
             user_id=user_id,
             target_role=target_role,
-            identified_weak_areas=weak_areas if weak_areas else ["Architectural Depth", "Quantified Edge Cases"],
+            identified_weak_areas=clean_weak_areas,
             milestones=milestones,
-            estimated_total_weeks=6,
+            estimated_total_weeks=2,
             created_at=datetime.now(timezone.utc)
         )
 
@@ -290,18 +267,26 @@ class ReportEngine:
         top_strengths = list(dict.fromkeys(all_strengths))[:4]
         priority_improvements = list(dict.fromkeys(all_improvements))[:4]
 
+        # Sort dimensions to accurately identify best and growth opportunity
+        sorted_dims = sorted(dimension_scores, key=lambda d: d.score, reverse=True)
+        best_dim = sorted_dims[0] if sorted_dims else None
+        worst_dim = sorted_dims[-1] if sorted_dims else None
+
+        best_dim_str = f"{best_dim.dimension} ({best_dim.score}/10)" if best_dim else "Technical Foundations"
+        worst_dim_str = f"{worst_dim.dimension} ({worst_dim.score}/10)" if worst_dim else "System Design Depth"
+
         # Executive summary
         target_role = session.get("target_role", "Software Engineer")
         executive_summary = (
             f"Candidate completed {len(questions_breakdown)} turns for the position of {target_role}, "
             f"achieving an overall calibrated score of {overall_score}/10 ({verdict}). "
-            f"Strongest performance was demonstrated in {dimension_scores[0].dimension} ({dimension_scores[0].score}/10). "
-            f"Primary growth opportunity lies in {dimension_scores[3].dimension} ({dimension_scores[3].score}/10) "
+            f"Strongest performance was demonstrated in {best_dim_str}. "
+            f"Primary growth opportunity lies in {worst_dim_str} "
             f"with specific focus on real-world edge cases and quantified tradeoffs."
         )
 
         # Generate Personalized Roadmap
-        lowest_dims = sorted(dimension_scores, key=lambda d: d.score)[:2]
+        lowest_dims = sorted_dims[::-1][:2]
         roadmap = self._generate_curated_roadmap(
             user_id=user_id,
             target_role=target_role,
@@ -412,7 +397,7 @@ class ReportEngine:
         return None
 
     async def get_latest_report(self, user_id: str) -> Optional[InterviewReport]:
-        """Retrieve most recent interview report for candidate."""
+        """Retrieve most recent interview report for candidate, auto-generating from latest session if needed."""
         if db_manager.db is not None:
             try:
                 doc = await db_manager.db.reports.find_one(
@@ -422,6 +407,18 @@ class ReportEngine:
                 if doc:
                     doc.pop("_id", None)
                     return InterviewReport(**doc)
+
+                # Fallback: Check if user has an existing completed or active session in db.sessions
+                latest_session = await db_manager.db.sessions.find_one(
+                    {"user_id": user_id},
+                    sort=[("created_at", -1)]
+                )
+                if latest_session and len(latest_session.get("history", [])) > 0:
+                    logger.info(f"[ReportEngine] Auto-generating report for latest session {latest_session['session_id']}")
+                    return await self.generate_report_for_session(
+                        session_id=latest_session["session_id"],
+                        user_id=user_id
+                    )
             except Exception as e:
                 logger.warning(f"[ReportEngine] DB error retrieving latest report: {e}")
 
@@ -429,7 +426,106 @@ class ReportEngine:
         for rep in reversed(list(self._in_memory_reports.values())):
             if rep.get("user_id") == user_id:
                 return InterviewReport(**rep)
+
+        # Check in-memory sessions for auto-generation
+        for sess in reversed(list(session_manager._in_memory_sessions.values())):
+            if sess.get("user_id") == user_id and len(sess.get("history", [])) > 0:
+                try:
+                    return await self.generate_report_for_session(sess["session_id"], user_id)
+                except Exception:
+                    pass
         return None
+
+    async def get_all_reports(self, user_id: str) -> List[Dict[str, Any]]:
+        """Retrieve list of all reports for candidate to allow easy browsing and selection."""
+        reports_list: List[Dict[str, Any]] = []
+        if db_manager.db is not None:
+            try:
+                cursor = db_manager.db.reports.find(
+                    {"user_id": user_id},
+                    {"report_id": 1, "session_id": 1, "target_role": 1, "overall_score": 1, "verdict": 1, "created_at": 1}
+                ).sort("created_at", -1)
+                async for r in cursor:
+                    c_at = r.get("created_at")
+                    reports_list.append({
+                        "report_id": r.get("report_id", str(r.get("_id"))),
+                        "session_id": r.get("session_id"),
+                        "target_role": r.get("target_role", "Software Engineer"),
+                        "overall_score": r.get("overall_score", 0.0),
+                        "verdict": r.get("verdict", "Completed"),
+                        "created_at": c_at.isoformat() if isinstance(c_at, datetime) else str(c_at or "")
+                    })
+            except Exception as e:
+                logger.warning(f"[ReportEngine] DB error listing user reports: {e}")
+
+        if not reports_list:
+            for rep in reversed(list(self._in_memory_reports.values())):
+                if rep.get("user_id") == user_id:
+                    reports_list.append({
+                        "report_id": rep.get("report_id", ""),
+                        "session_id": rep.get("session_id", ""),
+                        "target_role": rep.get("target_role", "Software Engineer"),
+                        "overall_score": rep.get("overall_score", 0.0),
+                        "verdict": rep.get("verdict", "Completed"),
+                        "created_at": str(rep.get("created_at", ""))
+                    })
+        return reports_list
+
+    async def delete_report_and_session(self, session_id: str, user_id: str) -> bool:
+        """Delete a report, session, and its turn answers securely scoped to user_id."""
+        if db_manager.db is not None:
+            try:
+                # 1. Delete from reports
+                await db_manager.db.reports.delete_one({"session_id": session_id, "user_id": user_id})
+                # 2. Delete from sessions
+                await db_manager.db.sessions.delete_one({"session_id": session_id, "user_id": user_id})
+                # 3. Delete from answers
+                await db_manager.db.answers.delete_many({"session_id": session_id})
+                logger.info(f"[ReportEngine] Deleted report & session {session_id} for user {user_id}")
+            except Exception as e:
+                logger.error(f"[ReportEngine] Error deleting session {session_id}: {e}")
+                raise e
+
+        # In-memory cleanup
+        self._in_memory_reports.pop(session_id, None)
+        session_manager._in_memory_sessions.pop(session_id, None)
+        session_manager._in_memory_answers.pop(session_id, None)
+        return True
+
+    async def clear_all_history(self, user_id: str) -> Dict[str, int]:
+        """Clear all candidate interview sessions, reports, and answer history."""
+        counts = {"reports": 0, "sessions": 0, "answers": 0}
+        if db_manager.db is not None:
+            try:
+                # Find all session_ids for this user to clean up answers collection
+                session_ids = []
+                cursor = db_manager.db.sessions.find({"user_id": user_id}, {"session_id": 1})
+                async for s in cursor:
+                    session_ids.append(s["session_id"])
+
+                r_del = await db_manager.db.reports.delete_many({"user_id": user_id})
+                s_del = await db_manager.db.sessions.delete_many({"user_id": user_id})
+                a_del = await db_manager.db.answers.delete_many({"session_id": {"$in": session_ids}})
+
+                counts["reports"] = r_del.deleted_count
+                counts["sessions"] = s_del.deleted_count
+                counts["answers"] = a_del.deleted_count
+                logger.info(f"[ReportEngine] Cleared all history for user {user_id}: {counts}")
+            except Exception as e:
+                logger.error(f"[ReportEngine] Error clearing history for user {user_id}: {e}")
+                raise e
+
+        # Clear in-memory
+        keys_to_pop = [k for k, v in self._in_memory_reports.items() if v.get("user_id") == user_id]
+        for k in keys_to_pop:
+            self._in_memory_reports.pop(k, None)
+
+        s_keys = [k for k, v in session_manager._in_memory_sessions.items() if v.get("user_id") == user_id]
+        for k in s_keys:
+            session_manager._in_memory_sessions.pop(k, None)
+            session_manager._in_memory_answers.pop(k, None)
+
+        return counts
 
     async def get_latest_roadmap(self, user_id: str) -> Optional[PersonalizedRoadmap]:
         """Retrieve latest career roadmap."""

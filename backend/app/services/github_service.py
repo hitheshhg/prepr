@@ -1,3 +1,4 @@
+import os
 import logging
 from typing import List, Dict, Any, Optional
 import httpx
@@ -36,12 +37,21 @@ class GitHubService:
             "Accept": "application/vnd.github.v3+json",
             "User-Agent": "Prepr-Interview-Platform",
         }
+        github_token = os.environ.get("GITHUB_TOKEN") or getattr(settings, "GITHUB_TOKEN", None)
+        if github_token:
+            headers["Authorization"] = f"Bearer {github_token}"
 
         try:
             async with httpx.AsyncClient(timeout=8.0) as client:
                 response = await client.get(url, headers=headers)
                 if response.status_code == 404:
                     logger.warning(f"[GitHubService] GitHub user '{cleaned_user}' not found (404)")
+                    return []
+                if response.status_code == 403:
+                    logger.warning(
+                        f"[GitHubService] GitHub API rate limit reached (403) while fetching '{cleaned_user}'. "
+                        f"Consider configuring GITHUB_TOKEN in backend/.env for up to 5,000 req/hr."
+                    )
                     return []
                 if response.status_code != 200:
                     logger.warning(

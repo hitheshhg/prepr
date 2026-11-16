@@ -175,5 +175,22 @@ async def test_report_routes_with_mock_auth():
             dash_res = await client.get("/api/v1/dashboard/metrics")
             assert dash_res.status_code == 200
             assert "average_interview_score" in dash_res.json()
+
+            # 6. List all user reports endpoint
+            all_res = await client.get("/api/v1/report/user/all")
+            assert all_res.status_code == 200
+            all_data = all_res.json()
+            assert "reports" in all_data
+            assert len(all_data["reports"]) >= 1
+
+            # 7. Delete report and session endpoint
+            del_res = await client.delete(f"/api/v1/report/session/{session_id}")
+            assert del_res.status_code == 200
+            assert del_res.json()["status"] == "success"
+
+            # 8. Clear all history endpoint
+            clear_res = await client.delete("/api/v1/report/history/all")
+            assert clear_res.status_code == 200
+            assert clear_res.json()["status"] == "success"
     finally:
         app.dependency_overrides.pop(get_current_user, None)

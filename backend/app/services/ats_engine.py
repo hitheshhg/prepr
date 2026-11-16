@@ -282,6 +282,8 @@ def _fallback_entity_extractor(text: str) -> ParsedResume:
     """Basic regex fallback entity extractor if LLM is temporarily unreachable."""
     email_match = re.search(r"[\w\.-]+@[\w\.-]+\.\w+", text)
     phone_match = re.search(r"\b(?:\+?\d{1,3}[-.\s]?)?\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}\b", text)
+    github_match = re.search(r"(?:https?://)?(?:www\.)?github\.com/[a-zA-Z0-9_\-]+", text, re.IGNORECASE)
+    linkedin_match = re.search(r"(?:https?://)?(?:www\.)?linkedin\.com/in/[a-zA-Z0-9_\-]+", text, re.IGNORECASE)
 
     first_line = text.strip().split("\n")[0].strip()
     candidate_name = first_line[:50] if first_line else "Candidate"
@@ -291,8 +293,8 @@ def _fallback_entity_extractor(text: str) -> ParsedResume:
         contact={
             "email": email_match.group(0) if email_match else "",
             "phone": phone_match.group(0) if phone_match else "",
-            "linkedin": "",
-            "github": "",
+            "linkedin": linkedin_match.group(0) if linkedin_match else "",
+            "github": github_match.group(0) if github_match else "",
             "location": ""
         },
         summary="Extracted via Prepr Text Parser",

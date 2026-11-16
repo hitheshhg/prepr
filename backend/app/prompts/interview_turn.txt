@@ -40,6 +40,7 @@ Instructions:
 2. If {current_index} < {total_questions}:
    - Generate "next_question" with question_index={next_index}, category="{next_category_suggestion}", difficulty="{target_difficulty}".
    - Make the question flow naturally as a follow-up or step forward into another required competency for {target_role}.
+   - CRITICAL DIVERSITY REQUIREMENT: The next question MUST explore a completely fresh domain or competency (e.g. databases, concurrency, distributed systems, incident response, API design) and must NEVER repeat, re-phrase, or overlap with the concepts already covered in {history_summary}.
    - If candidate's answer was weak, gently probe their understanding or shift to a fundamental problem; if strong, challenge them with scalability, edge cases, or trade-offs.
 
 3. If {current_index} >= {total_questions}:

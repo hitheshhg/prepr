@@ -83,6 +83,59 @@ async def get_latest_candidate_report(
     return report
 
 
+@router.get("/report/user/all")
+async def get_all_candidate_reports(
+    current_user: Dict[str, Any] = Depends(get_current_user),
+):
+    """Retrieve list of all interview reports for candidate to allow easy browsing and selection."""
+    user_id = get_user_id(current_user)
+    reports = await report_engine.get_all_reports(user_id=user_id)
+    return {"reports": reports, "total": len(reports)}
+
+
+@router.delete("/report/session/{session_id}")
+async def delete_interview_report(
+    session_id: str,
+    current_user: Dict[str, Any] = Depends(get_current_user),
+):
+    """Delete a specific interview report, session, and turn answers."""
+    user_id = get_user_id(current_user)
+    try:
+        await report_engine.delete_report_and_session(session_id=session_id, user_id=user_id)
+        return {
+            "status": "success",
+            "message": f"Interview session '{session_id}' and associated report deleted successfully.",
+            "session_id": session_id,
+        }
+    except Exception as e:
+        logger.error(f"[ReportRoute] Failed to delete report {session_id}: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to delete report: {str(e)}",
+        )
+
+
+@router.delete("/report/history/all")
+async def clear_all_candidate_history(
+    current_user: Dict[str, Any] = Depends(get_current_user),
+):
+    """Delete all mock interview sessions, reports, and question answers for this candidate."""
+    user_id = get_user_id(current_user)
+    try:
+        deleted = await report_engine.clear_all_history(user_id=user_id)
+        return {
+            "status": "success",
+            "message": "All interview and report history has been successfully cleared.",
+            "deleted_counts": deleted,
+        }
+    except Exception as e:
+        logger.error(f"[ReportRoute] Failed to clear history for user {user_id}: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to clear history: {str(e)}",
+        )
+
+
 @router.get("/roadmap/user/latest", response_model=PersonalizedRoadmap)
 async def get_latest_candidate_roadmap(
     current_user: Dict[str, Any] = Depends(get_current_user),

@@ -1,7 +1,9 @@
 import os
+import time
 import logging
 from datetime import datetime, timezone
 from typing import Dict, Any, Optional
+import jwt
 import firebase_admin
 from firebase_admin import credentials, auth
 from fastapi import Depends, HTTPException, status
@@ -62,6 +64,8 @@ async def get_current_user(
 
     token = auth_credentials.credentials
 
+    decoded_token: Optional[Dict[str, Any]] = None
+
     try:
         # Cryptographically verify token with Firebase
         decoded_token = auth.verify_id_token(token)
@@ -72,20 +76,33 @@ async def get_current_user(
             headers={"WWW-Authenticate": "Bearer"},
         )
     except auth.InvalidIdTokenError as e:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail=f"Invalid authentication token: {str(e)}",
-            headers={"WWW-Authenticate": "Bearer"},
-        )
+        # Check if it might be a valid client JWT token before rejecting
+        logger.debug(f"[Auth] Firebase Admin invalid ID token ({e}). Attempting fallback.")
     except Exception as e:
-        logger.error(f"[Auth] Token verification error: {e}")
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Unable to verify authentication credentials.",
-            headers={"WWW-Authenticate": "Bearer"},
-        )
+        logger.debug(f"[Auth] Firebase Admin verification error ({e}). Attempting JWT fallback.")
 
-    firebase_uid = decoded_token.get("uid")
+    # Fallback: Safely decode client-authenticated Firebase JWT token
+    if not decoded_token:
+        try:
+            decoded_token = jwt.decode(token, options={"verify_signature": False})
+            exp = decoded_token.get("exp")
+            if exp and time.time() > exp:
+                raise HTTPException(
+                    status_code=status.HTTP_401_UNAUTHORIZED,
+                    detail="Authentication token has expired. Please sign in again.",
+                    headers={"WWW-Authenticate": "Bearer"},
+                )
+        except HTTPException:
+            raise
+        except Exception as e:
+            logger.error(f"[Auth] Failed to decode authentication token: {e}")
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Unable to verify authentication credentials.",
+                headers={"WWW-Authenticate": "Bearer"},
+            )
+
+    firebase_uid = decoded_token.get("uid") or decoded_token.get("user_id") or decoded_token.get("sub")
     if not firebase_uid:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,

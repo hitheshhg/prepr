@@ -6,10 +6,12 @@ import {
   CheckCircle2,
   Circle,
   BookOpen,
-  Code,
+  Sparkles,
   Calendar,
   ArrowRight,
   RefreshCw,
+  Target,
+  Zap,
 } from 'lucide-react';
 import Card from '../components/ui/Card';
 import Button from '../components/ui/Button';
@@ -50,9 +52,9 @@ export const RoadmapPage: React.FC = () => {
     return (
       <div className="max-w-4xl mx-auto px-4 py-24 text-center">
         <RefreshCw className="w-8 h-8 text-neutral-400 animate-spin mx-auto mb-4" />
-        <h2 className="text-xl font-bold">Synthesizing Milestone Roadmap...</h2>
+        <h2 className="text-xl font-bold">Loading Your Roadmap...</h2>
         <p className="text-xs sm:text-sm text-[var(--text-muted)] mt-2 font-mono">
-          Generating step-by-step curriculum targeting your lowest scoring interview dimensions.
+          Building a simple 3-step action plan from your interview feedback.
         </p>
       </div>
     );
@@ -67,7 +69,7 @@ export const RoadmapPage: React.FC = () => {
           </div>
           <h2 className="text-2xl font-bold mb-2">No Roadmap Generated Yet</h2>
           <p className="text-xs sm:text-sm text-[var(--text-muted)] max-w-md mx-auto mb-6 leading-relaxed">
-            Complete a mock interview in the Interview Room so our AI can analyze your knowledge gaps and build a personalized progression roadmap.
+            Complete a mock interview in the Interview Room so our AI can analyze your performance and build your personalized 3-step action plan.
           </p>
           <Link to="/interview">
             <Button variant="primary" size="md" className="font-mono text-xs uppercase tracking-wider">
@@ -87,171 +89,195 @@ export const RoadmapPage: React.FC = () => {
   const progressPct = allTasksCount > 0 ? Math.round((completedCount / allTasksCount) * 100) : 0;
 
   return (
-    <div className="w-full max-w-6xl mx-auto space-y-7">
-      {/* Header Banner */}
+    <div className="w-full max-w-5xl mx-auto space-y-6">
+      {/* Top Banner: Clear, Simple Header */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-4 border-b border-[var(--bento-border)]">
         <div>
           <div className="flex items-center gap-2 mb-1.5">
             <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono font-semibold uppercase tracking-wider border border-emerald-500/30 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 select-none">
               <span className="w-2 h-2 rounded-full bg-emerald-500 shrink-0 animate-pulse" />
-              <span>Career Curriculum</span>
+              <span>3-Step Action Plan</span>
             </span>
           </div>
           <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight">
-            Personalized Career Roadmap
+            Targeted Skill Roadmap
           </h1>
           <p className="text-xs sm:text-sm text-[var(--text-muted)] mt-1">
-            Curated milestones and proof-of-skill tasks targeting detected technical gaps.
+            Simple, bite-sized practice steps tailored to bridge your interview gaps for <strong>{roadmap.target_role}</strong>.
           </p>
         </div>
 
         <Link to="/interview">
           <Button variant="primary" size="sm" className="flex items-center gap-1.5 font-mono text-xs uppercase tracking-wider">
-            Start interview <ArrowRight className="w-3.5 h-3.5" />
+            <Zap className="w-3.5 h-3.5" /> Start new interview
           </Button>
         </Link>
       </div>
 
-      {/* Progress & Target Focus Card */}
-      <Card padding="lg">
-        <div className="grid grid-cols-1 sm:grid-cols-12 gap-6 items-center">
-          <div className="sm:col-span-8 space-y-2">
-            <span className="text-xs font-mono uppercase tracking-wider text-[var(--text-muted)]">
-              Target Improvement Focus
-            </span>
-            <div className="flex flex-wrap gap-2 pt-1">
-              {roadmap.identified_weak_areas.map((area, idx) => (
-                <span
-                  key={idx}
-                  className="wix-pill text-xs font-mono font-semibold"
-                >
-                  {area}
-                </span>
-              ))}
-            </div>
-            <p className="text-xs text-[var(--text-muted)] pt-1">
-              Curated sequentially to elevate your interview scores from candidate level to Senior L5 benchmark.
-            </p>
-          </div>
-
-          <div className="sm:col-span-4 p-4 rounded-xl bg-neutral-500/5 border border-[var(--bento-border)] text-center">
-            <div className="text-3xl font-black font-mono">{progressPct}%</div>
-            <div className="text-[11px] font-mono text-[var(--text-muted)] mt-0.5">Roadmap Completion</div>
-            <div className="w-full bg-neutral-500/10 rounded-full h-1.5 mt-2.5 overflow-hidden">
-              <div
-                className="bg-neutral-900 dark:bg-white h-full transition-all duration-300"
-                style={{ width: `${progressPct}%` }}
-              />
-            </div>
-            <div className="text-[10px] font-mono text-[var(--text-muted)] mt-1.5">
-              {completedCount} of {allTasksCount} tasks completed
-            </div>
+      {/* Progress & Target Summary Bar */}
+      <div className="grid grid-cols-1 sm:grid-cols-12 gap-4 items-center p-4 sm:p-5 rounded-2xl bento-card border border-[var(--bento-border)]">
+        <div className="sm:col-span-8 space-y-1.5">
+          <span className="text-[11px] font-mono uppercase tracking-wider text-[var(--text-muted)] flex items-center gap-1.5">
+            <Target className="w-3.5 h-3.5 text-emerald-500" /> Focus Areas to Elevate
+          </span>
+          <div className="flex flex-wrap gap-1.5 pt-0.5">
+            {roadmap.identified_weak_areas.map((area, idx) => (
+              <span
+                key={idx}
+                className="inline-flex items-center px-2.5 py-0.5 rounded-lg text-xs font-mono font-semibold bg-neutral-500/10 border border-[var(--bento-border)]"
+              >
+                {area}
+              </span>
+            ))}
           </div>
         </div>
-      </Card>
 
-      {/* Vertical Milestones Timeline */}
-      <div className="relative pl-6 sm:pl-8 space-y-8 before:absolute before:left-3 sm:before:left-4 before:top-4 before:bottom-4 before:w-0.5 before:bg-[var(--bento-border)]">
+        <div className="sm:col-span-4 flex flex-col items-end sm:border-l sm:border-[var(--bento-border)] sm:pl-5">
+          <div className="flex items-baseline gap-2">
+            <span className="text-2xl font-black font-mono">{progressPct}%</span>
+            <span className="text-xs text-[var(--text-muted)] font-mono">
+              ({completedCount}/{allTasksCount} tasks)
+            </span>
+          </div>
+          <div className="w-full bg-neutral-500/10 rounded-full h-2 mt-2 overflow-hidden">
+            <div
+              className="bg-emerald-500 h-full rounded-full transition-all duration-300"
+              style={{ width: `${progressPct}%` }}
+            />
+          </div>
+        </div>
+      </div>
+
+      {/* 3 Simple Phase Cards */}
+      <div className="space-y-4">
         {roadmap.milestones.map((milestone, idx) => {
-          const isAdvanced = milestone.difficulty === 'Advanced';
+          const isDone = milestone.actionable_tasks.every(
+            (_, tIdx) => !!completedTasks[`${milestone.milestone_id}-t${tIdx}`]
+          );
+
           return (
             <motion.div
               key={milestone.milestone_id}
-              initial={{ opacity: 0, x: -12 }}
-              animate={{ opacity: 1, x: 0 }}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
               transition={{ delay: idx * 0.08 }}
-              className="relative"
+              className={`p-5 rounded-2xl border transition-all ${
+                isDone
+                  ? 'bg-emerald-500/5 border-emerald-500/30'
+                  : 'bento-card border-[var(--bento-border)]'
+              }`}
             >
-              {/* Step indicator circle on line */}
-              <div className="absolute -left-6 sm:-left-8 top-1.5 w-6 h-6 sm:w-8 sm:h-8 rounded-full bg-neutral-900 text-white dark:bg-white dark:text-black border-2 border-[var(--canvas-bg)] flex items-center justify-center text-xs font-bold font-mono shadow-sm">
-                {milestone.step_number}
+              {/* Card Header: Phase Step + Title + Time */}
+              <div className="flex flex-wrap items-center justify-between gap-3 mb-3">
+                <div className="flex items-center gap-3">
+                  <div
+                    className={`w-8 h-8 rounded-xl flex items-center justify-center font-mono font-bold text-xs ${
+                      isDone
+                        ? 'bg-emerald-500 text-white'
+                        : 'bg-neutral-900 text-white dark:bg-white dark:text-black'
+                    }`}
+                  >
+                    {isDone ? '✓' : milestone.step_number}
+                  </div>
+                  <div>
+                    <h3 className="text-base font-bold flex items-center gap-2">
+                      {milestone.title}
+                      {isDone && (
+                        <span className="text-xs font-mono font-semibold text-emerald-500">
+                          (Completed)
+                        </span>
+                      )}
+                    </h3>
+                    <div className="text-xs text-[var(--text-muted)] font-mono">
+                      Target Focus: <span className="text-[var(--text-main)] font-semibold">{milestone.target_skill}</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <Badge variant={milestone.difficulty === 'Advanced' ? 'rose' : milestone.difficulty === 'Intermediate' ? 'amber' : 'emerald'} size="sm">
+                    {milestone.difficulty}
+                  </Badge>
+                  <span className="text-xs font-mono text-[var(--text-muted)] flex items-center gap-1">
+                    <Calendar className="w-3.5 h-3.5" /> ~{milestone.estimated_days} Days
+                  </span>
+                </div>
               </div>
 
-              {/* Milestone Card */}
-              <Card padding="lg">
-                <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
-                  <div className="flex items-center gap-2">
-                    <span className="wix-pill text-[10px]">
-                      Step {milestone.step_number}
+              {/* Actionable Checkbox Tasks */}
+              <div className="mt-3.5 space-y-2">
+                <span className="text-[11px] font-mono uppercase tracking-wider text-[var(--text-muted)] block">
+                  Action Steps (Click to complete)
+                </span>
+                <div className="space-y-1.5">
+                  {milestone.actionable_tasks.map((task, tIdx) => {
+                    const taskId = `${milestone.milestone_id}-t${tIdx}`;
+                    const checked = !!completedTasks[taskId];
+
+                    return (
+                      <div
+                        key={tIdx}
+                        onClick={() => toggleTask(taskId)}
+                        className={`flex items-start gap-3 p-3 rounded-xl cursor-pointer transition-colors text-xs select-none border ${
+                          checked
+                            ? 'bg-emerald-500/10 border-emerald-500/20 text-[var(--text-muted)] line-through'
+                            : 'bg-neutral-500/5 hover:bg-neutral-500/10 border-[var(--bento-border)] text-[var(--text-main)]'
+                        }`}
+                      >
+                        {checked ? (
+                          <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
+                        ) : (
+                          <Circle className="w-4 h-4 text-neutral-400 shrink-0 mt-0.5" />
+                        )}
+                        <span className="leading-relaxed">{task}</span>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Clean Footer: Key Reference & Goal */}
+              <div className="mt-4 pt-3.5 border-t border-[var(--bento-border)] flex flex-wrap items-center justify-between gap-2 text-xs">
+                {milestone.recommended_resources.length > 0 && (
+                  <div className="flex items-center gap-1.5 text-[var(--text-muted)]">
+                    <BookOpen className="w-3.5 h-3.5 text-neutral-400" />
+                    <span className="font-mono text-[11px]">Recommended:</span>
+                    <span className="font-semibold text-[var(--text-main)] truncate max-w-xs">
+                      {milestone.recommended_resources[0]}
                     </span>
-                    <Badge variant={isAdvanced ? 'rose' : 'cyan'} size="sm">
-                      {milestone.difficulty}
-                    </Badge>
                   </div>
-                  <div className="flex items-center gap-1.5 text-xs text-[var(--text-muted)] font-mono">
-                    <Calendar className="w-3.5 h-3.5" />
-                    <span>~{milestone.estimated_days} Days</span>
-                  </div>
+                )}
+                <div className="text-[11px] text-[var(--text-muted)] font-mono">
+                  Goal: <span className="italic">{milestone.capstone_mini_project}</span>
                 </div>
-
-                <h3 className="text-base sm:text-lg font-bold mb-1">
-                  {milestone.title}
-                </h3>
-                <div className="text-xs text-[var(--text-muted)] font-mono mb-4">
-                  Target Competency: <span className="text-[var(--text-main)] font-semibold">{milestone.target_skill}</span>
-                </div>
-
-                {/* Actionable Tasks Checklist */}
-                <div className="mb-4 space-y-2">
-                  <div className="text-xs font-mono font-semibold uppercase tracking-wider text-[var(--text-muted)]">
-                    Actionable Learning Tasks
-                  </div>
-                  <div className="space-y-1.5">
-                    {milestone.actionable_tasks.map((task, tIdx) => {
-                      const taskId = `${milestone.milestone_id}-t${tIdx}`;
-                      const isDone = !!completedTasks[taskId];
-                      return (
-                        <div
-                          key={tIdx}
-                          onClick={() => toggleTask(taskId)}
-                          className={`flex items-start gap-2.5 p-2.5 rounded-xl cursor-pointer transition-colors text-xs select-none border ${
-                            isDone
-                              ? 'bg-neutral-500/5 border-transparent text-[var(--text-muted)] line-through'
-                              : 'bg-neutral-500/5 hover:bg-neutral-500/10 border-[var(--bento-border)] text-[var(--text-main)]'
-                          }`}
-                        >
-                          {isDone ? (
-                            <CheckCircle2 className="w-4 h-4 text-emerald-500 flex-shrink-0 mt-0.5" />
-                          ) : (
-                            <Circle className="w-4 h-4 text-neutral-400 flex-shrink-0 mt-0.5" />
-                          )}
-                          <span>{task}</span>
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
-
-                {/* Recommended Resources & Capstone Project Grid */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-3 border-t border-[var(--bento-border)] text-xs">
-                  {/* Resources */}
-                  <div className="p-3 rounded-xl bg-neutral-500/5 border border-[var(--bento-border)] space-y-1.5">
-                    <div className="font-semibold flex items-center gap-1.5 font-mono">
-                      <BookOpen className="w-3.5 h-3.5" /> Curated References
-                    </div>
-                    <ul className="list-disc list-inside text-[var(--text-muted)] space-y-0.5">
-                      {milestone.recommended_resources.map((res, rIdx) => (
-                        <li key={rIdx} className="truncate">
-                          {res}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  {/* Capstone Mini Project */}
-                  <div className="p-3 rounded-xl bg-neutral-500/5 border border-[var(--bento-border)] space-y-1.5">
-                    <div className="font-semibold flex items-center gap-1.5 font-mono">
-                      <Code className="w-3.5 h-3.5" /> Proof-of-Skill Capstone
-                    </div>
-                    <p className="text-[var(--text-muted)] leading-relaxed">
-                      {milestone.capstone_mini_project}
-                    </p>
-                  </div>
-                </div>
-              </Card>
+              </div>
             </motion.div>
           );
         })}
+      </div>
+
+      {/* Bottom CTA Card */}
+      <div className="p-6 rounded-2xl bento-card border border-[var(--bento-border)] flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
+        <div>
+          <h4 className="text-sm font-bold flex items-center justify-center sm:justify-start gap-1.5">
+            <Sparkles className="w-4 h-4 text-emerald-500" /> Ready to re-evaluate?
+          </h4>
+          <p className="text-xs text-[var(--text-muted)] mt-1">
+            After practicing these 3 phases, retake an interview to see your calibrated score rise.
+          </p>
+        </div>
+        <div className="flex items-center gap-3">
+          <Link to="/report">
+            <Button variant="secondary" size="sm" className="font-mono text-xs uppercase tracking-wider">
+              View latest report
+            </Button>
+          </Link>
+          <Link to="/interview">
+            <Button variant="primary" size="sm" className="flex items-center gap-1.5 font-mono text-xs uppercase tracking-wider">
+              Practice now <ArrowRight className="w-3.5 h-3.5" />
+            </Button>
+          </Link>
+        </div>
       </div>
     </div>
   );

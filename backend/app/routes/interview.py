@@ -124,6 +124,43 @@ async def end_interview_session(
         )
 
 
+@router.delete("/{session_id}")
+async def delete_interview_session(
+    session_id: str,
+    current_user: Dict[str, Any] = Depends(get_current_user),
+):
+    """Delete a specific interview session and report."""
+    user_id = get_user_id(current_user)
+    try:
+        from app.services.report_engine import report_engine
+        await report_engine.delete_report_and_session(session_id=session_id, user_id=user_id)
+        return {"status": "success", "message": f"Session {session_id} deleted."}
+    except Exception as e:
+        logger.error(f"[InterviewRoute] Error deleting session {session_id}: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to delete session: {str(e)}"
+        )
+
+
+@router.delete("/history/all")
+async def clear_all_interview_history(
+    current_user: Dict[str, Any] = Depends(get_current_user),
+):
+    """Delete all mock interview history and reports for candidate."""
+    user_id = get_user_id(current_user)
+    try:
+        from app.services.report_engine import report_engine
+        counts = await report_engine.clear_all_history(user_id=user_id)
+        return {"status": "success", "message": "All interview history cleared.", "counts": counts}
+    except Exception as e:
+        logger.error(f"[InterviewRoute] Error clearing history for user {user_id}: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to clear history: {str(e)}"
+        )
+
+
 @router.websocket("/ws/{session_id}")
 async def interview_websocket_endpoint(
     websocket: WebSocket,

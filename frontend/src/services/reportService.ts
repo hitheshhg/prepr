@@ -120,3 +120,27 @@ export const getDashboardMetrics = async (): Promise<DashboardMetrics> => {
   return response.data;
 };
 
+export interface ReportSummaryItem {
+  report_id: string;
+  session_id: string;
+  target_role: string;
+  overall_score: number;
+  verdict: string;
+  created_at: string;
+}
+
+export const getAllReports = async (): Promise<{ reports: ReportSummaryItem[]; total: number }> => {
+  const response = await api.get<{ reports: ReportSummaryItem[]; total: number }>('/api/v1/report/user/all');
+  return response.data;
+};
+
+export const deleteReportBySession = async (sessionId: string): Promise<{ status: string; message: string }> => {
+  const response = await api.delete<{ status: string; message: string }>(`/api/v1/report/session/${sessionId}`);
+  return response.data;
+};
+
+export const clearAllHistory = async (): Promise<{ status: string; message: string }> => {
+  const response = await api.delete<{ status: string; message: string }>('/api/v1/report/history/all');
+  return response.data;
+};
+

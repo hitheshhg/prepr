@@ -38,6 +38,7 @@ import {
   AnswerEvaluation,
   SessionSummary,
 } from '../services/interviewService';
+import { generateReport } from '../services/reportService';
 
 const PRESET_ROLES = [
   'Full Stack Developer',
@@ -242,6 +243,10 @@ export const InterviewRoomPage: React.FC = () => {
         const summary = await endInterview(sessionId);
         setSessionSummary(summary);
         setSessionActive(false);
+        // Eagerly pre-generate report in background so it's instantly available in the Reports section
+        generateReport(sessionId).catch((err) =>
+          console.warn('[InterviewRoom] Background report generation notice:', err)
+        );
       } else {
         setCurrentQuestion(resp.next_question);
         setCurrentQuestionIndex(resp.next_question.question_index);
@@ -273,6 +278,10 @@ export const InterviewRoomPage: React.FC = () => {
         const summary = await endInterview(sessionId);
         setSessionSummary(summary);
         setSessionActive(false);
+        // Eagerly pre-generate report in background
+        generateReport(sessionId).catch((err) =>
+          console.warn('[InterviewRoom] Background report generation notice on early end:', err)
+        );
       } catch (err) {
         console.error('Failed to end interview:', err);
       }

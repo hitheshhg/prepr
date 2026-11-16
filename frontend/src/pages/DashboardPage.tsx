@@ -16,6 +16,7 @@ import {
   Zap,
   RefreshCw,
   ArrowRight,
+  Trash2,
 } from 'lucide-react';
 import Card from '../components/ui/Card';
 import Button from '../components/ui/Button';
@@ -24,12 +25,17 @@ import { useAuth } from '../context/AuthContext';
 import {
   DashboardMetrics,
   getDashboardMetrics,
+  deleteReportBySession,
+  clearAllHistory,
 } from '../services/reportService';
 
 export const DashboardPage: React.FC = () => {
   const { currentUser, userProfile } = useAuth();
   const [metrics, setMetrics] = useState<DashboardMetrics | null>(null);
   const [loading, setLoading] = useState(true);
+  const [sessionToDelete, setSessionToDelete] = useState<string | null>(null);
+  const [isClearAllDialogOpen, setIsClearAllDialogOpen] = useState(false);
+  const [isActionLoading, setIsActionLoading] = useState(false);
 
   useEffect(() => {
     const fetchMetrics = async () => {
@@ -51,6 +57,39 @@ export const DashboardPage: React.FC = () => {
     userProfile?.display_name ||
     'Candidate'
   ).split(' ')[0];
+
+  const handleDeleteSingleSession = async () => {
+    if (!sessionToDelete) return;
+    setIsActionLoading(true);
+    try {
+      await deleteReportBySession(sessionToDelete);
+      setSessionToDelete(null);
+      // Re-fetch metrics to refresh cards and lists cleanly
+      const data = await getDashboardMetrics();
+      setMetrics(data);
+    } catch (err) {
+      console.error('Failed to delete session:', err);
+      alert('Could not delete session. Please try again.');
+    } finally {
+      setIsActionLoading(false);
+    }
+  };
+
+  const handleClearAllHistory = async () => {
+    setIsActionLoading(true);
+    try {
+      await clearAllHistory();
+      setIsClearAllDialogOpen(false);
+      // Re-fetch metrics (will be empty)
+      const data = await getDashboardMetrics();
+      setMetrics(data);
+    } catch (err) {
+      console.error('Failed to clear all history:', err);
+      alert('Could not clear history. Please try again.');
+    } finally {
+      setIsActionLoading(false);
+    }
+  };
 
   if (loading) {
     return (
@@ -246,9 +285,21 @@ export const DashboardPage: React.FC = () => {
                 <h2 className="text-sm font-bold">Recent sessions</h2>
                 <p className="text-xs text-[var(--text-muted)]">Review past performance logs</p>
               </div>
-              <Link to="/interview" className="text-xs font-mono font-medium hover:underline flex items-center gap-1">
-                New interview <ArrowRight className="w-3 h-3" />
-              </Link>
+              <div className="flex items-center gap-3">
+                {recentSessions.length > 0 && (
+                  <button
+                    type="button"
+                    onClick={() => setIsClearAllDialogOpen(true)}
+                    className="text-xs text-[var(--text-muted)] hover:text-rose-500 flex items-center gap-1 font-mono transition-colors"
+                    title="Clear all interview history"
+                  >
+                    <Trash2 className="w-3 h-3" /> Clear history
+                  </button>
+                )}
+                <Link to="/interview" className="text-xs font-mono font-medium hover:underline flex items-center gap-1">
+                  New interview <ArrowRight className="w-3 h-3" />
+                </Link>
+              </div>
             </div>
 
             <div className="divide-y divide-[var(--bento-border)] text-xs">
@@ -264,7 +315,7 @@ export const DashboardPage: React.FC = () => {
                     </p>
                   </div>
 
-                  <div className="flex items-center gap-3">
+                  <div className="flex items-center gap-2 sm:gap-3">
                     <span className="wix-pill text-xs font-mono font-bold">
                       {s.overall_score ? s.overall_score.toFixed(1) : '7.5'}/10
                     </span>
@@ -273,11 +324,99 @@ export const DashboardPage: React.FC = () => {
                         View report
                       </Button>
                     </Link>
+                    <button
+                      type="button"
+                      onClick={() => setSessionToDelete(s.session_id)}
+                      className="p-1.5 rounded-lg text-neutral-400 hover:text-rose-500 hover:bg-rose-500/10 transition-colors"
+                      title="Delete this session"
+                    >
+                      <Trash2 className="w-3.5 h-3.5" />
+                    </button>
                   </div>
                 </div>
               ))}
             </div>
           </Card>
+        </div>
+      )}
+
+      {/* Delete Single Session Modal */}
+      {sessionToDelete && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-fade-in">
+          <div className="relative w-full max-w-md border border-[var(--bento-border)] rounded-2xl shadow-2xl bg-[var(--canvas-bg)] p-6 space-y-4">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-rose-500/10 text-rose-500 flex items-center justify-center border border-rose-500/20">
+                <Trash2 className="w-5 h-5" />
+              </div>
+              <div>
+                <h2 className="text-lg font-bold">Delete Interview Session?</h2>
+                <p className="text-xs text-[var(--text-muted)]">This will remove this session and its report permanently.</p>
+              </div>
+            </div>
+            <p className="text-xs text-[var(--text-muted)] leading-relaxed">
+              Are you sure you want to delete this session? All question responses and calibrated scores will be removed.
+            </p>
+            <div className="flex items-center justify-end gap-3 pt-2">
+              <Button
+                variant="secondary"
+                size="sm"
+                onClick={() => setSessionToDelete(null)}
+                disabled={isActionLoading}
+                className="font-mono text-xs uppercase tracking-wider"
+              >
+                Cancel
+              </Button>
+              <Button
+                variant="primary"
+                size="sm"
+                onClick={handleDeleteSingleSession}
+                disabled={isActionLoading}
+                className="bg-rose-600 hover:bg-rose-700 text-white font-mono text-xs uppercase tracking-wider border-transparent"
+              >
+                {isActionLoading ? 'Deleting...' : 'Confirm Delete'}
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Clear All History Modal */}
+      {isClearAllDialogOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-fade-in">
+          <div className="relative w-full max-w-md border border-[var(--bento-border)] rounded-2xl shadow-2xl bg-[var(--canvas-bg)] p-6 space-y-4">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-rose-500/10 text-rose-500 flex items-center justify-center border border-rose-500/20">
+                <Trash2 className="w-5 h-5" />
+              </div>
+              <div>
+                <h2 className="text-lg font-bold">Clear All History?</h2>
+                <p className="text-xs text-[var(--text-muted)]">Reset all mock interview records and reports.</p>
+              </div>
+            </div>
+            <p className="text-xs text-[var(--text-muted)] leading-relaxed">
+              Are you sure you want to clear your entire interview preparation history? All past session logs, rubric evaluations, and generated roadmaps will be permanently deleted.
+            </p>
+            <div className="flex items-center justify-end gap-3 pt-2">
+              <Button
+                variant="secondary"
+                size="sm"
+                onClick={() => setIsClearAllDialogOpen(false)}
+                disabled={isActionLoading}
+                className="font-mono text-xs uppercase tracking-wider"
+              >
+                Cancel
+              </Button>
+              <Button
+                variant="primary"
+                size="sm"
+                onClick={handleClearAllHistory}
+                disabled={isActionLoading}
+                className="bg-rose-600 hover:bg-rose-700 text-white font-mono text-xs uppercase tracking-wider border-transparent"
+              >
+                {isActionLoading ? 'Clearing...' : 'Clear All'}
+              </Button>
+            </div>
+          </div>
         </div>
       )}
     </div>

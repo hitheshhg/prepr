@@ -1,5 +1,7 @@
 import json
+import re
 import time
+import asyncio
 import logging
 from typing import Type, TypeVar, Optional, Tuple, List
 from pydantic import BaseModel, ValidationError
@@ -17,10 +19,11 @@ class GeminiClient:
     """
     Centralized Gemini Client for Prepr.
     All LLM interactions pass through this module with:
-    - Strict Pydantic JSON validation
+    - Non-blocking async inference via client.aio
+    - Strict Pydantic JSON validation with resilient fallback parsing
     - Up to 2 retries on malformed JSON
     - Exponential backoff for HTTP 429 / 503 rate-limits & high demand
-    - Graceful fallback to GEMINI_FALLBACK_MODEL or active Flash models
+    - Graceful fallback to active Flash models
     """
 
     def __init__(self):
@@ -31,8 +34,8 @@ class GeminiClient:
         if self._client is None:
             if not settings.GEMINI_API_KEY:
                 raise ValueError("GEMINI_API_KEY is not configured in backend/.env")
-            # Configure with reasonable timeout to prevent hanging on overloaded models
-            http_options = types.HttpOptions(timeout=10000)
+            # Configure with reasonable timeout to allow structured schema decoding under load
+            http_options = types.HttpOptions(timeout=30000)
             self._client = genai.Client(api_key=settings.GEMINI_API_KEY, http_options=http_options)
         return self._client
 
@@ -41,8 +44,9 @@ class GeminiClient:
         candidates = [
             settings.GEMINI_MODEL,
             settings.GEMINI_FALLBACK_MODEL,
-            "gemini-flash-lite-latest",
-            "gemini-flash-latest",
+            "gemini-3.5-flash-lite",
+            "gemini-3.5-flash",
+            "gemini-3.8-flash",
         ]
         # Remove duplicates while preserving order and non-empty strings
         seen = set()
@@ -61,7 +65,7 @@ class GeminiClient:
         max_json_retries: int = 2,
     ) -> Tuple[T, str, float]:
         """
-        Generate structured JSON output validated against a Pydantic schema.
+        Generate structured JSON output validated against a Pydantic schema asynchronously.
         Returns: (parsed_pydantic_instance, model_name_used, latency_ms)
         """
         candidate_models = self.get_candidate_models()
@@ -84,7 +88,7 @@ class GeminiClient:
 
                     config = types.GenerateContentConfig(**config_kwargs)
 
-                    response = self.client.models.generate_content(
+                    response = await self.client.aio.models.generate_content(
                         model=model_name,
                         contents=prompt,
                         config=config,
@@ -109,7 +113,7 @@ class GeminiClient:
                     if attempt >= max_json_retries:
                         last_exception = json_err
                         break  # Fallback to next candidate model
-                    time.sleep(0.5)
+                    await asyncio.sleep(0.5)
 
                 except (ServerError, ClientError, APIError) as api_err:
                     status_code = getattr(api_err, "code", None)
@@ -133,8 +137,8 @@ class GeminiClient:
 
     async def extract_text_from_pdf_multimodal(self, pdf_bytes: bytes) -> str:
         """
-        Multimodal OCR fallback using Gemini 2.5 Flash for scanned or non-searchable PDF documents.
-        Passes the PDF bytes directly as an inline Part.
+        Multimodal OCR fallback using Gemini Flash models for scanned or non-searchable PDF documents.
+        Passes the PDF bytes directly as an inline Part asynchronously.
         """
         candidate_models = self.get_candidate_models()
         prompt = (
@@ -147,7 +151,7 @@ class GeminiClient:
         for model_name in candidate_models:
             try:
                 part = types.Part.from_bytes(data=pdf_bytes, mime_type="application/pdf")
-                response = self.client.models.generate_content(
+                response = await self.client.aio.models.generate_content(
                     model=model_name,
                     contents=[prompt, part],
                 )
@@ -161,19 +165,27 @@ class GeminiClient:
         return ""
 
     def _parse_and_validate(self, raw_text: str, schema: Type[T]) -> T:
-        """Helper to parse raw JSON string and instantiate Pydantic schema."""
+        """Helper to parse raw JSON string and instantiate Pydantic schema with resilient regex fallback."""
         cleaned_text = raw_text.strip()
-        # Strip markdown fences if present
+        # Strip markdown code blocks if present
         if cleaned_text.startswith("```json"):
             cleaned_text = cleaned_text[7:]
-        if cleaned_text.startswith("```"):
+        elif cleaned_text.startswith("```"):
             cleaned_text = cleaned_text[3:]
         if cleaned_text.endswith("```"):
             cleaned_text = cleaned_text[:-3]
         cleaned_text = cleaned_text.strip()
 
-        data = json.loads(cleaned_text)
-        return schema.model_validate(data)
+        try:
+            data = json.loads(cleaned_text)
+            return schema.model_validate(data)
+        except Exception:
+            # Resilient fallback: extract outermost JSON object {...} or array [...]
+            match = re.search(r"(\{.*\}|\[.*\])", raw_text, re.DOTALL)
+            if match:
+                data = json.loads(match.group(1))
+                return schema.model_validate(data)
+            raise
 
 
 # Global singleton instance
