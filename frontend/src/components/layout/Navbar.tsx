@@ -15,17 +15,21 @@ import {
   Sparkles,
   ShieldCheck,
   ChevronRight,
+  Volume2,
+  VolumeX,
+  Copy,
+  Check,
+  LogIn,
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import Avatar from '../common/Avatar';
 import ThemeToggle from '../ui/ThemeToggle';
-import { playClick } from '../../lib/sound';
+import { playClick, toggleSound, isSoundEnabled } from '../../lib/sound';
 
 interface NavItem {
   name: string;
   path: string;
   icon: React.ComponentType<{ className?: string }>;
-  badge?: string;
 }
 
 const navLinks: NavItem[] = [
@@ -40,6 +44,8 @@ export const Navbar: React.FC = () => {
   const { currentUser, userProfile, logout } = useAuth();
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [soundOn, setSoundOn] = useState<boolean>(() => isSoundEnabled());
+  const [copiedEmail, setCopiedEmail] = useState<boolean>(false);
   const location = useLocation();
   const navigate = useNavigate();
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -65,7 +71,7 @@ export const Navbar: React.FC = () => {
     };
   }, []);
 
-  // Close mobile drawer on route change
+  // Close mobile drawer and dropdown on route change
   useEffect(() => {
     setMobileMenuOpen(false);
     setDropdownOpen(false);
@@ -83,10 +89,26 @@ export const Navbar: React.FC = () => {
     }
   };
 
+  const handleSoundToggle = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    const newState = toggleSound();
+    setSoundOn(newState);
+  };
+
+  const handleCopyEmail = (e: React.MouseEvent, emailToCopy: string) => {
+    e.stopPropagation();
+    if (!emailToCopy) return;
+    navigator.clipboard.writeText(emailToCopy);
+    playClick(900, 0.02);
+    setCopiedEmail(true);
+    setTimeout(() => setCopiedEmail(false), 2000);
+  };
+
   const displayName = currentUser?.displayName || userProfile?.display_name || 'Candidate';
   const email = currentUser?.email || userProfile?.email || '';
   const photoURL = currentUser?.photoURL || userProfile?.photo_url || null;
   const firstName = displayName.split(' ')[0] || 'Candidate';
+  const isAuthenticated = Boolean(currentUser);
 
   return (
     <header className="sticky top-2 sm:top-4 z-40 w-full transition-all duration-300">
@@ -190,10 +212,10 @@ export const Navbar: React.FC = () => {
                 playClick(600, 0.02);
                 setDropdownOpen(!dropdownOpen);
               }}
-              className="flex items-center gap-1.5 sm:gap-2 p-1 pl-1 pr-1.5 sm:pr-2.5 rounded-full border border-black/10 dark:border-white/10 hover:border-black/25 dark:hover:border-white/25 bg-black/[0.02] dark:bg-white/[0.02] hover:bg-black/[0.05] dark:hover:bg-white/[0.06] transition-all focus:outline-none"
+              className="group flex items-center gap-1.5 sm:gap-2 p-1 pl-1 pr-1.5 sm:pr-2.5 rounded-full border border-black/10 dark:border-white/10 hover:border-black/30 dark:hover:border-white/30 bg-black/[0.02] dark:bg-white/[0.02] hover:bg-black/[0.05] dark:hover:bg-white/[0.06] transition-all focus:outline-none"
               aria-expanded={dropdownOpen}
               aria-haspopup="true"
-              aria-label="User account menu"
+              aria-label="Candidate profile menu"
             >
               <div className="relative">
                 <Avatar src={photoURL} name={displayName} size="sm" />
@@ -202,51 +224,96 @@ export const Navbar: React.FC = () => {
               <span className="hidden xl:inline-block text-xs font-mono font-medium text-neutral-800 dark:text-neutral-200 max-w-[85px] truncate">
                 {firstName}
               </span>
-              <ChevronDown className={`w-3 h-3 text-neutral-400 transition-transform duration-200 ${dropdownOpen ? 'rotate-180' : ''}`} />
+              <ChevronDown className={`w-3 h-3 text-neutral-400 group-hover:text-neutral-700 dark:group-hover:text-neutral-200 transition-transform duration-200 ${dropdownOpen ? 'rotate-180' : ''}`} />
             </button>
 
-            {/* Glass Dropdown Menu */}
+            {/* Premium Glass Dropdown Menu */}
             <AnimatePresence>
               {dropdownOpen && (
                 <motion.div
-                  initial={{ opacity: 0, y: 8, scale: 0.95 }}
+                  initial={{ opacity: 0, y: 10, scale: 0.96 }}
                   animate={{ opacity: 1, y: 0, scale: 1 }}
-                  exit={{ opacity: 0, y: 8, scale: 0.95 }}
-                  transition={{ duration: 0.15, ease: 'easeOut' }}
-                  className="absolute right-0 top-full mt-2 w-64 rounded-2xl bg-[var(--bento-bg)]/95 backdrop-blur-2xl border border-[var(--bento-border)] shadow-2xl p-2 z-50 font-mono text-xs"
+                  exit={{ opacity: 0, y: 10, scale: 0.96 }}
+                  transition={{ duration: 0.16, ease: [0.16, 1, 0.3, 1] }}
+                  className="absolute right-0 top-full mt-2 w-72 sm:w-80 rounded-2xl sm:rounded-3xl bg-[var(--bento-bg)]/95 dark:bg-[#121215]/95 backdrop-blur-2xl border border-[var(--bento-border)] shadow-2xl shadow-black/10 dark:shadow-black/40 ring-1 ring-black/5 dark:ring-white/10 p-3 sm:p-3.5 z-50 font-mono text-xs overflow-hidden"
                 >
-                  {/* User Profile Overview */}
-                  <div className="px-3 py-2.5 border-b border-[var(--bento-border)] mb-1.5 flex items-center gap-2.5">
-                    <Avatar src={photoURL} name={displayName} size="sm" />
-                    <div className="min-w-0 flex-1">
-                      <div className="font-semibold text-neutral-900 dark:text-white truncate">
-                        {displayName}
+                  {/* Hero Identity Header */}
+                  <div className="p-3 rounded-2xl bg-black/[0.02] dark:bg-white/[0.03] border border-black/[0.05] dark:border-white/[0.05] mb-2.5">
+                    <div className="flex items-start gap-3">
+                      <div className="relative shrink-0 mt-0.5">
+                        <Avatar src={photoURL} name={displayName} size="md" />
+                        <span className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-emerald-500 border-2 border-[var(--bento-bg)] animate-pulse" />
                       </div>
-                      <div className="text-[11px] text-neutral-500 dark:text-neutral-400 truncate">
-                        {email || 'Candidate Account'}
+                      <div className="min-w-0 flex-1">
+                        <div className="flex items-center gap-1.5">
+                          <span className="font-semibold text-neutral-900 dark:text-white truncate text-sm">
+                            {displayName}
+                          </span>
+                        </div>
+                        
+                        {/* Copyable Email Row */}
+                        {email && (
+                          <button
+                            type="button"
+                            onClick={(e) => handleCopyEmail(e, email)}
+                            title="Click to copy email"
+                            className="group/copy flex items-center gap-1 text-[11px] text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white transition-colors truncate max-w-full text-left mt-0.5"
+                          >
+                            <span className="truncate">{email}</span>
+                            {copiedEmail ? (
+                              <Check className="w-3 h-3 text-emerald-500 shrink-0" />
+                            ) : (
+                              <Copy className="w-2.5 h-2.5 opacity-0 group-hover/copy:opacity-100 transition-opacity shrink-0 text-neutral-400" />
+                            )}
+                          </button>
+                        )}
+
+                        <div className="mt-2 flex items-center gap-1.5 flex-wrap">
+                          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 font-medium">
+                            <ShieldCheck className="w-3 h-3" />
+                            <span>Verified Candidate</span>
+                          </span>
+                        </div>
                       </div>
-                      <div className="mt-1 inline-flex items-center gap-1 text-[10px] text-emerald-600 dark:text-emerald-400 font-medium">
-                        <ShieldCheck className="w-3 h-3" />
-                        <span>Verified Account</span>
+                    </div>
+
+                    {/* Candidate Quick Status Strip */}
+                    <div className="grid grid-cols-3 gap-1.5 mt-3 pt-2.5 border-t border-black/[0.05] dark:border-white/[0.05] text-[10px] text-center">
+                      <div className="p-1 rounded-lg bg-black/[0.02] dark:bg-white/[0.02]">
+                        <span className="text-neutral-400 block text-[9px] uppercase tracking-wider">Status</span>
+                        <span className="font-semibold text-emerald-600 dark:text-emerald-400">Active</span>
+                      </div>
+                      <div className="p-1 rounded-lg bg-black/[0.02] dark:bg-white/[0.02]">
+                        <span className="text-neutral-400 block text-[9px] uppercase tracking-wider">Engine</span>
+                        <span className="font-semibold text-neutral-800 dark:text-neutral-200">Gemini AI</span>
+                      </div>
+                      <div className="p-1 rounded-lg bg-black/[0.02] dark:bg-white/[0.02]">
+                        <span className="text-neutral-400 block text-[9px] uppercase tracking-wider">Cohort</span>
+                        <span className="font-semibold text-neutral-800 dark:text-neutral-200">VTU '26</span>
                       </div>
                     </div>
                   </div>
 
                   {/* Navigation Links in Menu */}
-                  <div className="space-y-0.5">
+                  <div className="space-y-1">
                     <Link
                       to="/profile"
                       onClick={() => {
                         playClick(700, 0.02);
                         setDropdownOpen(false);
                       }}
-                      className="flex items-center justify-between px-3 py-2 rounded-xl text-neutral-700 dark:text-neutral-300 hover:bg-neutral-500/10 hover:text-neutral-900 dark:hover:text-white transition-colors"
+                      className="group flex items-center justify-between p-2 rounded-xl text-neutral-700 dark:text-neutral-300 hover:bg-neutral-500/10 hover:text-neutral-900 dark:hover:text-white transition-all"
                     >
-                      <div className="flex items-center gap-2">
-                        <UserIcon className="w-3.5 h-3.5 text-neutral-400" />
-                        <span>Profile Settings</span>
+                      <div className="flex items-center gap-2.5">
+                        <div className="w-7 h-7 rounded-lg bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
+                          <UserIcon className="w-3.5 h-3.5" />
+                        </div>
+                        <div className="flex flex-col text-left">
+                          <span className="font-medium text-xs">Profile & Settings</span>
+                          <span className="text-[10px] text-neutral-400 dark:text-neutral-500">Bio, GitHub & preferences</span>
+                        </div>
                       </div>
-                      <ChevronRight className="w-3 h-3 text-neutral-400" />
+                      <ChevronRight className="w-3.5 h-3.5 text-neutral-400 group-hover:translate-x-0.5 transition-transform" />
                     </Link>
 
                     <Link
@@ -255,13 +322,18 @@ export const Navbar: React.FC = () => {
                         playClick(700, 0.02);
                         setDropdownOpen(false);
                       }}
-                      className="flex items-center justify-between px-3 py-2 rounded-xl text-neutral-700 dark:text-neutral-300 hover:bg-neutral-500/10 hover:text-neutral-900 dark:hover:text-white transition-colors"
+                      className="group flex items-center justify-between p-2 rounded-xl text-neutral-700 dark:text-neutral-300 hover:bg-neutral-500/10 hover:text-neutral-900 dark:hover:text-white transition-all"
                     >
-                      <div className="flex items-center gap-2">
-                        <Award className="w-3.5 h-3.5 text-neutral-400" />
-                        <span>My Reports</span>
+                      <div className="flex items-center gap-2.5">
+                        <div className="w-7 h-7 rounded-lg bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
+                          <Award className="w-3.5 h-3.5" />
+                        </div>
+                        <div className="flex flex-col text-left">
+                          <span className="font-medium text-xs">Performance Reports</span>
+                          <span className="text-[10px] text-neutral-400 dark:text-neutral-500">Rubric breakdown & poise MDI</span>
+                        </div>
                       </div>
-                      <ChevronRight className="w-3 h-3 text-neutral-400" />
+                      <ChevronRight className="w-3.5 h-3.5 text-neutral-400 group-hover:translate-x-0.5 transition-transform" />
                     </Link>
 
                     <Link
@@ -270,26 +342,89 @@ export const Navbar: React.FC = () => {
                         playClick(700, 0.02);
                         setDropdownOpen(false);
                       }}
-                      className="flex items-center justify-between px-3 py-2 rounded-xl text-neutral-700 dark:text-neutral-300 hover:bg-neutral-500/10 hover:text-neutral-900 dark:hover:text-white transition-colors"
+                      className="group flex items-center justify-between p-2 rounded-xl text-neutral-700 dark:text-neutral-300 hover:bg-neutral-500/10 hover:text-neutral-900 dark:hover:text-white transition-all"
                     >
-                      <div className="flex items-center gap-2">
-                        <Map className="w-3.5 h-3.5 text-neutral-400" />
-                        <span>Career Roadmap</span>
+                      <div className="flex items-center gap-2.5">
+                        <div className="w-7 h-7 rounded-lg bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
+                          <Map className="w-3.5 h-3.5" />
+                        </div>
+                        <div className="flex flex-col text-left">
+                          <span className="font-medium text-xs">Career Roadmap</span>
+                          <span className="text-[10px] text-neutral-400 dark:text-neutral-500">3-Step progression checklist</span>
+                        </div>
                       </div>
-                      <ChevronRight className="w-3 h-3 text-neutral-400" />
+                      <ChevronRight className="w-3.5 h-3.5 text-neutral-400 group-hover:translate-x-0.5 transition-transform" />
+                    </Link>
+
+                    <Link
+                      to="/analyzer"
+                      onClick={() => {
+                        playClick(700, 0.02);
+                        setDropdownOpen(false);
+                      }}
+                      className="group flex items-center justify-between p-2 rounded-xl text-neutral-700 dark:text-neutral-300 hover:bg-neutral-500/10 hover:text-neutral-900 dark:hover:text-white transition-all"
+                    >
+                      <div className="flex items-center gap-2.5">
+                        <div className="w-7 h-7 rounded-lg bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
+                          <FileText className="w-3.5 h-3.5" />
+                        </div>
+                        <div className="flex flex-col text-left">
+                          <span className="font-medium text-xs">Resume ATS Match</span>
+                          <span className="text-[10px] text-neutral-400 dark:text-neutral-500">Keyword gaps & score</span>
+                        </div>
+                      </div>
+                      <ChevronRight className="w-3.5 h-3.5 text-neutral-400 group-hover:translate-x-0.5 transition-transform" />
                     </Link>
                   </div>
 
-                  {/* Sign Out Action */}
-                  <div className="pt-1.5 mt-1.5 border-t border-[var(--bento-border)]">
+                  {/* Micro-Settings & Audio Preference */}
+                  <div className="pt-2 mt-2 border-t border-[var(--bento-border)] space-y-1">
                     <button
                       type="button"
-                      onClick={handleLogout}
-                      className="w-full flex items-center gap-2 px-3 py-2 rounded-xl text-rose-600 dark:text-rose-400 hover:bg-rose-500/10 transition-colors text-left font-medium"
+                      onClick={handleSoundToggle}
+                      className="w-full flex items-center justify-between p-2 rounded-xl text-neutral-700 dark:text-neutral-300 hover:bg-neutral-500/10 transition-colors text-left"
                     >
-                      <LogOut className="w-3.5 h-3.5" />
-                      <span>Sign out</span>
+                      <div className="flex items-center gap-2">
+                        {soundOn ? (
+                          <Volume2 className="w-3.5 h-3.5 text-emerald-500" />
+                        ) : (
+                          <VolumeX className="w-3.5 h-3.5 text-neutral-400" />
+                        )}
+                        <span className="text-xs">Audio Feedback</span>
+                      </div>
+                      <span className={`text-[10px] font-mono px-2 py-0.5 rounded-md ${soundOn ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-semibold' : 'bg-neutral-500/10 text-neutral-400'}`}>
+                        {soundOn ? 'Active' : 'Muted'}
+                      </span>
                     </button>
+                  </div>
+
+                  {/* Account Action: Sign Out or Sign In */}
+                  <div className="pt-2 mt-1 border-t border-[var(--bento-border)]">
+                    {isAuthenticated ? (
+                      <button
+                        type="button"
+                        onClick={handleLogout}
+                        className="w-full flex items-center justify-between p-2 rounded-xl text-rose-600 dark:text-rose-400 hover:bg-rose-500/10 transition-colors text-left font-medium"
+                      >
+                        <div className="flex items-center gap-2">
+                          <LogOut className="w-3.5 h-3.5" />
+                          <span>Sign out</span>
+                        </div>
+                        <span className="text-[10px] text-rose-500/70 font-mono">End Session</span>
+                      </button>
+                    ) : (
+                      <Link
+                        to="/signin"
+                        onClick={() => {
+                          playClick(700, 0.02);
+                          setDropdownOpen(false);
+                        }}
+                        className="w-full flex items-center justify-center gap-2 p-2 rounded-xl bg-neutral-900 text-white dark:bg-white dark:text-black font-semibold text-xs transition-opacity hover:opacity-90"
+                      >
+                        <LogIn className="w-3.5 h-3.5" />
+                        <span>Sign in / Register</span>
+                      </Link>
+                    )}
                   </div>
                 </motion.div>
               )}
@@ -376,14 +511,28 @@ export const Navbar: React.FC = () => {
                 <UserIcon className="w-4 h-4" />
                 <span>Profile Settings</span>
               </Link>
-              <button
-                type="button"
-                onClick={handleLogout}
-                className="flex items-center gap-2 px-3 py-2 rounded-xl text-rose-600 dark:text-rose-400 hover:bg-rose-500/10 text-left font-medium"
-              >
-                <LogOut className="w-4 h-4" />
-                <span>Sign out</span>
-              </button>
+              {isAuthenticated ? (
+                <button
+                  type="button"
+                  onClick={handleLogout}
+                  className="flex items-center gap-2 px-3 py-2 rounded-xl text-rose-600 dark:text-rose-400 hover:bg-rose-500/10 text-left font-medium"
+                >
+                  <LogOut className="w-4 h-4" />
+                  <span>Sign out</span>
+                </button>
+              ) : (
+                <Link
+                  to="/signin"
+                  onClick={() => {
+                    playClick(700, 0.02);
+                    setMobileMenuOpen(false);
+                  }}
+                  className="flex items-center gap-2 px-3 py-2 rounded-xl text-neutral-900 dark:text-white font-semibold"
+                >
+                  <LogIn className="w-4 h-4" />
+                  <span>Sign in / Register</span>
+                </Link>
+              )}
             </div>
           </motion.div>
         )}
