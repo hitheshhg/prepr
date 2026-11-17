@@ -17,6 +17,7 @@ import {
   FileText,
   Code,
   Github,
+  Camera,
 } from 'lucide-react';
 import Card from '../components/ui/Card';
 import Button from '../components/ui/Button';
@@ -96,6 +97,7 @@ export const InterviewRoomPage: React.FC = () => {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [rightPanelTab, setRightPanelTab] = useState<'camera' | 'scorecard'>('camera');
   const [showCodeSandbox, setShowCodeSandbox] = useState(false);
+  const [showPreCheck, setShowPreCheck] = useState(false);
   const [githubHandle, setGithubHandle] = useState('');
 
   // Speech Hooks
@@ -462,6 +464,37 @@ export const InterviewRoomPage: React.FC = () => {
                   <p className="text-[11px] text-[var(--text-muted)] mt-1.5 font-sans">
                     Prepr will inspect your public repositories to formulate direct architectural deep-dive questions based on your real projects.
                   </p>
+                </div>
+
+                {/* Camera & Vision HUD Pre-Check */}
+                <div className="pt-2 border-t border-[var(--bento-border)]">
+                  <div className="flex items-center justify-between mb-2">
+                    <div className="flex items-center gap-2">
+                      <Camera className="w-3.5 h-3.5 text-emerald-500" />
+                      <span className="text-xs font-mono font-semibold uppercase tracking-wider text-[var(--text-muted)]">
+                        Camera & Face Mesh Pre-Check
+                      </span>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => setShowPreCheck(!showPreCheck)}
+                      className="text-xs font-mono text-emerald-500 hover:underline flex items-center gap-1"
+                    >
+                      <Sparkles className="w-3 h-3" />
+                      {showPreCheck ? 'Hide Pre-Check' : 'Test Camera & Face Mesh'}
+                    </button>
+                  </div>
+                  {showPreCheck && (
+                    <div className="h-[280px] rounded-2xl overflow-hidden border border-[var(--bento-border)] mb-2">
+                      <WebcamVisionTracker
+                        isActive={false}
+                        deliveryMetrics={deliveryMetrics}
+                        onRecordEyeContact={recordEyeContact}
+                        onUpdatePosture={updatePosture}
+                        className="h-full border-0 rounded-none shadow-none"
+                      />
+                    </div>
+                  )}
                 </div>
 
                 {errorMessage && (
