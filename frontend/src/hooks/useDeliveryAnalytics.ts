@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useCallback } from 'react';
 
 export interface FillerWordMatch {
   word: string;
@@ -97,17 +97,17 @@ export const useDeliveryAnalytics = (
   }, [transcript, durationSeconds]);
 
   // Record an eye contact sample (0 to 100)
-  const recordEyeContact = (score: number) => {
+  const recordEyeContact = useCallback((score: number) => {
     setEyeContactEvents((prev) => {
       const next = [...prev, score];
       if (next.length > 60) next.shift(); // Keep rolling window of last 60 ticks
       return next;
     });
-  };
+  }, []);
 
-  const updatePosture = (posture: 'attentive' | 'stable' | 'fidgeting') => {
+  const updatePosture = useCallback((posture: 'attentive' | 'stable' | 'fidgeting') => {
     setPostureEvents(posture);
-  };
+  }, []);
 
   // Average rolling eye contact percentage
   const eyeContactScore = useMemo(() => {

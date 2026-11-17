@@ -61,3 +61,7 @@ Thumbs.db
 .coverage
 htmlcov/
 .pytest_cache/
+
+# Large vendor binaries & models (served locally when present, fallback to CDN in production)
+frontend/public/wasm/
+frontend/public/models/
