@@ -74,7 +74,7 @@ export const App: React.FC = () => {
               }
             />
 
-            {/* Protected SaaS App with Left Sidebar & Topbar */}
+            {/* Protected SaaS App with Bento Header Navbar & AppShell */}
             <Route
               path="/dashboard"
               element={
